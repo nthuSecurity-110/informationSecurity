@@ -48,4 +48,4 @@
         3. Return value.
 - Comments are very welcomed when coding!
 
-大家加油！(ง •_•)ง
+## 大家加油！(ง •_•)ง
