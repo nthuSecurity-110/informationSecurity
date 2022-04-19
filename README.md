@@ -10,13 +10,13 @@
     1. `git add --a`
     2. `git status` --> optional, to check the modified files
     3. `git commit -m "enter your commit message"`
-    4. git push origin islab/[your_name]
-Branch names:
-家秀：islab/chelsea
-家燕：islab/jessica
-晴雯：islab/michelle
-徐祈：islab/jose
-妍廷：islab/sakura
+    4. `git push origin islab/[your_name]`
+- Branch names:
+    - 家秀：islab/chelsea
+    - 家燕：islab/jessica
+    - 晴雯：islab/michelle
+    - 徐祈：islab/jose
+    - 妍廷：islab/sakura
 
 ## To get the latest official development update
 - Run `git pull origin main`
