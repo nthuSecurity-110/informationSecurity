@@ -2,6 +2,7 @@
 
 ## Setup
 - Run `git clone https://github.com/nthuSecurity-110/informationSecurity.git`
+- Run `python main.py` in Windows to execute the program.
 
 ## Modifying Files
 - Run `git checkout islab/[your_name]`
