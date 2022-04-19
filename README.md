@@ -1,6 +1,6 @@
-# Information Security Lab 110 Repository
+# Information Security Lab 110 Repository 💻
 
-## Git 101
+## Git 101 ✅
 ### Setup
 - Run `git clone https://github.com/nthuSecurity-110/informationSecurity.git`
 - Run `python main.py` in Windows to execute the program.
@@ -35,7 +35,7 @@
     - If no errors --> create a pull request (PR) --> person in charge will merge to main branch
     - If error found --> fix in your respective branch --> re-push
 
-## When Coding
+## When Coding 🔥
 - Use Class in different files --> bundling functionalities together to make the overall development process neater and easier to understand.
 - For each classes:
     - Provide a documentation (brief explanation) about the class. If possible, include:
