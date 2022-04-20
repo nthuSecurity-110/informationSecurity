@@ -1,6 +1,7 @@
 import sys
 import subprocess
 from itertools import groupby
+from typing import TYPE_CHECKING
   
 class NetworkData:
     '''
@@ -104,10 +105,14 @@ class NetworkData:
         """
         TYPE = "Wireless LAN adapter Wi-Fi"
         REQ_DATA = "DefaultGateway"
+        TYPE_CH = "無線區域網路介面卡 Wi-Fi"
+        REQ_DATA_CH = "預設閘道"
         default_gateway = ''
         try:
             if TYPE in self.net_dict.keys():
                 default_gateway = self.net_dict[TYPE][REQ_DATA]
+            elif TYPE_CH in self.net_dict.keys():
+                default_gateway = self.net_dict[TYPE_CH][REQ_DATA_CH]
         except KeyError:
             sys.stderr.write("Default Gateway does not exist.")
         except:
@@ -120,12 +125,16 @@ class NetworkData:
             Argument(s): self
             Returns: subnet mask value of Wireless LAN Adapter Wi-Fi connection.
         """
-        REQ = "Wireless LAN adapter Wi-Fi"
+        TYPE = "Wireless LAN adapter Wi-Fi"
         REQ_DATA = "SubnetMask"
-        subnet_mask = ''
+        TYPE_CH = "無線區域網路介面卡 Wi-Fi"
+        REQ_DATA_CH = "子網路遮罩"
+        subnet_mask = '' 
         try:
-            if REQ in self.net_dict.keys():
-                subnet_mask = self.net_dict[REQ][REQ_DATA]
+            if TYPE in self.net_dict.keys():
+                subnet_mask = self.net_dict[TYPE][REQ_DATA]
+            elif TYPE_CH in self.net_dict.keys():
+                subnet_mask = self.net_dict[TYPE_CH][REQ_DATA_CH]
         except KeyError:
             sys.stderr.write("Default Gateway does not exist.")
         except:
