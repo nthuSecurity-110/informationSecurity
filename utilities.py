@@ -13,11 +13,21 @@ class Helper:
 
     def decimalToBinary(self, n):
         """
+            Convert decimal to binary.
+            Argument(s):
+                - self
+                - n: a decimal number
+            Returns: the corresponding binary of the decimal number.
         """
         return bin(n).replace("0b", "")
 
     def calculateMask(self, subnet_mask):
         """
+            Calculates the mask value of a subnet mask.
+            Argument(s):
+                - self
+                - subnet mask value
+            Returns: an integer, the mask value.
         """
         try:
             parse_lst = subnet_mask.split('.')

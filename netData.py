@@ -1,7 +1,6 @@
 import sys
 import subprocess
 from itertools import groupby
-from typing import TYPE_CHECKING
   
 class NetworkData:
     '''
