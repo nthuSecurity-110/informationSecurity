@@ -31,7 +31,7 @@ class NetworkData:
             Returns: a dictionary
         """
         # Traverse the ipconfig information
-        self.data = subprocess.check_output(['ipconfig','/all']).decode('utf-8', errors='ignore').split('\n')
+        self.data = subprocess.check_output(['ipconfig','/all']).decode('big5', errors='ignore').split('\n')
 
         # for item in data:
         #      print(item.split('\r')[:-1])
@@ -113,6 +113,8 @@ class NetworkData:
                 default_gateway = self.net_dict[TYPE][REQ_DATA]
             elif TYPE_CH in self.net_dict.keys():
                 default_gateway = self.net_dict[TYPE_CH][REQ_DATA_CH]
+            else:
+                print("We don't recognize your language.")
         except KeyError:
             sys.stderr.write("Default Gateway does not exist.")
         except:
@@ -135,6 +137,8 @@ class NetworkData:
                 subnet_mask = self.net_dict[TYPE][REQ_DATA]
             elif TYPE_CH in self.net_dict.keys():
                 subnet_mask = self.net_dict[TYPE_CH][REQ_DATA_CH]
+            else:
+                print("We don't recognize your language.")
         except KeyError:
             sys.stderr.write("Default Gateway does not exist.")
         except:
