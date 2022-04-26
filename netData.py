@@ -30,11 +30,18 @@ class NetworkData:
             Returns: a dictionary
         """
         # Traverse the ipconfig information
-        self.data = subprocess.check_output(['ipconfig','/all']).decode('big5', errors='ignore').split('\n')
-
+        self.data = subprocess.check_output(['ip','a']).decode('big5', errors='ignore').split('\n')
+        for i in range(0, len(self.data)):
+                self.data[i] = self.data[i].lstrip()
+        self.info_arr = self.data[8].split(' ')
+        self.net_arr = self.info_arr[1].split('/')
+        self.ip = self.net_arr[0]
+        self.subnet = self.net_arr[1]
+        print("ip", self.ip)
+        print("subnet", self.subnet)
         # for item in data:
         #      print(item.split('\r')[:-1])
-
+        '''
         tmp_ip_list = []
         ip_list = []
         info_list = []
@@ -94,6 +101,7 @@ class NetworkData:
 
         for idx in range(0, len(network_type)):
             self.net_dict[network_type[idx]] = dict(ip_list[idx])
+        '''
         # print(self.net_dict)
     
     def getGateway11(self):
@@ -102,6 +110,8 @@ class NetworkData:
             Argument(s): self
             Returns: gateway value of Wireless LAN Adapter Wi-Fi connection.
         """
+        return self.ip
+        '''
         TYPE = "Wireless LAN adapter Wi-Fi"
         REQ_DATA = "DefaultGateway"
         TYPE_CH = "無線區域網路介面卡 Wi-Fi"
@@ -119,6 +129,7 @@ class NetworkData:
         except:
             sys.stderr.write("An error has occured.")
         return default_gateway
+        '''
 
     def getSubnet11(self):
         """
@@ -126,6 +137,8 @@ class NetworkData:
             Argument(s): self
             Returns: subnet mask value of Wireless LAN Adapter Wi-Fi connection.
         """
+        return self.subnet
+        '''
         TYPE = "Wireless LAN adapter Wi-Fi"
         REQ_DATA = "SubnetMask"
         TYPE_CH = "無線區域網路介面卡 Wi-Fi"
@@ -143,3 +156,4 @@ class NetworkData:
         except:
             sys.stderr.write("An error has occured.")
         return subnet_mask
+        '''

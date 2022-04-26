@@ -3,6 +3,7 @@
 ## Git 101 ✅
 ### Setup
 - Run `git clone https://github.com/nthuSecurity-110/informationSecurity.git`
+- Run `pip install python-nmap`
 - Run `python main.py` in Windows to execute the program.
 
 ### Modifying Files

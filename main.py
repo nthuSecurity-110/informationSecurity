@@ -14,7 +14,7 @@ def callback_result(host, scan_result):
 
 wireless_lan_gateway = config.getGateway11()
 wireless_lan_subnet = config.getSubnet11()
-mask_num = util.calculateMask(wireless_lan_subnet)
+mask_num = config.getSubnet11() #util.calculateMask(wireless_lan_subnet)
 
 ipAddr = wireless_lan_gateway + '/' + str(mask_num)
 print(ipAddr)
