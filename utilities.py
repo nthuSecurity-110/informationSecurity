@@ -9,7 +9,7 @@ class Helper:
             calculate_mask                  calculates the mask of a given subnet mask
     '''
     def __init__(self):
-        self.string = "hello"
+        self.haha="hello"
 
     def decimalToBinary(self, n):
         """
@@ -38,3 +38,11 @@ class Helper:
             return mask_str.count('1')
         except:
             sys.stderr.write("An error has occured.")
+    def getOS(self):
+        OS=int(input("Please input your OS(1-win, 2-linux)"))
+        if OS ==1: 
+            return "win"
+        elif OS==2:
+            return "linux"
+        else:
+            return "OS not recognized"
