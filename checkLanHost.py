@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import imp
 import nmap
 from datetime import datetime
@@ -7,10 +8,15 @@ def callback_result(host, scan_result):
     print('------------------')
     print(host, scan_result)
 
-def LanHost(config):
+def LanHost(config, os):
     wireless_lan_gateway = config.getGateway11()
     wireless_lan_subnet = config.getSubnet11()
-    mask_num = IPAddress(wireless_lan_subnet).netmask_bits()
+    if os == 'win':
+        mask_num = IPAddress(wireless_lan_subnet).netmask_bits()
+    elif os == 'linux':
+        mask_num = wireless_lan_subnet
+    else:
+        mask_num=-1
 
     ipAddr = wireless_lan_gateway + '/' + str(mask_num)
     print(ipAddr)
