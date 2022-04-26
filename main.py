@@ -20,5 +20,5 @@ if __name__ == '__main__':
 
     
     
-    LanHost(config)
+    LanHost(config,user_os)
     
