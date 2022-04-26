@@ -1,75 +1,43 @@
-'''
-FOR TESTING PURPOSES ONLY.
-'''
-
 import sys
-import subprocess
-from itertools import groupby
+from ipaddress import ip_address
+from subprocess import Popen, PIPE
 
-# Traverse the ipconfig information
-data = subprocess.check_output(['ipconfig','/all']).decode('utf-8').split('\n')
-for item in data:
-     print(item.split('\r')[:-1])
 
-tmp_ip_list = []
-ip_list = []
-info_list = []
-network_type = []
+def getLANRouters(tracertList):  # Get the direct ancestors in LAN
+    ip_list = []
+    for i in range(len(tracertList)):
+        # some IP is in [], we have to take it out
+        if (tracertList[i] != '' and tracertList[i][0] == '[') or (tracertList[i] != '' and tracertList[i][0] == '('  and tracertList[i][-1] == ')'):
+            ip_list.append(tracertList[i][1:-1])
 
-ip_dict = {}
+        if(all([item.isnumeric() for item in tracertList[i].split('.')]) and
+                len(tracertList[i].split('.')) == 4):  # if the string is in format of IP addr
+            ip_list.append(tracertList[i])  # append it into ip_list
 
-cnt = 0
-for item in data:
-    if item == '\r' or item == '':
-        if (cnt == 2 and item == '\r') or (cnt == 2 and item == ''):
-            tmp_ip_list.extend(info_list)
-            tmp_ip_list.extend(['-1:-1'])
-            info_list.clear()
-            cnt = 1
+    ip_list.pop(0)
+    IP={'private': [], 'public':[]}
+    for ip in ip_list:
+        if(ip_address(ip).is_private):
+            IP['private'].append(ip)
         else:
-            cnt += 1
-    else:
-        if cnt == 2:
-            info_list.append(item)
-        if cnt == 1:
-            network_type.append(item)
+            IP['public'].append(ip)
 
-i = (list(g) for _, g in groupby(tmp_ip_list, key='-1:-1'.__ne__))
-tmp_ip_list = [a + b for a, b in zip(i, i)]
+    return IP,ip_list
 
-for elm in tmp_ip_list:
-    for str in elm:
-        elm = [elem.replace(' ', '').replace('\r', '') for elem in elm]
-    ip_list.append(elm)
+    
+if len(sys.argv) < 2:
+    print('Usage:python tracert.py "command to watch"\n\
+Example:python tracert.py tracert 192.168.0.1\n')
+    sys.exit(1)
 
-tmp = []
-for lists in ip_list:
-    for str_val in lists:
-        list_of_words = str_val.split(':', 1)
-        if len(list_of_words) > 1:
-            list_of_words = [list_of_words[0].replace('.', ''), list_of_words[1]]
-        tmp.append(list_of_words)
+cmdline_ins = sys.argv[1:]
+print("cmdline", cmdline_ins)
+p = Popen(cmdline_ins, stdout=PIPE)
+print("p", p)
+outputText = str(p.communicate()[0]).split(' ')
+print(outputText)
 
-for sublists in tmp:
-    if sublists == ['-1', '-1']:
-        tmp[tmp.index(sublists)] = '-1'
-
-j = (list(g) for _, g in groupby(tmp, key='-1'.__ne__))
-ip_list = [a + b for a, b in zip(j, j)]
-
-for items in ip_list:
-    items.remove('-1')
-for elm in network_type:
-    network_type = [elem.replace('\r', '').replace(':', '') for elem in network_type]
-
-#remove elements with incomplete information
-for items in ip_list:
-    for sub_elm in items:
-        if len(sub_elm) != 2:
-            items.remove(items[items.index(sub_elm)])
-
-# print(network_type)
-for idx in range(0, len(network_type)):
-    ip_dict[network_type[idx]] = dict(ip_list[idx])
-
-print(ip_dict)
+print("\nIP:")
+b,a=getLANRouters(outputText)
+print(a)
+print(b)
