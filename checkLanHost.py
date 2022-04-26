@@ -1,20 +1,16 @@
-import sys
-from utilities import *
-from netData import *
+import imp
 import nmap
 from datetime import datetime
-
-util = Helper()
-config = NetworkData()
+from netaddr import IPAddress
 
 def callback_result(host, scan_result):
     print('------------------')
     print(host, scan_result)
 
-def LanHost():
+def LanHost(config):
     wireless_lan_gateway = config.getGateway11()
     wireless_lan_subnet = config.getSubnet11()
-    mask_num = util.calculateMask(wireless_lan_subnet)
+    mask_num = IPAddress(wireless_lan_subnet).netmask_bits()
 
     ipAddr = wireless_lan_gateway + '/' + str(mask_num)
     print(ipAddr)
