@@ -18,7 +18,7 @@ class CheckLanHost:
         elif self.os == "linux":
             print('------------------')
             print("scan_res:", scan_result)
-            if scan_result != None and scan_result['scan'] != None:
+            if scan_result != None and scan_result['scan'] != None and scan_result['scan'] != {}:
                 print(scan_result['scan'])
             else:
                 print(host)
