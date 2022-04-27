@@ -1,75 +1,59 @@
-'''
-FOR TESTING PURPOSES ONLY.
-'''
+import nmap
+from datetime import datetime
+from netaddr import IPAddress
+from trace import *
 
-import sys
-import subprocess
-from itertools import groupby
+# trace = Trace()
+class Test:
+    def __init__(self, os):
+        self.user_os = os
 
-# Traverse the ipconfig information
-data = subprocess.check_output(['ipconfig','/all']).decode('utf-8').split('\n')
-for item in data:
-     print(item.split('\r')[:-1])
-
-tmp_ip_list = []
-ip_list = []
-info_list = []
-network_type = []
-
-ip_dict = {}
-
-cnt = 0
-for item in data:
-    if item == '\r' or item == '':
-        if (cnt == 2 and item == '\r') or (cnt == 2 and item == ''):
-            tmp_ip_list.extend(info_list)
-            tmp_ip_list.extend(['-1:-1'])
-            info_list.clear()
-            cnt = 1
+    def callback_result(self, host, scan_result):
+        if self.user_os == "win":
+            print('------------------')
+            print("scan_res:", scan_result)
+            if scan_result['scan'] != {}:
+                print(scan_result['scan'])
+            else:
+                print(host)
+        elif self.user_os == "linux":
+            print('------------------')
+            print("scan_res:", scan_result)
+            if scan_result != None and scan_result['scan'] != None:
+                print(scan_result['scan'])
+            else:
+                print(host)
         else:
-            cnt += 1
-    else:
-        if cnt == 2:
-            info_list.append(item)
-        if cnt == 1:
-            network_type.append(item)
+            print("err")
 
-i = (list(g) for _, g in groupby(tmp_ip_list, key='-1:-1'.__ne__))
-tmp_ip_list = [a + b for a, b in zip(i, i)]
+    def AllLanHostTest(self, os):
+        wireless_lan_gateway = "140.114.71.253"
+        wireless_lan_subnet = "255.255.255.0"
+        if os == 'win':
+            mask_num = IPAddress(wireless_lan_subnet).netmask_bits()
+        elif os == 'linux':
+            mask_num = wireless_lan_subnet
+        else:
+            mask_num=-1
 
-for elm in tmp_ip_list:
-    for str in elm:
-        elm = [elem.replace(' ', '').replace('\r', '') for elem in elm]
-    ip_list.append(elm)
+        # cmd = input("Choose an option: '-sS'/'-sP'/'-sL'/'-PS'/'-PU': ")
+        cmd = '-sS -F -O -T4'
+        # cmd+=" --min-paralleism 10"
+        cmd+=" --min-hostgroup 20"
+        # cmd+=" --min-rate 10"
+        # cmd+=" --max-scan-delay 500ms" 
+        # cmd+=" --host-timeout 100ms" # 100ms is too short, some msg lost
+        start_time = datetime.now()
+        nma = nmap.PortScannerAsync()
+        # privateIP_list = trace.IPdict['private']
+        privateIP_list = [wireless_lan_gateway]
+        for ip in privateIP_list:
+            mask_num = 16 if ip != wireless_lan_gateway else mask_num
+            ip = ip + '/' + str(mask_num)
 
-tmp = []
-for lists in ip_list:
-    for str_val in lists:
-        list_of_words = str_val.split(':', 1)
-        if len(list_of_words) > 1:
-            list_of_words = [list_of_words[0].replace('.', ''), list_of_words[1]]
-        tmp.append(list_of_words)
-
-for sublists in tmp:
-    if sublists == ['-1', '-1']:
-        tmp[tmp.index(sublists)] = '-1'
-
-j = (list(g) for _, g in groupby(tmp, key='-1'.__ne__))
-ip_list = [a + b for a, b in zip(j, j)]
-
-for items in ip_list:
-    items.remove('-1')
-for elm in network_type:
-    network_type = [elem.replace('\r', '').replace(':', '') for elem in network_type]
-
-#remove elements with incomplete information
-for items in ip_list:
-    for sub_elm in items:
-        if len(sub_elm) != 2:
-            items.remove(items[items.index(sub_elm)])
-
-# print(network_type)
-for idx in range(0, len(network_type)):
-    ip_dict[network_type[idx]] = dict(ip_list[idx])
-
-print(ip_dict)
+            print(f"scanning LAN under {ip}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            nma.scan(hosts=ip, arguments=cmd, callback=self.callback_result)
+            while nma.still_scanning():
+                nma.wait(2)
+        end_time = datetime.now()
+        print("Duration: {}".format(end_time - start_time))
