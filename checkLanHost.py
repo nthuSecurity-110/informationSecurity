@@ -1,13 +1,16 @@
 import nmap
 from datetime import datetime
 from netaddr import IPAddress
+from sqlalchemy import null
 from tracert import *
 
 trace = Trace()
 
 def callback_result(host, scan_result):
     print('------------------')
-    print(host, scan_result)
+    if scan_result['scan'] != {}:
+        print(host, scan_result['scan'])
+    
 
 def LanHost(config, os):
     wireless_lan_gateway = config.getGateway11()
@@ -19,16 +22,22 @@ def LanHost(config, os):
     else:
         mask_num=-1
 
-    ipAddr = wireless_lan_gateway + '/' + str(mask_num)
-    print(ipAddr)
 
 
-    cmd = input("Choose an option: '-sS'/'-sP'/'-sL'/'-PS'/'-PU': ")
+
+    # cmd = input("Choose an option: '-sS'/'-sP'/'-sL'/'-PS'/'-PU': ")
+    cmd = '-sS -F -O'
+    cmd+=" --min-hostgroup 20"
+    cmd+=" --min-rate 10"
+
     start_time = datetime.now()
     nma = nmap.PortScannerAsync()
-    IPdict = trace.IPdict
-    privateIP_list = IPdict['private']
+    privateIP_list = trace.IPdict['private']
     for ip in privateIP_list:
+        mask_num = 16 if ip != wireless_lan_gateway else mask_num
+        ip = ip + '/' + str(mask_num)
+
+        print(f"scanning LAN under {ip}")
         nma.scan(hosts=ip, arguments=cmd, callback=callback_result)
         while nma.still_scanning():
             nma.wait(2)

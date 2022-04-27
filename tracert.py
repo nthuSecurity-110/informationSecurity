@@ -10,9 +10,9 @@ class Trace:
         print(outputText)
 
         print("\nIP:")
-        b,a=self.getLANRouters(outputText)
-        self.IPdict = a
-        print(b)
+        self.IPdict,ip_list=self.getLANRouters(outputText)
+        print(self.IPdict)
+        
 
     def getLANRouters(self, tracertList):
         # Get the direct ancestors in LAN
@@ -27,12 +27,12 @@ class Trace:
                 ip_list.append(tracertList[i])  # append it into ip_list
 
         ip_list.pop(0)
-        IP={'private': [], 'public':[]}
+        IP_dict={'private': [], 'public':[]}
         for ip in ip_list:
             if(ip_address(ip).is_private):
-                IP['private'].append(ip)
+                IP_dict['private'].append(ip)
             else:
-                IP['public'].append(ip)
+                IP_dict['public'].append(ip)
 
         # self.IPdict = IP
-        return IP,ip_list
+        return IP_dict,ip_list
