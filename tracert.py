@@ -3,16 +3,17 @@ from ipaddress import ip_address
 from subprocess import Popen, PIPE
 
 class Trace:
+    
     def __init__(self):
-        self.cmdline = ['tracert', '8.8.8.8']
+        self.root_IP=input("input root ip: ") # tracert stop at root ip provided by user
+        self.cmdline = ['tracert', self.root_IP]
         p = Popen(self.cmdline, stdout=PIPE)
         outputText = str(p.communicate()[0]).split(' ')
-        print(outputText)
+        # print(outputText)
 
         print("\nIP:")
-        self.IPdict,ip_list=self.getLANRouters(outputText)
+        self.IPdict,self.IPlist=self.getLANRouters(outputText)
         print(self.IPdict)
-        
 
     def getLANRouters(self, tracertList):
         # Get the direct ancestors in LAN
