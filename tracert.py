@@ -7,7 +7,8 @@ def getLANRouters(tracertList):  # Get the direct ancestors in LAN
     ip_list = []
     for i in range(len(tracertList)):
         # some IP is in [], we have to take it out
-        if tracertList[i] != '' and tracertList[i][0] == '[':
+        if (tracertList[i] != '' and tracertList[i][0] == '[') or \
+            (tracertList[i] != '' and tracertList[i][0] == '(' and tracertList[i][-1] == ')'):
             ip_list.append(tracertList[i][1:-1])
 
         if(all([item.isnumeric() for item in tracertList[i].split('.')]) and

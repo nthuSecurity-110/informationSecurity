@@ -17,7 +17,7 @@ if __name__ == '__main__':
         config = NetworkData_Linux()
     else:
         sys.stderr(user_os)
-
+    
     
     
     LanHost(config,user_os)

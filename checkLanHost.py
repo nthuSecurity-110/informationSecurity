@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import imp
 import nmap
 from datetime import datetime
