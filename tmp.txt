@@ -1,0 +1,160 @@
+scan_res:
+{'nmap':
+	{'command_line': 'nmap -oX - -sS -F -O -T4 --min-hostgroup 20 140.114.195.252',
+	'scaninfo': {'tcp':
+				{'method': 'syn',
+				'services': '7,9,13,21-23,25-26,37,53,79-81,88,106,110-111,113,119,135,139,143-144,179,199,389,427,443-445,465,513-515,543-544,548,554,587,631,646,873,990,993,995,1025-1029,1110,1433,1720,1723,1755,1900,2000-2001,2049,2121,2717,3000,3128,3306,3389,3986,4899,5000,5009,5051,5060,5101,5190,5357,5432,5631,5666,5800,5900,6000-6001,6646,7070,8000,8008-8009,8080-8081,8443,8888,9100,9999-10000,32768,49152-49157'
+				}
+			},
+	'scanstats': {'timestr': 'Wed May  4 23:28:49 2022',
+			'elapsed': '4.74',
+			'uphosts': '1',
+			'downhosts': '0',
+			'totalhosts': '1'
+			}
+	},
+'scan': {
+	'140.114.195.252': {'hostnames': [{'name': 'sd195252.jing.ab.nthu.edu.tw', 'type': 'PTR'}],
+				'addresses': {'ipv4': '140.114.195.252'},
+				'vendor': {},
+				'status': {'state': 'up',
+						'reason': 'echo-reply'},
+				'tcp': {22: {
+						'state': 'open',
+						'reason': 'syn-ack',
+						'name': 'ssh',
+						'product': '',
+						'version': '',
+						'extrainfo': '',
+						'conf': '3',
+						'cpe': ''},
+					23: {
+						'state': 'open',
+						'reason': 'syn-ack',
+						'name': 'telnet',
+						'product': '',
+						'version': '',
+						'extrainfo': '',
+						'conf': '3',
+						'cpe': ''
+						}
+					},
+				'portused': [{'state': 'open', 'proto': 'tcp', 'portid': '22'},
+						{'state': 'closed', 'proto': 'tcp', 'portid': '7'},
+						{'state': 'closed', 'proto': 'udp', 'portid': '36525'}],
+				'osmatch': [{'name': 'DD-WRT v24-sp1 (Linux 2.4.36)',
+						'accuracy': '100',
+						'line': '46581',
+						'osclass': [{'type': 'WAP', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.4.X', 'accuracy': '100', 'cpe': ['cpe:/o:linux:linux_kernel:2.4.36']}]
+						}]
+				}
+		}
+}
+
+{'140.114.195.252':
+    {'hostnames': [{'name': 'sd195252.jing.ab.nthu.edu.tw', 'type': 'PTR'}],
+    'addresses': {'ipv4': '140.114.195.252'},
+    'vendor': {},
+    'status': {'state': 'up', 'reason': 'echo-reply'},
+    'tcp': {22: {
+                'state': 'open',
+                'reason': 'syn-ack',
+                'name': 'ssh',
+                'product': '',
+                'version': '',
+                'extrainfo': '',
+                'conf': '3',
+                'cpe': ''},
+            23: {
+                'state': 'open',
+                'reason': 'syn-ack',
+                'name': 'telnet',
+                'product': '',
+                'version': '',
+                'extrainfo': '',
+                'conf': '3',
+                'cpe': ''}
+            },
+    'portused': [{'state': 'open', 'proto': 'tcp', 'portid': '22'},
+                {'state': 'closed', 'proto': 'tcp', 'portid': '7'},
+                {'state': 'closed', 'proto': 'udp', 'portid': '36525'}],
+    'osmatch': [{'name': 'DD-WRT v24-sp1 (Linux 2.4.36)',
+                'accuracy': '100',
+                'line': '46581',
+                'osclass': [{'type': 'WAP', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.4.X', 'accuracy': '100', 'cpe': ['cpe:/o:linux:linux_kernel:2.4.36']}]
+                }]
+    }
+}
+
+
+
+
+scan_res: {'nmap': {'command_line': 'nmap -oX - -sS -F -O -T4 --min-hostgroup 20 202.169.174.26', 'scaninfo': {'tcp': {'method': 'syn', 'services': '7,9,13,21-23,25-26,37,53,79-81,88,106,110-111,113,119,135,139,143-144,179,199,389,427,443-445,465,513-515,543-544,548,554,587,631,646,873,990,993,995,1025-1029,1110,1433,1720,1723,1755,1900,2000-2001,2049,2121,2717,3000,3128,3306,3389,3986,4899,5000,5009,5051,5060,5101,5190,5357,5432,5631,5666,5800,5900,6000-6001,6646,7070,8000,8008-8009,8080-8081,8443,8888,9100,9999-10000,32768,49152-49157'}}, 'scanstats': {'timestr': 'Wed May  4 23:54:37 2022', 'elapsed': '14.51', 'uphosts': '1', 'downhosts': '0', 'totalhosts': '1'}}, 'scan': {'202.169.174.26': {'hostnames': [{'name': '', 'type': ''}], 'addresses': {'ipv4': '202.169.174.26'}, 'vendor': {}, 'status': {'state': 'up', 'reason': 'reset'}, 'uptime': {'seconds': '18732653', 'lastboot': 'Thu Sep 30 04:23:44 2021'}, 'tcp': {179: {'state': 'open', 'reason': 'syn-ack', 'name': 'bgp', 'product': '', 'version': '', 'extrainfo': '', 'conf': '3', 'cpe': ''}}, 'portused': [{'state': 'open', 'proto': 'tcp', 'portid': '179'}, {'state': 'closed', 'proto': 'tcp', 'portid': '7'}, {'state': 'closed', 'proto': 'udp', 'portid': '31495'}], 'osmatch': [{'name': 'Cisco Nexus switch (NX-OS 6.0(2))', 'accuracy': '97', 'line': '18854', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '97', 'cpe': ['cpe:/o:cisco:nx_os:6.0']}]}, {'name': 'Cisco Nexus 7000 switch (NX-OS 5.2(4))', 'accuracy': '96', 'line': '18613', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '5.X', 'accuracy': '96', 'cpe': ['cpe:/o:cisco:nexus_7000', 'cpe:/o:cisco:nx_os:5.2']}]}, {'name': 'Cisco Nexus 3000 switch (NX-OS 6)', 'accuracy': '94', 'line': '18763', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '94', 'cpe': ['cpe:/o:cisco:nx_os:6']}]}, {'name': 'Cisco Nexus 7000 switch (NX-OS 6.0)', 'accuracy': '93', 'line': '18781', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '93', 'cpe': ['cpe:/o:cisco:nx_os:6.0']}]}, {'name': 'Cisco Nexus 7000 switch (NX-OS 6.2.8)', 'accuracy': '93', 'line': '18799', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '93', 'cpe': ['cpe:/o:cisco:nx_os:6.2.8']}]}, {'name': 'Cisco Nexus switch (NX-OS 6)', 'accuracy': '92', 'line': '18836', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '92', 'cpe': ['cpe:/o:cisco:nx_os:6']}]}, {'name': 'Cisco Nexus 7000-series switch (NX-OS 6.1(2))', 'accuracy': '92', 'line': '18817', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '92', 'cpe': ['cpe:/o:cisco:nexus_7000', 'cpe:/o:cisco:nx_os:6.1']}]}, {'name': 'Cisco Nexus switch (NX-OS 5 or 6.0(2))', 'accuracy': '91', 'line': '18671', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '5.X', 'accuracy': '91', 'cpe': ['cpe:/o:cisco:nx_os:5']}, {'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '91', 'cpe': ['cpe:/o:cisco:nx_os:6']}]}, {'name': 'Cisco Nexus 5548 switch (NX-OS 5.2)', 'accuracy': '91', 'line': '18575', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '5.X', 'accuracy': '91', 'cpe': ['cpe:/o:cisco:nexus_5548', 'cpe:/o:cisco:nx_os:5.2']}]}, {'name': 'Cisco Nexus switch (NX-OS 7.2)', 'accuracy': '91', 'line': '18926', 'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '7.X', 'accuracy': '91', 'cpe': ['cpe:/o:cisco:nx_os:7.2']}]}]}}}
+{'202.169.174.26':
+    {'hostnames': [{'name': '', 'type': ''}],
+    'addresses': {'ipv4': '202.169.174.26'},
+    'vendor': {},
+    'status': {'state': 'up', 'reason': 'reset'},
+    'uptime': {'seconds': '18732653', 'lastboot': 'Thu Sep 30 04:23:44 2021'},
+    'tcp': {179:
+                {'state': 'open', 'reason': 'syn-ack', 'name': 'bgp', 'product': '', 'version': '', 'extrainfo': '', 'conf': '3', 'cpe': ''}
+            },
+    'portused': [{'state': 'open', 'proto': 'tcp', 'portid': '179'},
+                {'state': 'closed', 'proto': 'tcp', 'portid': '7'},
+                {'state': 'closed', 'proto': 'udp', 'portid': '31495'}],
+    'osmatch': [{'name': 'Cisco Nexus switch (NX-OS 6.0(2))',
+                'accuracy': '97',
+                'line': '18854',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '97', 'cpe': ['cpe:/o:cisco:nx_os:6.0']}]
+                },
+                {'name': 'Cisco Nexus 7000 switch (NX-OS 5.2(4))',
+                'accuracy': '96',
+                'line': '18613',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '5.X', 'accuracy': '96', 'cpe': ['cpe:/o:cisco:nexus_7000', 'cpe:/o:cisco:nx_os:5.2']}]
+                },
+                {'name': 'Cisco Nexus 3000 switch (NX-OS 6)',
+                'accuracy': '94',
+                'line': '18763',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '94', 'cpe': ['cpe:/o:cisco:nx_os:6']}]
+                },
+                {'name': 'Cisco Nexus 7000 switch (NX-OS 6.0)',
+                'accuracy': '93',
+                'line': '18781',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '93', 'cpe': ['cpe:/o:cisco:nx_os:6.0']}]
+                },
+                {'name': 'Cisco Nexus 7000 switch (NX-OS 6.2.8)',
+                'accuracy': '93',
+                'line': '18799',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '93', 'cpe': ['cpe:/o:cisco:nx_os:6.2.8']}]
+                },
+                {'name': 'Cisco Nexus switch (NX-OS 6)',
+                'accuracy': '92',
+                'line': '18836',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '92', 'cpe': ['cpe:/o:cisco:nx_os:6']}]
+                },
+                {'name': 'Cisco Nexus 7000-series switch (NX-OS 6.1(2))',
+                'accuracy': '92',
+                'line': '18817',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '92', 'cpe': ['cpe:/o:cisco:nexus_7000', 'cpe:/o:cisco:nx_os:6.1']}]
+                },
+                {'name': 'Cisco Nexus switch (NX-OS 5 or 6.0(2))',
+                'accuracy': '91',
+                'line': '18671',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '5.X', 'accuracy': '91', 'cpe': ['cpe:/o:cisco:nx_os:5']},
+                            {'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '6.X', 'accuracy': '91', 'cpe': ['cpe:/o:cisco:nx_os:6']}]
+                },
+                {'name': 'Cisco Nexus 5548 switch (NX-OS 5.2)',
+                'accuracy': '91',
+                'line': '18575',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '5.X', 'accuracy': '91', 'cpe': ['cpe:/o:cisco:nexus_5548', 'cpe:/o:cisco:nx_os:5.2']}]
+                },
+                {'name': 'Cisco Nexus switch (NX-OS 7.2)',
+                'accuracy': '91',
+                'line': '18926',
+                'osclass': [{'type': 'switch', 'vendor': 'Cisco', 'osfamily': 'NX-OS', 'osgen': '7.X', 'accuracy': '91', 'cpe': ['cpe:/o:cisco:nx_os:7.2']}]
+                }
+                ]
+    }
+}
+
+{'140.114.195.254': {'hostnames': [{'name': '', 'type': ''}], 'addresses': {'ipv4': '140.114.195.254'}, 'vendor': {}, 'status': {'state': 'up', 'reason': 'echo-reply'}, 'uptime': {'seconds': '5419203', 'lastboot': 'Thu Mar  3 10:39:33 2022'}, 'tcp': {23: {'state': 'open', 'reason': 'syn-ack', 'name': 'telnet', 'product': '', 'version': '', 'extrainfo': '', 'conf': '3', 'cpe': ''}}, 'portused': [{'state': 'open', 'proto': 'tcp', 'portid': '23'}, {'state': 'closed', 'proto': 'tcp', 'portid': '7'}, {'state': 'closed', 'proto': 'udp', 'portid': '33577'}], 'osmatch': [{'name': 'DD-WRT v24-sp1 (Linux 2.4.36)', 'accuracy': '97', 'line': '46581', 'osclass': [{'type': 'WAP', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.4.X', 'accuracy': '97', 'cpe': ['cpe:/o:linux:linux_kernel:2.4.36']}]}, {'name': 'Asus RT-AC66U router (Linux 2.6)', 'accuracy': '95', 'line': '8262', 'osclass': [{'type': 'broadband router', 'vendor': 'Asus', 'osfamily': 'embedded', 'osgen': None, 'accuracy': '95', 'cpe': ['cpe:/h:asus:rt-ac66u']}, {'type': 'broadband router', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.6.X', 'accuracy': '95', 'cpe': ['cpe:/o:linux:linux_kernel:2.6']}]}, {'name': 'Asus RT-N16 WAP (Linux 2.6)', 'accuracy': '95', 'line': '60866', 'osclass': [{'type': 'WAP', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.6.X', 'accuracy': '95', 'cpe': ['cpe:/o:linux:linux_kernel:2.6']}, {'type': 'WAP', 'vendor': 'Asus', 'osfamily': 'embedded', 'osgen': None, 'accuracy': '95', 'cpe': ['cpe:/h:asus:rt-n16']}]}, {'name': 'Asus RT-N66U WAP (Linux 2.6)', 'accuracy': '95', 'line': '60907', 'osclass': [{'type': 'WAP', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.6.X', 'accuracy': '95', 'cpe': ['cpe:/o:linux:linux_kernel:2.6']}, {'type': 'WAP', 'vendor': 'Asus', 'osfamily': 'embedded', 'osgen': None, 'accuracy': '95', 'cpe': ['cpe:/h:asus:rt-n66u']}]}, {'name': 'Tomato 1.28 (Linux 2.6.22)', 'accuracy': '95', 'line': '61604', 'osclass': [{'type': 'WAP', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.6.X', 'accuracy': '95', 'cpe': ['cpe:/o:linux:linux_kernel:2.6.22']}]}, {'name': 'Dell Integrated Remote Access Controller (iDRAC7)', 'accuracy': '94', 'line': '21922', 'osclass': [{'type': 'remote management', 'vendor': 'Dell', 'osfamily': 'embedded', 'osgen': None, 'accuracy': '94', 'cpe': []}]}, {'name': 'Linux 2.6.8 - 2.6.30', 'accuracy': '94', 'line': '58656', 'osclass': [{'type': 'general purpose', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.6.X', 'accuracy': '94', 'cpe': ['cpe:/o:linux:linux_kernel:2.6']}]}, {'name': 'Linux 2.6.22', 'accuracy': '94', 'line': '51302', 'osclass': [{'type': 'general purpose', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.6.X', 'accuracy': '94', 'cpe': ['cpe:/o:linux:linux_kernel:2.6.22']}]}, {'name': 'D-Link DIR-300 WAP (Linux 2.6.21)', 'accuracy': '94', 'line': '61089', 'osclass': [{'type': 'WAP', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.6.X', 'accuracy': '94', 'cpe': ['cpe:/o:linux:linux_kernel:2.6.21']}, {'type': 'WAP', 'vendor': 'D-Link', 'osfamily': 'embedded', 'osgen': None, 'accuracy': '94', 'cpe': ['cpe:/h:dlink:dir-300']}]}, {'name': 'OpenWrt 0.9 - 7.09 (Linux 2.4.30 - 2.4.34)', 'accuracy': '94', 'line': '46781', 'osclass': [{'type': 'WAP', 'vendor': 'Linux', 'osfamily': 'Linux', 'osgen': '2.4.X', 'accuracy': '94', 'cpe': ['cpe:/o:linux:linux_kernel:2.4']}]}]}}

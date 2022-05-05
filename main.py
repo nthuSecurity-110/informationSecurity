@@ -16,14 +16,18 @@ if __name__ == '__main__':
         from test import *
     
     if test_or_not=='n':
-        check = CheckLanHost(user_os)
-        if user_os == "win":
-            config = NetworkData()
-        elif user_os == "linux": 
-            config = NetworkData_Linux()
-        else:
-            sys.stderr(user_os)
-        check.AllLanHost(config)
+        try:
+            check = CheckLanHost(user_os)
+            if user_os == "win":
+                config = NetworkData()
+                check.AllLanHost(config)
+            elif user_os == "linux": 
+                config = NetworkData_Linux()
+                check.AllLanHost(config)
+            else:
+                print(user_os)
+        except:
+            sys.stderr("OS error")
     else:
-        tst = Test()
+        tst = Test(user_os)
         tst.AllLanHostTest('win', user_os)
