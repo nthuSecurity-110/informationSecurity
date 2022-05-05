@@ -234,7 +234,7 @@ class CheckLanHost:
 
             prYellow('\n' + 96*'#' + "START SCANNING" + 95*'#' + '\n')
             print(f"{'scanning LAN under '+ip:^205s}")
-            nma.scan(hosts=ip, arguments=cmd, callback=self.callback_result)
+            nma.scan(hosts=ip, arguments=cmd, callback=self.callback_result, sudo=True)
             while nma.still_scanning():
                 nma.wait(2)
         end_time = datetime.now()
