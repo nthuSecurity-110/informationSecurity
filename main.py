@@ -1,33 +1,33 @@
 from netData import *
-from netData_linux import NetworkData_Linux
-from utilities import Helper
+from netData_linux import *
+from utilities import *
 import sys
 
-
-
-
 util = Helper()
-
-
-
     
 if __name__ == '__main__':
     # import different module for testing
-    # it's just for convenient, 
-    test_or_not=input("test or not(y/n)?")
+    # it's just for convenience. 
+    test_or_not=input("test or not(y/n)? ")
+    user_os = util.getOS()
     if test_or_not =='n':
-        from checkLanHost import AllLanHost
+        from checkLanHost import *
     else:
-        from test import AllLanHost
+        from test import *
     
     if test_or_not=='n':
-        user_os = util.getOS()
-        if user_os == "win":
-            config = NetworkData()
-        elif user_os == "linux": 
-            config = NetworkData_Linux()
-        else:
-            sys.stderr(user_os)
-        AllLanHost(config,user_os)
+        try:
+            check = CheckLanHost(user_os)
+            if user_os == "win":
+                config = NetworkData()
+                check.AllLanHost(config)
+            elif user_os == "linux": 
+                config = NetworkData_Linux()
+                check.AllLanHost(config)
+            else:
+                print(user_os)
+        except:
+            sys.stderr("OS error")
     else:
-        AllLanHost('win')
+        tst = Test(user_os)
+        tst.AllLanHostTest('win', user_os)
