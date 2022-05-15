@@ -228,19 +228,20 @@ class CheckLanHost:
         # cmd+=" --min-rate 10"
 
         start_time = datetime.now()
-        nma = nmap.PortScannerAsync()
+        AsyncScan = nmap.PortScannerAsync()
+        Scan = nmap.PortScanner()
         
         for i in range(len(trace.IPlist)):
             if i != 0 and trace.IPlist[i-1] == trace.root_IP: # stop at root IP
                 break
 
-            ip=trace.IPlist[i]
-            mask_num = 24 if ip != wireless_lan_gateway else mask_num
-            ip = ip + '/' + str(30)
-            # ip = ip + '/' + str(mask_num)
+            LAN_ip=trace.IPlist[i]
+            mask_num = 24 if LAN_ip != wireless_lan_gateway else mask_num
+            LAN_ip = LAN_ip + '/' + str(mask_num)
+            # LAN_ip = LAN_ip + '/' + str(30)
             
-            # p = Popen(['nmap', '-sn ', ip], stdout=PIPE)
             # p = Popen(['nmap -sn '+ ip], stdout=PIPE)
+            # p = Popen(['nmap', '-sn ', ip], stdout=PIPE)
             # outputText = str(p.communicate()[0]).split(' ')
             
             # outputText = os.popen("nmap -sn "+ip).read()
@@ -248,10 +249,16 @@ class CheckLanHost:
             
 
             prYellow('\n' + 96*'#' + "START SCANNING" + 95*'#' + '\n')
-            print(f"{'scanning LAN under '+ip:^205s}")
-            nma.scan(hosts=ip, arguments=cmd, callback=self.callback_result, sudo=True)
-            # nma.scan(hosts=ip, arguments=cmd, callback=self.test_callback, sudo=True)
-            while nma.still_scanning():
-                nma.wait(2)
+            print(f"{'scanning LAN under '+LAN_ip:^205s}")
+
+            Scan.scan(hosts=LAN_ip, arguments="-sn", sudo=True)
+            hosts_list = Scan.all_hosts()
+            print(f'alive host in LAN {LAN_ip}: {hosts_list}\n')
+
+            for ip in hosts_list:
+                AsyncScan.scan(hosts=ip, arguments=cmd, callback=self.callback_result, sudo=True)
+                # AsyncScan.scan(hosts=ip, arguments=cmd, callback=self.test_callback, sudo=True)
+                while AsyncScan.still_scanning():
+                    AsyncScan.wait(2)
         end_time = datetime.now()
         print("\nDuration: {}".format(end_time - start_time))
