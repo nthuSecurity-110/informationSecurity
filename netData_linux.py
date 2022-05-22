@@ -30,15 +30,18 @@ class NetworkData_Linux:
             Returns: a dictionary
         """
         # Traverse the ipconfig information
-        self.data = subprocess.check_output(['ip','a']).decode('big5', errors='ignore').split('\n')
-        for i in range(0, len(self.data)):
-                self.data[i] = self.data[i].lstrip()
-        self.info_arr = self.data[8].split(' ')
-        self.net_arr = self.info_arr[1].split('/')
-        self.ip = self.net_arr[0]
-        self.subnet = self.net_arr[1]
-        print("ip", self.ip)
-        print("subnet", self.subnet)
+        # self.data = subprocess.check_output(['ip','a']).decode('big5', errors='ignore').split('\n')
+        # for i in range(0, len(self.data)):
+        #         self.data[i] = self.data[i].lstrip()
+        # self.info_arr = self.data[8].split(' ')
+        # self.net_arr = self.info_arr[1].split('/')
+        # self.ip = self.net_arr[0]
+        # self.subnet = self.net_arr[1]
+        ip_and_subnet = subprocess.check_output("ip a|grep brd|grep inet|cut -d ' '  -f 6",shell=True).decode('big5', errors='ignore')
+        self.ip = ip_and_subnet.split('/')[0]
+        self.subnet = ip_and_subnet.split('/')[1]
+        print("ip",self.ip)
+        print("subnet",self.subnet)
         # for item in data:
         #      print(item.split('\r')[:-1])
         # print(self.net_dict)

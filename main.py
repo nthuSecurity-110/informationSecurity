@@ -8,7 +8,8 @@ util = Helper()
 if __name__ == '__main__':
     # import different module for testing
     # it's just for convenience. 
-    test_or_not=input("test or not(y/n)? ")
+    # test_or_not=input("test or not(y/n)? ")
+    test_or_not='n'
     user_os = util.getOS()
     if test_or_not =='n':
         from checkLanHost import *

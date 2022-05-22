@@ -40,7 +40,8 @@ class Helper:
             sys.stderr.write("An error has occured.")
 
     def getOS(self):
-        OS = input("Please input your OS (1-win, 2-linux): ")
+        # OS = input("Please input your OS (1-win, 2-linux): ")
+        OS='2'
         if OS == '1': 
             return "win"
         elif OS == '2':
