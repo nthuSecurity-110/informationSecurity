@@ -234,7 +234,6 @@ class CheckLanHost:
             # outputText = os.popen("nmap -sn "+ip).read()
             # print(f'outputText: {outputText}')
             
-
             prYellow('\n' + 96*'#' + "START SCANNING" + 95*'#' + '\n')
             print(f"{'scanning LAN under '+LAN_ip:^205s}")
 

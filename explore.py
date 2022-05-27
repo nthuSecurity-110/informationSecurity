@@ -18,9 +18,8 @@ class Explore():
         tree = Tree()
         root_data = NodeData()
         tree.create_node(identifier='root_nmapScan',data=root_data)
-        
-
-
+        # print("tree show:", tree.show())
+        # print("tree depth:", tree.depth())
         print("done exploring!")
 
     def start(self):
