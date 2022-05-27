@@ -6,6 +6,8 @@ import nmap
 from datetime import datetime
 from netaddr import IPAddress
 from trace import *
+from explore import *
+from multiprocess import Process
 # from subprocess import Popen, PIPE
 # import os
 
@@ -37,8 +39,8 @@ _osgen = "OS Gen"
 _oscpe = "OS CPE"
 
 class CheckLanHost:
-    def __init__(self, os):
-        self.os = os
+    def __init__(self) -> None:
+        pass
 
     def format_output(self, string):
         print(205*'=')
@@ -186,39 +188,24 @@ class CheckLanHost:
             print(205*'=')
 
     def callback_result(self, host, scan_result):
-        if self.os == "win":
-            print('\n'+stars)
-            print(stars+'\n')
-            if scan_result['scan'] != {}:
-                # print(scan_result['scan'])
-                prGreen(f"{'Data found for host ' + host}")
-                self.format_output(scan_result['scan'])
-            else:
-                prRed(f"{'No available data for host ' + host}")
-        elif self.os == "linux":
-            print('\n'+stars+'\n')
-            if scan_result != None and scan_result['scan'] != None and scan_result['scan'] != {}:
-                # print(scan_result['scan'])
-                prGreen(f"{'Data found for host ' + host}")
-                self.format_output(scan_result['scan'])
-            else:
-                prRed(f"{'No available data for host ' + host}")
+        print('\n'+stars+'\n')
+        if scan_result != None and scan_result['scan'] != None and scan_result['scan'] != {}:
+            # print(scan_result['scan'])
+            prGreen(f"{'Data found for host ' + host}")
+            self.format_output(scan_result['scan'])
+            explore = Explore()
+            explore.start()
         else:
-            print("err")
+            prRed(f"{'No available data for host ' + host}")
     # def test_callback(self, host, scan_result):
     #     print(scan_result)
 
 
     def AllLanHost(self, config):
-        trace = Trace(self.os)
+        trace = Trace()
         wireless_lan_gateway = config.getGateway11()
         wireless_lan_subnet = config.getSubnet11()
-        if self.os == 'win':
-            mask_num = IPAddress(wireless_lan_subnet).netmask_bits()
-        elif self.os == 'linux':
-            mask_num = wireless_lan_subnet
-        else:
-            mask_num=-1
+        mask_num = wireless_lan_subnet
 
         # cmd = input("Choose an option: '-sS'/'-sP'/'-sL'/'-PS'/'-PU': ")
         cmd = '-sS -F -O -T4' 

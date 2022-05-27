@@ -5,15 +5,10 @@ from subprocess import Popen, PIPE
 from matplotlib.pyplot import contour
 
 class Trace:
-    def __init__(self, os):
-        self.os = os
-        self.root_IP=input("input root ip: ") # tracert stop at root ip provided by user
-        if self.os == "win":
-            self.cmdline = ['tracert', self.root_IP]
-        elif self.os == "linux":
-            self.cmdline = ['traceroute', self.root_IP]
-        else:
-            sys.stderr("OS not recognized")
+    def __init__(self):
+        self.root_IP=input("input root ip: ") # tracert stop at root ip provided by use        
+        self.cmdline = ['traceroute', self.root_IP]
+
         p = Popen(self.cmdline, stdout=PIPE)
         outputText = str(p.communicate()[0]).split(' ')
         # print(outputText)
