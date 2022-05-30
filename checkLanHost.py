@@ -6,6 +6,11 @@ import nmap
 from datetime import datetime
 from netaddr import IPAddress
 from trace import *
+from explore import *
+from multiprocess import Process
+from nodeData import *
+# from subprocess import Popen, PIPE
+# import os
 
 block = "||"
 stars = '*'*205
@@ -35,8 +40,9 @@ _osgen = "OS Gen"
 _oscpe = "OS CPE"
 
 class CheckLanHost:
-    def __init__(self, os):
-        self.os = os
+    def __init__(self):
+        self.ip_list = []
+        self.contents = []
 
     def format_output(self, string):
         print(205*'=')
@@ -184,58 +190,66 @@ class CheckLanHost:
             print(205*'=')
 
     def callback_result(self, host, scan_result):
-        if self.os == "win":
-            print('\n'+stars)
-            print(stars+'\n')
-            if scan_result['scan'] != {}:
-                # print(scan_result['scan'])
-                prGreen(f"{'Data found for host ' + host}")
-                self.format_output(scan_result['scan'])
-            else:
-                prRed(f"{'No available data for host ' + host}")
-        elif self.os == "linux":
-            print('\n'+stars+'\n')
-            if scan_result != None and scan_result['scan'] != None and scan_result['scan'] != {}:
-                # print(scan_result['scan'])
-                prGreen(f"{'Data found for host ' + host}")
-                self.format_output(scan_result['scan'])
-            else:
-                prRed(f"{'No available data for host ' + host}")
+        print('\n'+stars+'\n')
+        if scan_result != None and scan_result['scan'] != None and scan_result['scan'] != {}:
+            # print(scan_result['scan'])
+            prGreen(f"{'Data found for host ' + host}")
+            self.format_output(scan_result['scan'])
+            explore = Explore()
+            explore.start()
         else:
-            print("err")
+            prRed(f"{'No available data for host ' + host}")
+    # def test_callback(self, host, scan_result):
+    #     print(scan_result)
+
+    def getIP(self):
+        return self.ip_list
 
     def AllLanHost(self, config):
-        trace = Trace(self.os)
+        trace = Trace()
         wireless_lan_gateway = config.getGateway11()
         wireless_lan_subnet = config.getSubnet11()
-        if self.os == 'win':
-            mask_num = IPAddress(wireless_lan_subnet).netmask_bits()
-        elif self.os == 'linux':
-            mask_num = wireless_lan_subnet
-        else:
-            mask_num=-1
+        mask_num = wireless_lan_subnet
 
         # cmd = input("Choose an option: '-sS'/'-sP'/'-sL'/'-PS'/'-PU': ")
         cmd = '-sS -F -O -T4' 
         cmd+=" --min-hostgroup 20"
+        # cmd = "-sn"
         # the fastest parameters I find so far
         # cmd+=" --min-rate 10"
 
         start_time = datetime.now()
-        nma = nmap.PortScannerAsync()
+        AsyncScan = nmap.PortScannerAsync()
+        Scan = nmap.PortScanner()
         
         for i in range(len(trace.IPlist)):
             if i != 0 and trace.IPlist[i-1] == trace.root_IP: # stop at root IP
                 break
 
-            ip=trace.IPlist[i]
-            mask_num = 24 if ip != wireless_lan_gateway else mask_num
-            ip = ip + '/' + str(30)
-
+            LAN_ip=trace.IPlist[i]
+            mask_num = 24 if LAN_ip != wireless_lan_gateway else mask_num
+            LAN_ip = LAN_ip + '/' + str(mask_num)
+            # LAN_ip = LAN_ip + '/' + str(30)
+            
+            # p = Popen(['nmap -sn '+ ip], stdout=PIPE)
+            # p = Popen(['nmap', '-sn ', ip], stdout=PIPE)
+            # outputText = str(p.communicate()[0]).split(' ')
+            
+            # outputText = os.popen("nmap -sn "+ip).read()
+            # print(f'outputText: {outputText}')
+            
             prYellow('\n' + 96*'#' + "START SCANNING" + 95*'#' + '\n')
-            print(f"{'scanning LAN under '+ip:^205s}")
-            nma.scan(hosts=ip, arguments=cmd, callback=self.callback_result)#, sudo=True)
-            while nma.still_scanning():
-                nma.wait(2)
+            print(f"{'scanning LAN under '+LAN_ip:^205s}")
+
+            Scan.scan(hosts=LAN_ip, arguments="-sn", sudo=True)
+            hosts_list = Scan.all_hosts()
+            print(f'alive host in LAN {LAN_ip}: {hosts_list}\n')
+
+            for ip in hosts_list:
+                self.ip_list.append(ip)
+                AsyncScan.scan(hosts=ip, arguments=cmd, callback=self.callback_result, sudo=True)
+                # AsyncScan.scan(hosts=ip, arguments=cmd, callback=self.test_callback, sudo=True)
+                while AsyncScan.still_scanning():
+                    AsyncScan.wait(2)
         end_time = datetime.now()
         print("\nDuration: {}".format(end_time - start_time))
