@@ -3,7 +3,11 @@ function: nmap-scan-for-os
 In: [port, IP]
 Out: [service, OS ver]
 description: Description here
-rule: 
-  and:
-    service: Windows XP microsoft-ds
-    port: 445
+rule: (IP == 8.8.8.8 and port == 445) or (IP == 17.253.144.10 and port == 443)
+  or:
+    and:
+      IP: 8.8.8.8
+      port: 445
+    and:
+      IP: 17.253.144.10
+      port: 443

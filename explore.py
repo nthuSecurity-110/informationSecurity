@@ -22,13 +22,13 @@ class Explore():
             for file in files:
                 with open("./attack_chain/"+file, "r") as attack_chain:
                     # print(yaml.load(attack_chain))
-                    self.class_chain, self.block_chain = self.load_block(attack_chain)
+                    self.load_block(attack_chain)
                     # print(self.class_chain, self.block_chain)
                 for i in range(len(self.block_chain)):
                 #     if(self.match_rule(self.block_chain[i])=="lack"):
                 #         Data = self.user_take_over(self.block_chain[i], Data)
                     if(not self.match_rule(self.block_chain[i])):
-                        Data, failed = self.run_class(self.class_chain[i], Data)
+                        self.Data, failed = self.run_class(self.class_chain[i])
                     if failed:
                         break
                 # continue
@@ -49,10 +49,13 @@ class Explore():
                     halt()
                 
     """
-    def match_rule(self,blockname="nmap_scan"):
+    def match_rule(self, blockname="nmap_scan"):
         # return value: true or false
         block = Block(blockname)
-        
+
+
+        # for input in block.In:
+            
         # if rule mismatch, return false
         # compare Data and block, if lacking of input, user take over.
         # after that, if still lack of input, return false
@@ -61,10 +64,11 @@ class Explore():
         time.sleep(2)
         None
 
-
+    def run_class(self, Class):
+        None
     def load_block(self, attack_chain):
-        Data = yaml.load(attack_chain, Loader=yaml.SafeLoader)
-        return Data["class_chain"], Data["block_chain"]
+        atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
+        self.class_chain, self.block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
 
     def exploring(self):
         print("\n\n\nhalting for 5 sec.\ndo_something........\n\n\n")
