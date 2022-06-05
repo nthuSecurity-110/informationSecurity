@@ -14,8 +14,9 @@ class Explore():
     def __init__(self):
         self.process = Process(target=self.exploring, args=())
         self.Data={
-            'ip': None,
-            'OS': None
+            # 'ip': None,
+            'OS': None,
+            'port': "445",
         }
         path = os.walk("./attack_chain")
         for root, directories, files in path:
@@ -52,16 +53,34 @@ class Explore():
     def match_rule(self, blockname="nmap_scan"):
         # return value: true or false
         block = Block(blockname)
+        block.blockInfo()
 
+        for input in block.In:
+            try:
+                print(self.Data[input])
+            except KeyError:
+                print(input + " missing data")
+                self.user_takeover(input)
+                # break
+        
+        # if(not eval(block.rule)):
+        #     return False
 
-        # for input in block.In:
             
         # if rule mismatch, return false
         # compare Data and block, if lacking of input, user take over.
         # after that, if still lack of input, return false
         # return false means we won't use this block, but use other blocks with run_class
         
+        
         time.sleep(2)
+
+        None
+
+    def user_takeover(self, lack_input):
+        # while(input("input missing")):
+        #     None
+        # exec("self."+input+" = usr_in")
         None
 
     def run_class(self, Class):
