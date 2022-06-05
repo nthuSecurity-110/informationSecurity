@@ -1,0 +1,9 @@
+name: nmap_scan
+function: nmap-scan-for-os
+In: [port, IP]
+Out: [service, OS ver]
+description: Description here
+rule: 
+  and:
+    service: Windows XP microsoft-ds
+    port: 445

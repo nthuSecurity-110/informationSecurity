@@ -1,0 +1,2 @@
+class_chain: [default, malware, instructive, fuzzer]
+block_chain: [nmap_scan, dns-zeustracker, firewall-bypass, dns-fuzz]
