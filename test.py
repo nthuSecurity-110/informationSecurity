@@ -1,7 +1,5 @@
-a = 1
-b = 2
-s = "a==2 or b==3"
-if ({s}):
-    print("yes")
-else:
-    print("no")
+L=['i','ip','ipp','ippp']
+
+for item in L:
+    exec("aaa = input('Please input missing parameter(" + item +"):')")
+    print(f'item: {aaa}')

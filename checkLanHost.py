@@ -195,8 +195,10 @@ class CheckLanHost:
             # print(scan_result['scan'])
             prGreen(f"{'Data found for host ' + host}")
             self.format_output(scan_result['scan'])
-            explore = Explore()
-            explore.start()
+            # explore = Explore()
+            # explore.exploring()
+            
+            # explore.start()
         else:
             prRed(f"{'No available data for host ' + host}")
     # def test_callback(self, host, scan_result):
@@ -247,9 +249,16 @@ class CheckLanHost:
 
             for ip in hosts_list:
                 self.ip_list.append(ip)
+                # test = input("test input in checkLanHost.py")
                 AsyncScan.scan(hosts=ip, arguments=cmd, callback=self.callback_result, sudo=True)
                 # AsyncScan.scan(hosts=ip, arguments=cmd, callback=self.test_callback, sudo=True)
                 while AsyncScan.still_scanning():
                     AsyncScan.wait(2)
+        
+        explored_host = input("\n\nWhich host you want to explore?(type host ip)\n")
+        print("START EXPLORING!")
+        explore = Explore()
+        explore.exploring()
+
         end_time = datetime.now()
         print("\nDuration: {}".format(end_time - start_time))
