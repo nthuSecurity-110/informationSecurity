@@ -1,3 +1,4 @@
+from function import Function
 from multiprocess import Process
 from nodeData import *
 from treelib import Tree, Node
@@ -5,6 +6,7 @@ from block import Block
 import time
 import os
 import yaml
+import nmap
 class Explore():
     """
     This is used for exploring one specific host. 
@@ -13,56 +15,47 @@ class Explore():
     """
     def __init__(self):
         # self.process = Process(target=self.exploring, args=())
+        # nmap get basic info, fill into Data
+        
+        explored_host = input("Which host you want to explore?(for testing default: 163.32.250.178)\n") # 163.32.250.178
+        if explored_host == '':
+            explored_host = '163.32.250.178'
+        print("START EXPLORING!")
+
+        L = os.popen("sudo nmap -sS -F -O -T4 140.114.206.90 | grep '/tcp\|/udp'").read().split('\n')
+        # processing nmap output
+        p = [item.split('/')[0] for item in L if item.split('/')[0]!='']
+        l = [item.split('/')[1] for item in L if item.split('/')[0]!='']
+        s = [item.split('  ')[-1] for item in l]
+
         self.Data={
-            # 'ip': None,
+            'IP': explored_host,
+            'Service': s,
             'OS': None,
-            'port': "445",
+            'Port': p,
+            'Apache': None,
+
         }
-        path = os.walk("./attack_chain")
-        for root, directories, files in path:
-            for file in files:
-                with open("./attack_chain/"+file, "r") as attack_chain:
-                    # print(yaml.load(attack_chain))
-                    self.load_block(attack_chain)
                     
-                for i in range(len(self.block_chain)):
-                    if(not self.match_rule(self.block_chain[i])):
-                        self.Data, failed = self.run_class(self.class_chain[i])
-                    if failed:
-                        break
-                # continue
-                    
-                    
-    """ 
-            for i in range(len(block_chain)):
-                
-                if !match_rule(block_chain[i]):
-                    Data = user_take_over() # user take over only when lacking of input info, instead of rule mismatch
-
-                Data = run(block_chain[i], Data)
-
-                if !match_rule(block_chain[i]):
-                    Data = run_class(class_chain[i], Data)
-                if !match_rule(block_chain[i]):
-                    output_report()
-                    halt()
-                
-    """
-    def match_rule(self, blockname="nmap_scan"):
+    def match_rule_format(self, block):
         # return value: true or false
-        block = Block(blockname)
-        block.blockInfo()
+        if not block.valid:
+            return False
 
         for para in block.In: # para means input parameters
-            try:
-                print(self.Data[para])
+            try: # if Data doesn't contain para, we give it as None
+                self.Data[para]
             except KeyError:
-                print(para + " missing data")
+                self.Data[para] = None
+            
+            if self.Data[para]==None:
+                print(f'missing data "{para}"')
                 self.user_takeover(para)
-                # break
         
-        # if(not eval(block.rule)):
-        #     return False
+        if block.rule == "" and not eval(block.rule):
+            return False
+        else:
+            return True
 
             
         # if rule mismatch, return false
@@ -72,12 +65,7 @@ class Explore():
 
 
     def user_takeover(self, lack_input):
-        # while(input("input missing")):
-        #     None
-        # exec("self."+input+" = usr_in")
-        # we need to rebuild checkLanHost, it seems like AsyncScan make EOFError keeps happening
-        # Find the target host, then we call explore.py, I think the problem would be solved
-        exec("self."+lack_input+" = input('Please input missing parameter(" +lack_input +"):')")
+        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter(" +lack_input +"):')")
         
 
 
@@ -88,10 +76,32 @@ class Explore():
         self.class_chain, self.block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
 
     def exploring(self):
-        print("\n\n\nhalting for 5 sec.\ndo_something........\n\n\n")
-        time.sleep(5)
+        path = os.walk("./attack_chain")
+        for root, directories, files in path:
+            for file in files:
+                with open("./attack_chain/"+file, "r") as attack_chain:
+                    # print(yaml.load(attack_chain))
+                    self.load_block(attack_chain)
+                    
+                for i in range(len(self.block_chain)): # for all blocks in block chain
+                    blockname = self.block_chain[i]
+                    block = Block(blockname)
+                    if(self.match_rule_format(block)):
+                        try:
+                            block_func = getattr(Function, block.function) # get the required function from block
+                            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+                            self.Data, match_rule = block_func(func_in, self.Data)
+                            if match_rule:
+                                print("MATCH RULE~~~!!!!\n")
+                        except AttributeError: # if block use undefined function, skip to next chain
+                            print(f"Function '{block.function}' is not defined, skip to next chain.")
+                    else:
+                        self.run_class(self.class_chain[i])
+                    
+                # continue
         
-        tree = Tree()
+        # time.sleep(5)
+        # tree = Tree()
         # root_data = NodeData()
         # tree.create_node(identifier='root_nmapScan',data=root_data)
         # print("tree show:", tree.show())

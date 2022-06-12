@@ -1,5 +1,9 @@
-L=['i','ip','ipp','ippp']
+fullstring = "StackAbuse"
+substring = "tack"
 
-for item in L:
-    exec("aaa = input('Please input missing parameter(" + item +"):')")
-    print(f'item: {aaa}')
+try:
+    print(fullstring.find(substring))
+    print("Found!")
+except ValueError:
+    print("Not found!")
+    

@@ -1,6 +1,0 @@
-name: nmap_scan
-function: nmap-scan-for-os
-In: [port, ip]
-Out: [service, OS ver]
-description: Description here
-rule: (ip == "8.8.8.8" and port == "445") or (ip == "17.253.144.10" and port == "443")

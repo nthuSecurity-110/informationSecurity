@@ -9,7 +9,15 @@ class Helper:
             calculate_mask                  calculates the mask of a given subnet mask
     '''
     def __init__(self):
-        self.haha="hello"
+        None
+
+    def choose_mode(self): # Choose mode 1 will skip nmap discovery LAN. Default mode is 2.
+        mode = input("Choose the mode. 1 for specific target, 2 for no idea.\nMode:")
+        if mode in ['1','2']:
+            return int(mode)
+        else:
+            print("default mode: 1")
+            return 1
 
     def decimalToBinary(self, n):
         """

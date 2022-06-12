@@ -6,7 +6,6 @@ import nmap
 from datetime import datetime
 from netaddr import IPAddress
 from trace import *
-from explore import *
 from multiprocess import Process
 from nodeData import *
 # from subprocess import Popen, PIPE
@@ -195,10 +194,6 @@ class CheckLanHost:
             # print(scan_result['scan'])
             prGreen(f"{'Data found for host ' + host}")
             self.format_output(scan_result['scan'])
-            # explore = Explore()
-            # explore.exploring()
-            
-            # explore.start()
         else:
             prRed(f"{'No available data for host ' + host}")
     # def test_callback(self, host, scan_result):
@@ -255,10 +250,6 @@ class CheckLanHost:
                 while AsyncScan.still_scanning():
                     AsyncScan.wait(2)
         
-        explored_host = input("\n\nWhich host you want to explore?(type host ip)\n")
-        print("START EXPLORING!")
-        explore = Explore()
-        explore.exploring()
 
         end_time = datetime.now()
         print("\nDuration: {}".format(end_time - start_time))

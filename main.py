@@ -3,6 +3,7 @@ from netData_linux import *
 from utilities import *
 from checkLanHost import *
 from nodeData import *
+from explore import *
 import sys
 
 util = Helper()
@@ -10,7 +11,13 @@ util = Helper()
 if __name__ == '__main__':
     
     check = CheckLanHost()
+    
     config = NetworkData_Linux()
-    check.AllLanHost(config)
+    mode = Helper().choose_mode()
+    if mode == 2:
+        check.AllLanHost(config)
+    explore = Explore()
+    explore.exploring()
+
     node = NodeData(check.getIP())
     node.createDict()
