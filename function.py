@@ -32,7 +32,7 @@ class Function():
             print(outputLine)        
 
         # problem 1:This way, however, isn't import rule from block!!!
-        if version.parse(Data['Apache']) < version.parse('3.1'): 
+        if version.parse(Data['Apache']) < version.parse('3.1'):
             match = True
 
         return Data, match
@@ -56,6 +56,6 @@ class Function():
             outputLine = stdout_line.decode('utf-8').rstrip()
             if re.search("session [0-9] opend", outputLine)!=None:
                 match = True
+            print(outputLine)        
         
-        # problem 2: msfconsole won't output anything here in this function. But the previous function will.
         return Data, match

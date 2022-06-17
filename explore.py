@@ -70,6 +70,7 @@ class Explore():
 
 
     def run_class(self, Class):
+        # problem 2: if rule mismatch, try other block in class. 假設block失敗，到class去掃的部分，我也都還沒寫(可能要等class那邊先出來?)
         None
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
