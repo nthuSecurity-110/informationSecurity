@@ -29,12 +29,12 @@ class Function():
                 From = outputLine.find('Apache/')+len('Apache/')
                 Data['Apache'] = outputLine[From:From+10].split(' ')[0]
                 # print(Data['Apache'])
-            print(outputLine)        
+                # problem 1:This way, however, isn't import rule from block!!!
+                if version.parse(Data['Apache']) < version.parse('3.1'):
+                    match = True
 
-        # problem 1:This way, however, isn't import rule from block!!!
-        if version.parse(Data['Apache']) < version.parse('3.1'):
-            match = True
-
+            print(outputLine)     
+            
         return Data, match
             
 
@@ -45,7 +45,7 @@ class Function():
         match = Default # set default first
 
         configFile=open('meta.rc','w')
-        configFile.write('use exploit/multi/http/php_cgi_arg_injection\n')
+        configFile.write('nuse exploit/multi/http/php_cgi_arg_injectio\n')
         configFile.write(f"set RHOST {func_in['IP']}\n")
         configFile.write('run\n')
         configFile.write('exit\n')
