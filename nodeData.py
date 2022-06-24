@@ -2,7 +2,7 @@ import yaml
 
 class NodeData():
     """
-    Put rule in yaml format, and add some operation
+    Put condition in yaml format, and add some operation
     """
     def __init__(self, ip_list):
         self.ip = ip_list
@@ -35,7 +35,7 @@ class NodeData():
 
     def createDict(self):
         self.contentDict()
-        self.yaml_format = [{'rule': 'nodeA',
+        self.yaml_format = [{'condition': 'nodeA',
                                 'AAA': [it for it in self.list_of_dict]
                             }]
         print(self.yaml_format)

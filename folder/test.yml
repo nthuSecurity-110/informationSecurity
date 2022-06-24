@@ -19,7 +19,7 @@
     - 1>2
     - 2>3
     - 9-1==8
-# - and:  #RuleLengthError
+# - and:  #ConditionLengthError
 #   - 1+1==3
 #   - 5+5==10
 # - or:

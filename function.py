@@ -29,7 +29,7 @@ class Function():
                 From = outputLine.find('Apache/')+len('Apache/')
                 Data['Apache'] = outputLine[From:From+10].split(' ')[0]
                 # print(Data['Apache'])
-                # problem 1:This way, however, isn't import rule from block!!!
+                # problem 1:This way, however, isn't import condition from block!!!
                 if version.parse(Data['Apache']) < version.parse('3.1'):
                     match = True
 

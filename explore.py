@@ -37,7 +37,7 @@ class Explore():
 
         }
                     
-    def match_rule_format(self, block):
+    def match_condition_format(self, block):
         # return value: true or false
         if not block.valid:
             return False
@@ -52,13 +52,13 @@ class Explore():
                 print(f'missing data "{para}"')
                 self.user_takeover(para)
         
-        if block.rule == "" and not eval(block.rule):
+        if block.condition == "" and not eval(block.condition):
             return False
         else:
             return True
 
             
-        # if rule mismatch, return false
+        # if condition mismatch, return false
         # compare Data and block, if lacking of input, user take over.
         # after that, if still lack of input, return false
         # return false means we won't use this block, but use other blocks with run_class
@@ -70,7 +70,7 @@ class Explore():
 
 
     def run_class(self, Class):
-        # problem 2: if rule mismatch, try other block in class. 假設block失敗，到class去掃的部分，我也都還沒寫(可能要等class那邊先出來?)
+        # problem 2: if condition mismatch, try other block in class. 假設block失敗，到class去掃的部分，我也都還沒寫(可能要等class那邊先出來?)
         None
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
@@ -87,12 +87,12 @@ class Explore():
                 for i in range(len(self.block_chain)): # for all blocks in block chain
                     blockname = self.block_chain[i]
                     block = Block(blockname)
-                    if(self.match_rule_format(block)):
+                    if(self.match_condition_format(block)):
                         try:
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                            self.Data, match_rule = block_func(func_in, self.Data)
-                            if match_rule:
+                            self.Data, match_condition = block_func(func_in, self.Data)
+                            if match_condition:
                                 print("MATCH RULE~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")

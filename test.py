@@ -14,15 +14,15 @@ class Error(Exception):
     '''Base class for customized exceptions'''
     pass
 
-class RuleLengthError(Error):
-    '''To raise an exception when there is more than one rule in a single yaml file.'''
+class ConditionLengthError(Error):
+    '''To raise an exception when there is more than one condition in a single yaml file.'''
     pass
 
-def solve(rule):
-    if isinstance(rule, str) and type(eval(rule)) == Boolean:
-        return eval(rule)
-    print("call solve!",rule)
-    for i,(key,val) in enumerate(rule.items()):
+def solve(condition):
+    if isinstance(condition, str) and type(eval(condition)) == Boolean:
+        return eval(condition)
+    print("call solve!",condition)
+    for i,(key,val) in enumerate(condition.items()):
         print(f"key:{key}, val:{val}")
         if isinstance(val, list):
             result = (key=='and')
@@ -54,17 +54,17 @@ with open("./folder/"+"test.yml", "r") as testfile:
         F= yaml.load(testfile, Loader=yaml.SafeLoader)
         print("F length:", len(F))
         if len(F) > 1:
-            raise RuleLengthError
+            raise ConditionLengthError
         print("F[0]:", F[0])
         print("======================")
         print(solve(F[0]))
     except TypeError:
-        print("I cannot find any rules!")
+        print("I cannot find any conditions!")
     except FileNotFoundError:
         print("Please double check the file name!")
-    except RuleLengthError:
-        print("Please input one rule at a time!")
+    except ConditionLengthError:
+        print("Please input one condition at a time!")
     except ValueError:
         print("Invalid value!")
     except:
-        print("Rule syntax error! Please re-check the .yml file content.")
+        print("Condition syntax error! Please re-check the .yml file content.")

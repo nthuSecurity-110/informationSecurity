@@ -1,5 +1,5 @@
 description: metaspolit tool for getting http version
 function: http_version
 In: [IP]
-rule: 
+condition: 
 Out: [Apache]
