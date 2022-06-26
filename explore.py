@@ -41,6 +41,8 @@ class Explore():
         # return value: true or false
         if not block.valid:
             return False
+        
+        missing_paras = []
 
         for para in block.In: # para means input parameters
             try: # if Data doesn't contain para, we give it as None
@@ -49,8 +51,13 @@ class Explore():
                 self.Data[para] = None
             
             if self.Data[para]==None:
-                print(f'missing data "{para}"')
-                self.user_takeover(para)
+                # print(f'missing data "{para}"')
+                # self.user_takeover(para)
+                missing_paras.append(para)
+
+        if missing_paras:
+            # print(missing_paras)
+            return missing_paras
         
         if block.condition == "" and not eval(block.condition):
             return False
@@ -71,6 +78,7 @@ class Explore():
 
     def run_class(self, Class):
         # problem 2: if condition mismatch, try other block in class. 假設block失敗，到class去掃的部分，我也都還沒寫(可能要等class那邊先出來?)
+        print('Enter run_class.')
         None
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
@@ -87,7 +95,8 @@ class Explore():
                 for i in range(len(self.block_chain)): # for all blocks in block chain
                     blockname = self.block_chain[i]
                     block = Block(blockname)
-                    if(self.match_condition_format(block)):
+                    result = self.match_condition_format(block)
+                    if result == True:
                         try:
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
@@ -96,8 +105,19 @@ class Explore():
                                 print("MATCH RULE~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")
-                    else:
+                    elif result == False:
                         self.run_class(self.class_chain[i])
+                    else:
+                    	print('There are some missing data.')
+                    	mode = input("Please choose next step. 1 for user take over, 2 for run other class methods.\nNext step:")
+                    	if mode == '1':
+                    	    for para in result:
+                    	    	self.user_takeover(para)
+                    	elif mode == '2':
+                    	    self.run_class(self.class_chain[i])
+                    	else:
+                    	    print("default step: 2")
+                    	    self.run_class(self.class_chain[i])
                     
                 # continue
         
