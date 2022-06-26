@@ -51,8 +51,10 @@ class Explore():
             if self.Data[para]==None:
                 print(f'missing data "{para}"')
                 self.user_takeover(para)
-        
-        if block.condition == "" and not eval(block.condition):
+                exec(f'{para} = ' + self.Data[para])
+        if block.condition == None:
+            return True
+        elif not eval(block.condition):
             return False
         else:
             return True
@@ -68,10 +70,15 @@ class Explore():
         exec("self.Data['"+lack_input+"'] = input('Please input missing parameter(" +lack_input +"):')")
         
 
-
     def run_class(self, Class):
-        # problem 2: if condition mismatch, try other block in class. 假設block失敗，到class去掃的部分，我也都還沒寫(可能要等class那邊先出來?)
-        None
+        print("enter run_class")
+        files = os.listdir('./block/Class/{classname}'.format(classname=Class))
+        for file in files:
+            block = Block('Class/' + Class + '/' + file.split('.')[0])
+            block_func = getattr(Function, block.function) # get the required function from block
+            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+            self.Data, match_condition = block_func(func_in, self.Data)
+
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
         self.class_chain, self.block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
