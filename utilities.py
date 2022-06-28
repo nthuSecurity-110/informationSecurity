@@ -9,7 +9,15 @@ class Helper:
             calculate_mask                  calculates the mask of a given subnet mask
     '''
     def __init__(self):
-        self.haha="hello"
+        None
+
+    def choose_mode(self): # Choose mode 1 will skip nmap discovery LAN. Default mode is 2.
+        mode = input("Choose the mode.\n1: a specific target was known.\n2: search for a target!\nMode: ")
+        if mode in ['1','2']:
+            return int(mode)
+        else:
+            print("Default mode: 1")
+            return 1
 
     def decimalToBinary(self, n):
         """
@@ -39,12 +47,4 @@ class Helper:
         except:
             sys.stderr.write("An error has occured.")
 
-    def getOS(self):
-        OS = input("Please input your OS (1-win, 2-linux): ")
-        if OS == '1': 
-            return "win"
-        elif OS == '2':
-            return "linux"
-        else:
-            return ("OS not recognized")
             

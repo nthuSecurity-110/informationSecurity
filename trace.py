@@ -2,16 +2,13 @@ import sys
 from ipaddress import ip_address
 from subprocess import Popen, PIPE
 
+from matplotlib.pyplot import contour
+
 class Trace:
-    def __init__(self, os):
-        self.os = os
-        self.root_IP=input("input root ip: ") # tracert stop at root ip provided by user
-        if self.os == "win":
-            self.cmdline = ['tracert', self.root_IP]
-        elif self.os == "linux":
-            self.cmdline = ['traceroute', self.root_IP]
-        else:
-            sys.stderr("OS not recognized")
+    def __init__(self):
+        self.root_IP=input("input root ip: ") # tracert stop at root ip provided by use        
+        self.cmdline = ['traceroute', self.root_IP]
+
         p = Popen(self.cmdline, stdout=PIPE)
         outputText = str(p.communicate()[0]).split(' ')
         # print(outputText)
@@ -31,8 +28,10 @@ class Trace:
             if(all([item.isnumeric() for item in tracertList[i].split('.')]) and
                     len(tracertList[i].split('.')) == 4):  # if the string is in format of IP addr
                 ip_list.append(tracertList[i])  # append it into ip_list
-
-        ip_list.pop(0)
+                
+        ip_list.pop(0) # since the first ip would must be root_ip
+        ip_list = list(dict.fromkeys(ip_list)) # remove duplicate ip in ip_list
+        
         IP_dict={'private': [], 'public':[]}
         for ip in ip_list:
             if(ip_address(ip).is_private):

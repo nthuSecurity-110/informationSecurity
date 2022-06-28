@@ -1,59 +1,70 @@
-import nmap
-from datetime import datetime
-from netaddr import IPAddress
-from trace import *
+import os
+from xmlrpc.client import Boolean, boolean
+from iniconfig import ParseError
+import yaml
+# path = os.walk("./attack_chain")
+# for root, directories, files in path:
+#     for file in files:
+#         with open("./attack_chain/"+file, "r") as attack_chain:
+#             # print(yaml.load(attack_chain))
+#             atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
+#             class_chain, block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
 
-# trace = Trace()
-class Test:
-    def __init__(self, os):
-        self.user_os = os
+class Error(Exception):
+    '''Base class for customized exceptions'''
+    pass
 
-    def callback_result(self, host, scan_result):
-        if self.user_os == "win":
-            print('------------------')
-            print("scan_res:", scan_result)
-            if scan_result['scan'] != {}:
-                print(scan_result['scan'])
-            else:
-                print(host)
-        elif self.user_os == "linux":
-            print('------------------')
-            print("scan_res:", scan_result)
-            if scan_result != None and scan_result['scan'] != None:
-                print(scan_result['scan'])
-            else:
-                print(host)
+class ConditionLengthError(Error):
+    '''To raise an exception when there is more than one condition in a single yaml file.'''
+    pass
+
+def solve(condition):
+    if isinstance(condition, str) and type(eval(condition)) == Boolean:
+        return eval(condition)
+    print("call solve!",condition)
+    for i,(key,val) in enumerate(condition.items()):
+        print(f"key:{key}, val:{val}")
+        if isinstance(val, list):
+            result = (key=='and')
+            for item in val:
+                if isinstance(item, dict):
+                    outcome = solve(item)
+                else:
+                    outcome = eval(item)
+                
+                if key == 'or':
+                    result = (outcome or result)
+                elif key == 'and':
+                    result = (outcome and result)
+                else:
+                    print("Non-existing key")
+            return result
         else:
-            print("err")
+            print("It should be list!")
+    
+# path = os.walk("./folder")
+# for root, directories, files in path:
+#     for file in files:
+#         with open("./folder/"+file, "r") as testfile:
+#             F= yaml.load(testfile, Loader=yaml.SafeLoader)
+#             F = solve(F)
 
-    def AllLanHostTest(self, os):
-        wireless_lan_gateway = "140.114.71.253"
-        wireless_lan_subnet = "255.255.255.0"
-        if os == 'win':
-            mask_num = IPAddress(wireless_lan_subnet).netmask_bits()
-        elif os == 'linux':
-            mask_num = wireless_lan_subnet
-        else:
-            mask_num=-1
-
-        # cmd = input("Choose an option: '-sS'/'-sP'/'-sL'/'-PS'/'-PU': ")
-        cmd = '-sS -F -O -T4'
-        # cmd+=" --min-paralleism 10"
-        cmd+=" --min-hostgroup 20"
-        # cmd+=" --min-rate 10"
-        # cmd+=" --max-scan-delay 500ms" 
-        # cmd+=" --host-timeout 100ms" # 100ms is too short, some msg lost
-        start_time = datetime.now()
-        nma = nmap.PortScannerAsync()
-        # privateIP_list = trace.IPdict['private']
-        privateIP_list = [wireless_lan_gateway]
-        for ip in privateIP_list:
-            mask_num = 16 if ip != wireless_lan_gateway else mask_num
-            ip = ip + '/' + str(mask_num)
-
-            print(f"scanning LAN under {ip}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            nma.scan(hosts=ip, arguments=cmd, callback=self.callback_result)
-            while nma.still_scanning():
-                nma.wait(2)
-        end_time = datetime.now()
-        print("Duration: {}".format(end_time - start_time))
+with open("./folder/"+"test.yml", "r") as testfile:
+    try:
+        F= yaml.load(testfile, Loader=yaml.SafeLoader)
+        print("F length:", len(F))
+        if len(F) > 1:
+            raise ConditionLengthError
+        print("F[0]:", F[0])
+        print("="*30)
+        print(solve(F[0]))
+    except TypeError:
+        print("I cannot find any conditions!")
+    except FileNotFoundError:
+        print("Please double check the file name!")
+    except ConditionLengthError:
+        print("Please input one condition at a time!")
+    except ValueError:
+        print("Invalid value!")
+    except:
+        print("Condition syntax error! Please re-check the .yml file content.")

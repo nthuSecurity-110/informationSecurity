@@ -1,0 +1,6 @@
+description: metasploit tool for getting http version
+function: http_version
+argument: ['-r', 'http_version.rc']
+In: [IP]
+condition:
+Out: [Apache]
