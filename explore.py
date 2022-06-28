@@ -111,32 +111,27 @@ class Explore():
         if not block.valid:
             return False
 
+        missing_paras = []
+
         for para in block.In: # para means input parameters
             try: # if Data doesn't contain para, we give it as None
                 self.Data[para]
             except KeyError:
                 self.Data[para] = None
             
-            if self.Data[para]==None:
-                print(f'missing data "{para}"')
-                self.user_takeover(para)
-            
-        if block.condition == None:
-            return True
+            if self.Data[para] == None:
+                # print(f'missing data "{para}"')
+                # self.user_takeover(para)
+                missing_paras.append(para)
+
+        if missing_paras:
+            # print(missing_paras)
+            return missing_paras
+        
+        if block.condition == "" and not eval(block.condition):
+            return False
         else:
-            new_condition = block.condition
-            for param in block.In:
-                if param in block.condition:
-                    print("param: ", param)
-                    user_condition = self.Data[param]
-                    block_condition = block.condition.split(" ")
-                    op = block_condition[1]
-                    ver = block_condition[2]
-                    new_condition = user_condition + ' ' + op + ' ' + ver
-                    print("new block condition: "+ new_condition)
-            res = self.compare_version(user_condition, ver)
-            print("Condition result:", self.get_comparison_result(res, op))
-            return self.get_comparison_result(res, op)
+            return True
 
     def user_takeover(self, lack_input):
         exec("self.Data['"+lack_input+"'] = input('Please input missing parameter(" +lack_input +"): ')")
@@ -165,7 +160,8 @@ class Explore():
                 for i in range(len(self.block_chain)): # for all blocks in block chain
                     blockname = self.block_chain[i]
                     block = Block(blockname)
-                    if(self.match_condition_format(block)):
+                    result = self.match_condition_format(block)
+                    if result == True:
                         try:
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
@@ -174,8 +170,19 @@ class Explore():
                                 print("MATCH RULE~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")
-                    else:
+                    elif result == False:
                         self.run_class(self.class_chain[i])
+                    else:
+                        print('There are some missing data.')
+                        mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step:")
+                        if mode == '1':
+                    	    for para in result:
+                                self.user_takeover(para)
+                        elif mode == '2':
+                            self.run_class(self.class_chain[i])
+                        else:
+                            print("default step: 2")
+                            self.run_class(self.class_chain[i])
                     
                 # continue
         
