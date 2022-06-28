@@ -51,13 +51,21 @@ class Explore():
             if self.Data[para]==None:
                 print(f'missing data "{para}"')
                 self.user_takeover(para)
-                exec(f'{para} = ' + self.Data[para])
+            
+
+            
         if block.condition == None:
             return True
-        elif not eval(block.condition):
-            return False
         else:
-            return True
+            new_condition = block.condition
+            for param in block.In:
+                if param in block.condition:
+                    print("param: ", param)
+                    new_condition = self.Data[param] + block.condition.split(" ", 1)[1]
+                    print("new block condition: "+ new_condition)
+            return eval(new_condition)
+
+
 
             
         # if condition mismatch, return false
