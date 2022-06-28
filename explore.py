@@ -17,7 +17,7 @@ class Explore():
         # self.process = Process(target=self.exploring, args=())
         # nmap get basic info, fill into Data
         
-        explored_host = input("Which host you want to explore?(for testing default: 163.32.250.178)\n") # 163.32.250.178
+        explored_host = input("Which host you want to explore? (Testing default: 163.32.250.178)\n") # 163.32.250.178
         if explored_host == '':
             explored_host = '163.32.250.178'
         print("START EXPLORING!")
@@ -36,9 +36,78 @@ class Explore():
             'Apache': None,
 
         }
-                    
+
+    def compare_version(self, v1, v2):
+        '''
+        source from GeeksforGeeks
+        '''
+        arr1 = v1.split(".")
+        arr2 = v2.split(".")
+        n = len(arr1)
+        m = len(arr2)
+        
+        arr1 = [int(i) for i in arr1]
+        arr2 = [int(i) for i in arr2]
+    
+        if n>m:
+            for i in range(m, n):
+                arr2.append(0)
+        elif m>n:
+            for i in range(n, m):
+                arr1.append(0)
+
+        for i in range(len(arr1)):
+            if arr1[i]>arr2[i]:
+                return 1
+            elif arr2[i]>arr1[i]:
+                return -1
+        return 0
+
+    def get_comparison_result(self, res, op):
+            if op == '<':
+                if res < 0:
+                    return True
+                elif res > 0:
+                    return False
+                else:
+                    return False
+            elif op == '>':
+                if res < 0:
+                    return False
+                elif res > 0:
+                    return True
+                else:
+                    return False
+            elif op == '<=':
+                if res < 0:
+                    return True
+                elif res > 0:
+                    return False
+                else:
+                    return True
+            elif op == '>=':
+                if res < 0:
+                    return False
+                elif res > 0:
+                    return True
+                else:
+                    return True
+            elif op == '==' or op == '=':
+                if res < 0:
+                    return False
+                elif res > 0:
+                    return False
+                else:
+                    return True
+
     def match_condition_format(self, block):
-        # return value: true or false
+        '''
+        if condition mismatch, return false
+        compare Data and block, if lacking of input, user take over.
+        after that, if still lack of input, return false
+        return false means we won't use this block, but use other blocks with run_class
+        return value: true or false
+        '''
         if not block.valid:
             return False
 
@@ -52,8 +121,6 @@ class Explore():
                 print(f'missing data "{para}"')
                 self.user_takeover(para)
             
-
-            
         if block.condition == None:
             return True
         else:
@@ -61,23 +128,19 @@ class Explore():
             for param in block.In:
                 if param in block.condition:
                     print("param: ", param)
-                    new_condition = self.Data[param] + block.condition.split(" ", 1)[1]
+                    user_condition = self.Data[param]
+                    block_condition = block.condition.split(" ")
+                    op = block_condition[1]
+                    ver = block_condition[2]
+                    new_condition = user_condition + ' ' + op + ' ' + ver
                     print("new block condition: "+ new_condition)
-            return eval(new_condition)
-
-
-
-            
-        # if condition mismatch, return false
-        # compare Data and block, if lacking of input, user take over.
-        # after that, if still lack of input, return false
-        # return false means we won't use this block, but use other blocks with run_class
-
+            res = self.compare_version(user_condition, ver)
+            print("Condition result:", self.get_comparison_result(res, op))
+            return self.get_comparison_result(res, op)
 
     def user_takeover(self, lack_input):
-        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter(" +lack_input +"):')")
+        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter(" +lack_input +"): ')")
         
-
     def run_class(self, Class):
         print("enter run_class")
         files = os.listdir('./block/Class/{classname}'.format(classname=Class))

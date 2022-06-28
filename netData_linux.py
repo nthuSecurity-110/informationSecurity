@@ -32,7 +32,7 @@ class NetworkData_Linux:
         brd_grep= "ip a|grep brd|grep inet|cut -d ' '  -f 6" # the script that get ip and subnet
         ip_and_subnet = subprocess.check_output(brd_grep, shell=True).decode('big5', errors='ignore')
         self.ip ,self.subnet = ip_and_subnet.split('/')[0], ip_and_subnet.split('/')[1]
-        print(f"ip:{self.ip}\nsubnet:{self.subnet}")
+        print(f"ip: {self.ip}\nsubnet: {self.subnet}")
     
     def getGateway11(self):
         """

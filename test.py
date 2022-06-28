@@ -56,7 +56,7 @@ with open("./folder/"+"test.yml", "r") as testfile:
         if len(F) > 1:
             raise ConditionLengthError
         print("F[0]:", F[0])
-        print("======================")
+        print("="*30)
         print(solve(F[0]))
     except TypeError:
         print("I cannot find any conditions!")
