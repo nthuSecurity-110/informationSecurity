@@ -22,7 +22,7 @@ class Explore():
             explored_host = '163.32.250.178'
         print("START EXPLORING!")
 
-        L = os.popen("sudo nmap -sS -F -O -T4 140.114.206.90 | grep '/tcp\|/udp'").read().split('\n')
+        L = os.popen(f"sudo nmap -sS -F -O -T4 {explored_host} | grep '/tcp\|/udp'").read().split('\n')
         # processing nmap output
         p = [item.split('/')[0] for item in L if item.split('/')[0]!='']
         l = [item.split('/')[1] for item in L if item.split('/')[0]!='']
@@ -36,6 +36,7 @@ class Explore():
             'Apache': None,
 
         }
+        print(self.Data)
 
     def compare_version(self, v1, v2):
         '''
@@ -199,3 +200,10 @@ class Explore():
         
     # def kill(self):
     #     self.process.kill()
+"""
+Todo:
+1. gobuster (dirb)
+2. upload a file
+3. nc -lvp 1234
+4. get root(skip user.txt)
+"""
