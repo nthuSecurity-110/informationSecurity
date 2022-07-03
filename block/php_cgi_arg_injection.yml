@@ -3,11 +3,5 @@ function: php_cgi_arg_injection
 argument: ['-r', 'php_cgi_arg_injection.rc']
 In: [Apache, IP]
 condition: 
-  - and:
-    - Apache < 3.1
-    - Apache < 3.1
-    - Apache < 3.1
-    - or:
-      - Apache > 3.1
-      - Apache < 3.1
+  - Apache < 3.1
 Out: []

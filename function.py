@@ -1,3 +1,4 @@
+from inspect import Parameter
 import os
 from packaging import version
 from subprocess import Popen, PIPE
@@ -6,7 +7,7 @@ Default = False
 
 class Function():
         
-    def http_version(func_in, Data):
+    def http_version(func_in, Data, args):
         # - msfconsole
         # - wait for 15s (msfconsole opening)
         # - use auxiliary/scanner/http/http_version
@@ -38,7 +39,7 @@ class Function():
         return Data, match
             
 
-    def php_cgi_arg_injection(func_in, Data):
+    def php_cgi_arg_injection(func_in, Data, args):
         # use exploit/multi/http/php_cgi_arg_injection
         # - set RHOSTS {IP}
         # - run
@@ -59,8 +60,48 @@ class Function():
             print(outputLine)        
         
         return Data, match
-    def metasploit(func_in, Data):
-        None
-    def print_something(func_in, Data):
+    def metasploit(func_in, Data, args):
+        match = Default # set default first
+        script_name = ""
+        for arg in args:
+            if ".rc" in arg:
+                script_name = arg
+                break
+        # start with a template script
+        templateFile=open("./meta_script_template/" + script_name,'r')
+        configFile=open(script_name,'w')
+        for line in templateFile:
+            subst_line = line
+            if '<' in line and '>' in line:
+                l = line.find('<')
+                r = line.find('>')
+                param = line[l+1:r]
+                subst_line = line.replace("<" + param + ">",Data[param])
+            configFile.write(subst_line + "\n")
+        templateFile.close()
+        configFile.close()
+        # run the script
+        proc = Popen(['msfconsole'] + args, stdout=PIPE)
+
+        # grab needed info from script
+        for stdout_line in iter(proc.stdout.readline, b''): 
+            
+            outputLine = stdout_line.decode('utf-8').rstrip()
+            
+            # code below just for getting apache version
+            if "Apache/" in outputLine:
+                From = outputLine.find('Apache/')+len('Apache/')
+                Data['Apache'] = outputLine[From:From+10].split(' ')[0]
+                if version.parse(Data['Apache']) < version.parse('3.1'):
+                    match = True
+            
+            if re.search("session [0-9] opend", outputLine)!=None:
+                match = True
+
+            print(outputLine)  
+
+        return Data, match 
+        
+    def print_something(func_in, Data, args):
         print("class chain is running~~")
         return Data, False

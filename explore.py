@@ -217,7 +217,8 @@ class Explore():
             block = Block('Class/' + Class + '/' + file.split('.')[0])
             block_func = getattr(Function, block.function) # get the required function from block
             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-            self.Data, match_condition = block_func(func_in, self.Data)
+            args = block.argument
+            self.Data, match_condition = block_func(func_in, self.Data, args)
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
@@ -239,7 +240,8 @@ class Explore():
                         try:
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                            self.Data, match_condition = block_func(func_in, self.Data)
+                            args = block.argument
+                            self.Data, match_condition = block_func(func_in, self.Data, args)
                             if match_condition:
                                 print("MATCH RULE~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain

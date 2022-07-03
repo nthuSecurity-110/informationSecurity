@@ -1,2 +1,2 @@
 class_chain: [Test, Test]
-block_chain: [http_version, php_cgi_arg_injection_for_test]
+block_chain: [http_version_for_test, php_cgi_arg_injection_for_test]
