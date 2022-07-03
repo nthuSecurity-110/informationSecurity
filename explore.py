@@ -160,7 +160,8 @@ class Explore():
                     
                 for i in range(len(self.block_chain)): # for all blocks in block chain
                     blockname = self.block_chain[i]
-                    block = Block(blockname)
+                    classname = self.class_chain[i]
+                    block = Block(classname, blockname)
                     result = self.match_condition_format(block)
                     if result == True:
                         try:

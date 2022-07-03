@@ -63,3 +63,19 @@ class Function():
     def print_something(func_in, Data):
         print("class chain is running~~")
         return Data, False
+
+    def gobuster(func_in, Data):
+        # need to handle wordlist (undone)
+        os.system(f"gobuster dir -u {func_in['IP']} -w 'wordlist'")
+        return Data, False
+
+    def upload_file(func_in, Data):
+        return Data, False
+
+    def netcat(func_in, Data):
+        # unpack argument list and use
+        os.system(f"nc {*Data['argument']} {func_in['port']}")
+        return Data, False
+
+    def get_root(func_in, Data):
+        return Data, False

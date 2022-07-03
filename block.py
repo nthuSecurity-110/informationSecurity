@@ -1,9 +1,10 @@
 import yaml
 
 class Block():
-    def __init__(self, filename):
+    def __init__(self, classname, filename):
         try:
-            with open("./block/" + filename+ ".yml", "r") as condition:
+            # with open("./block/" + filename+ ".yml", "r") as condition:
+            with open("./block/" + classname + "/" + filename+ ".yml", "r") as condition:
                 Data = yaml.load(condition,Loader=yaml.SafeLoader)
                 print("data:", Data)
                 self.function = Data['function']
