@@ -59,7 +59,8 @@ class Function():
             print(outputLine)        
         
         return Data, match
-    
+    def metasploit(func_in, Data):
+        None
     def print_something(func_in, Data):
         print("class chain is running~~")
         return Data, False
