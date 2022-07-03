@@ -73,8 +73,7 @@ class Function():
         return Data, False
 
     def netcat(func_in, Data):
-        # unpack argument list and use
-        os.system(f"nc {*Data['argument']} {func_in['port']}")
+        os.system(f"nc {Data['argument']} {func_in['port']}")
         return Data, False
 
     def get_root(func_in, Data):
