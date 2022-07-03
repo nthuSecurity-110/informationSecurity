@@ -1,0 +1,6 @@
+description: listen to the port
+function: netcat
+argument: ['-lvnp']
+In: [port]
+condition: 
+Out: []
