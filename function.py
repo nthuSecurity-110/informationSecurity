@@ -61,20 +61,33 @@ class Function():
         return Data, match
     
     def print_something(func_in, Data):
+        match = Default
         print("class chain is running~~")
-        return Data, False
+        return Data, match
 
     def gobuster(func_in, Data):
-        # need to handle wordlist (undone)
-        os.system(f"gobuster dir -u {func_in['IP']} -w 'wordlist'")
-        return Data, False
+        match = Default
+        
+        # proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
+        # for stdout_line in iter(proc.stdout.readline, b''):
+        #     # code below just for getting apache version
+        #     outputLine = stdout_line.decode('utf-8').rstrip()
+        #     if re.search("/panel", outputLine)!=None:
+        #         match = True
+        #     print(outputLine)
+        os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
+        return Data, match
 
     def upload_file(func_in, Data):
-        return Data, False
+        match = Default
+        return Data, match
 
     def netcat(func_in, Data):
+        match = Default
         os.system(f"nc {Data['argument']} {func_in['port']}")
-        return Data, False
+        return Data, match
 
     def get_root(func_in, Data):
-        return Data, False
+        match = Default
+
+        return Data, match

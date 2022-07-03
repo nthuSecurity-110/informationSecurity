@@ -17,7 +17,7 @@ class Explore():
         # self.process = Process(target=self.exploring, args=())
         # nmap get basic info, fill into Data
         
-        explored_host = input("Which host you want to explore? (Testing default: 163.32.250.178)\n") # 163.32.250.178
+        explored_host = input("Which host you want to explore? (Testing default: 163.32.250.178)\n").strip() # 163.32.250.178
         if explored_host == '':
             explored_host = '163.32.250.178'
         print("START EXPLORING!")
@@ -141,7 +141,7 @@ class Explore():
         print("enter run_class")
         files = os.listdir('./block/Class/{classname}'.format(classname=Class))
         for file in files:
-            block = Block('Class/' + Class + '/' + file.split('.')[0])
+            block = Block('Class/' + Class + '/' + file.split('.')[0], file)
             block_func = getattr(Function, block.function) # get the required function from block
             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
             self.Data, match_condition = block_func(func_in, self.Data)
@@ -202,6 +202,10 @@ class Explore():
     # def kill(self):
     #     self.process.kill()
 """
+src: https://tryhackme.com/room/rrootme#
+ans: https://medium.com/@canturkbal/tryhackme-rootme-ctf-walkthrough-915a014a0cf2
+php_file: https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php
+
 Todo:
 1. gobuster (dirb)
 2. upload a file
