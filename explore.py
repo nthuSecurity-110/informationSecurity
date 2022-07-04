@@ -210,6 +210,7 @@ class Explore():
             '''
 
     def user_takeover(self, lack_input):
+<<<<<<< HEAD
         exec("self.Data['"+lack_input+"'] = input('Please input missing parameter (" + lack_input +"): ')")
 
     def run_class(self, Class):
@@ -235,6 +236,24 @@ class Explore():
                 func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                 self.Data, match_condition = block_func(func_in, self.Data)
 >>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
+=======
+        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter (" +lack_input +"): ')")
+        
+    def run_class(self, Class):
+        files = os.listdir('./block/{classname}'.format(classname=Class))
+        for file in files:
+            print("file:", file)
+            tmp = file.split('.')[0]
+
+            if tmp == '':
+                print("Not a valid yml file!")
+                break
+            else:
+                block = Block(Class + '/' + tmp, file)
+                block_func = getattr(Function, block.function) # get the required function from block
+                func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+                self.Data, match_condition = block_func(func_in, self.Data)
+>>>>>>> c58be24b103c6ed62f99d8f8f3b2623da1a2fbd4
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
