@@ -3,6 +3,7 @@ import yaml
 class Block():
     def __init__(self, classname, filename):
         try:
+            print("path:", "./block/" + classname + "/" + filename+ ".yml")
             with open("./block/" + classname + "/" + filename+ ".yml", "r") as ymlFile:
                 Data = yaml.load(ymlFile ,Loader=yaml.SafeLoader)
                 print("data:", Data)

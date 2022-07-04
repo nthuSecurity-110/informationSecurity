@@ -135,16 +135,22 @@ class Explore():
             return True
 
     def user_takeover(self, lack_input):
-        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter(" +lack_input +"): ')")
+        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter (" +lack_input +"): ')")
         
     def run_class(self, Class):
-        print("enter run_class")
-        files = os.listdir('./block/Class/{classname}'.format(classname=Class))
+        files = os.listdir('./block/{classname}'.format(classname=Class))
         for file in files:
-            block = Block('Class/' + Class + '/' + file.split('.')[0], file)
-            block_func = getattr(Function, block.function) # get the required function from block
-            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-            self.Data, match_condition = block_func(func_in, self.Data)
+            print("file:", file)
+            tmp = file.split('.')[0]
+
+            if tmp == '':
+                print("Not a valid yml file!")
+                break
+            else:
+                block = Block(Class + '/' + tmp, file)
+                block_func = getattr(Function, block.function) # get the required function from block
+                func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+                self.Data, match_condition = block_func(func_in, self.Data)
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
@@ -176,7 +182,7 @@ class Explore():
                         self.run_class(self.class_chain[i])
                     else:
                         print('There are some missing data.')
-                        mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step:")
+                        mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
                         if mode == '1':
                     	    for para in result:
                                 self.user_takeover(para)
