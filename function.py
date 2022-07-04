@@ -110,19 +110,14 @@ class Function():
 
     def gobuster(func_in, Data):
         match = Default
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
-        # proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
-        # for stdout_line in iter(proc.stdout.readline, b''):
-        #     # code below just for getting apache version
-        #     outputLine = stdout_line.decode('utf-8').rstrip()
-        #     if re.search("/panel", outputLine)!=None:
-        #         match = True
-        #     print(outputLine)
-        os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
+        proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
+        for stdout_line in iter(proc.stdout.readline, b''):
+            # code below just for getting apache version
+            outputLine = stdout_line.decode('utf-8').rstrip()
+            print(outputLine)
+            if re.search("/panel", outputLine)!=None:
+                match = True
+        # os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
         return Data, match
 
     def upload_file(func_in, Data):
@@ -136,8 +131,4 @@ class Function():
 
     def get_root(func_in, Data):
         match = Default
-<<<<<<< HEAD
-
-=======
->>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
         return Data, match

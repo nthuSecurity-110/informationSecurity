@@ -38,11 +38,7 @@ class Explore():
             'Port': p,
             'Apache': None,
         }
-<<<<<<< HEAD
-        print(self.Data)
-=======
         # print(self.Data)
->>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
 
     def compare_version(self, v1, v2):
         '''
@@ -210,7 +206,6 @@ class Explore():
             '''
 
     def user_takeover(self, lack_input):
-<<<<<<< HEAD
         exec("self.Data['"+lack_input+"'] = input('Please input missing parameter (" + lack_input +"): ')")
 
     def run_class(self, Class):
@@ -218,12 +213,6 @@ class Explore():
         print("className:", Class)
         files = os.listdir('./block/{classname}'.format(classname=Class))
         for file in files:
-<<<<<<< HEAD
-            block = Block('Class/' + Class + '/' + file.split('.')[0], file)
-            block_func = getattr(Function, block.function) # get the required function from block
-            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-            self.Data, match_condition = block_func(func_in, self.Data)
-=======
             print("file:", file)
             fileName = file.split('.')[0]
 
@@ -235,25 +224,6 @@ class Explore():
                 block_func = getattr(Function, block.function) # get the required function from block
                 func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                 self.Data, match_condition = block_func(func_in, self.Data)
->>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
-=======
-        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter (" +lack_input +"): ')")
-        
-    def run_class(self, Class):
-        files = os.listdir('./block/{classname}'.format(classname=Class))
-        for file in files:
-            print("file:", file)
-            tmp = file.split('.')[0]
-
-            if tmp == '':
-                print("Not a valid yml file!")
-                break
-            else:
-                block = Block(Class + '/' + tmp, file)
-                block_func = getattr(Function, block.function) # get the required function from block
-                func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                self.Data, match_condition = block_func(func_in, self.Data)
->>>>>>> c58be24b103c6ed62f99d8f8f3b2623da1a2fbd4
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
@@ -306,25 +276,13 @@ class Explore():
         
     # def kill(self):
     #     self.process.kill()
-<<<<<<< HEAD
-=======
-
->>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
 """
 src: https://tryhackme.com/room/rrootme#
 ans: https://medium.com/@canturkbal/tryhackme-rootme-ctf-walkthrough-915a014a0cf2
 php_file: https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php
-<<<<<<< HEAD
-
-=======
->>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
 Todo:
 1. gobuster (dirb)
 2. upload a file
 3. nc -lvp 1234
 4. get root(skip user.txt)
-<<<<<<< HEAD
 """
-=======
-"""
->>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
