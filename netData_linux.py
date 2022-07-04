@@ -29,9 +29,18 @@ class NetworkData_Linux:
             Argument(s): self
             Returns: a dictionary
         """
-        brd_grep= "ip a|grep brd|grep inet|cut -d ' '  -f 6" # the script that get ip and subnet
-        ip_and_subnet = subprocess.check_output(brd_grep, shell=True).decode('big5', errors='ignore')
-        self.ip ,self.subnet = ip_and_subnet.split('/')[0], ip_and_subnet.split('/')[1]
+        brd_grep = "ip a|grep brd|grep inet|cut -d ' '  -f 6" # the script that get ip and subnet
+        tun_grep = "ip a|grep tun|grep inet|cut -d ' '  -f 6"
+        get_ip = tun_grep if tun_grep !="" else brd_grep # if use vpn, use the tunneling ip first
+        ip_and_subnet = subprocess.check_output(get_ip, shell=True).decode('big5', errors='ignore')
+        try:
+            self.ip ,self.subnet = ip_and_subnet.split('/')[0], ip_and_subnet.split('/')[1]
+        except IndexError:
+            print("Can't find your ip and subnet mask!\n\
+                Find it yourself and tell me below.\
+                (You can try 'ip a' or ifconfig)")
+            self.ip = input("IP: ")
+            self.subnet = input("Subnet mask: ")
         print(f"ip: {self.ip}\nsubnet: {self.subnet}")
     
     def getGateway11(self):
