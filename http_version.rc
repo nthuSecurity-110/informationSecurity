@@ -1,0 +1,7 @@
+use auxiliary/scanner/http/http_version
+
+set RHOST 163.32.250.178
+
+run
+
+exit

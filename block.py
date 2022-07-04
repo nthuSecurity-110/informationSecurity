@@ -3,7 +3,8 @@ import yaml
 class Block():
     def __init__(self, classname, filename):
         try:
-            with open("./block/" + classname + "/" + filename+ ".yml", "r") as ymlFile:
+            print("path:", "./block/" + classname + "/" + filename + ".yml")
+            with open("./block/" + classname + "/" + filename + ".yml", "r") as ymlFile:
                 Data = yaml.load(ymlFile ,Loader=yaml.SafeLoader)
                 print("data:", Data)
                 self.function = Data['function']
@@ -17,7 +18,6 @@ class Block():
         except FileNotFoundError:
             print(f"Block '{filename}' does not exist. Skipping it!")
             self.valid = False
-
 
     def blockInfo(self):
         print("="*10 + "Block Info" + "="*10)

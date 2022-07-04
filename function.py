@@ -1,3 +1,4 @@
+from inspect import Parameter
 import os
 from packaging import version
 from subprocess import Popen, PIPE
@@ -59,7 +60,49 @@ class Function():
             print(outputLine)        
         
         return Data, match
-    
+
+    def metasploit(func_in, Data, args):
+        match = Default # set default first
+        script_name = ""
+        for arg in args:
+            if ".rc" in arg:
+                script_name = arg
+                break
+        # start with a template script
+        templateFile=open("./meta_script_template/" + script_name,'r')
+        configFile=open(script_name,'w')
+        for line in templateFile:
+            subst_line = line
+            if '<' in line and '>' in line:
+                l = line.find('<')
+                r = line.find('>')
+                param = line[l+1:r]
+                subst_line = line.replace("<" + param + ">",Data[param])
+            configFile.write(subst_line + "\n")
+        templateFile.close()
+        configFile.close()
+        # run the script
+        proc = Popen(['msfconsole'] + args, stdout=PIPE)
+
+        # grab needed info from script
+        for stdout_line in iter(proc.stdout.readline, b''): 
+            
+            outputLine = stdout_line.decode('utf-8').rstrip()
+            
+            # code below just for getting apache version
+            if "Apache/" in outputLine:
+                From = outputLine.find('Apache/')+len('Apache/')
+                Data['Apache'] = outputLine[From:From+10].split(' ')[0]
+                if version.parse(Data['Apache']) < version.parse('3.1'):
+                    match = True
+            
+            if re.search("session [0-9] opend", outputLine)!=None:
+                match = True
+
+            print(outputLine)  
+
+        return Data, match 
+        
     def print_something(func_in, Data):
         match = Default
         print("class chain is running~~")
@@ -67,7 +110,11 @@ class Function():
 
     def gobuster(func_in, Data):
         match = Default
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
         # proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
         # for stdout_line in iter(proc.stdout.readline, b''):
         #     # code below just for getting apache version
@@ -89,5 +136,8 @@ class Function():
 
     def get_root(func_in, Data):
         match = Default
+<<<<<<< HEAD
 
+=======
+>>>>>>> 40701ab5268bd6a0918773b32e9f6fccdf3c1ab9
         return Data, match
