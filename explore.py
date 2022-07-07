@@ -16,10 +16,10 @@ class Explore():
     To parallelize the execution between "exploring" and "nmap searching"
     We use subprocess here, which has to be use very carefully.
     """
-    def __init__(self):
+    def __init__(self,myIP):
         # self.process = Process(target=self.exploring, args=())
         # nmap get basic info, fill into Data
-        
+
         explored_host = input("Which host you want to explore? (Testing default: 163.32.250.178)\n").strip() # 163.32.250.178
         if explored_host == '':
             explored_host = '163.32.250.178'
@@ -32,6 +32,7 @@ class Explore():
         s = [item.split('  ')[-1] for item in l]
 
         self.Data={
+            'myIP': myIP,
             'IP': explored_host,
             'Service': s,
             'OS': None,
@@ -244,10 +245,11 @@ class Explore():
                     result = self.match_condition_format(block)
                     if result == True:
                         try:
+                            print("Go to /home/kali/Desktop, you would find reverse_shell.php5.\nUpload it to the web.")
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                             args = block.argument
-                            self.Data, match_condition = block_func(func_in, self.Data) #error , args)
+                            self.Data, match_condition = block_func(func_in, self.Data, args, block.In) 
                             if match_condition:
                                 print("MATCH RULE~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain
@@ -255,7 +257,7 @@ class Explore():
                     elif result == False:
                         self.run_class(self.class_chain[i])
                     else:
-                        print('There are some missing data.')
+                        print('There are some missing data..')
                         mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
                         if mode == '1':
                     	    for para in result:
