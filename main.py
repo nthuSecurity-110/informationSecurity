@@ -16,7 +16,7 @@ if __name__ == '__main__':
     mode = Helper().choose_mode()
     if mode == 2:
         check.AllLanHost(config)
-    explore = Explore()
+    explore = Explore(config.getGateway11())
     explore.exploring()
 
     node = NodeData(check.getIP())

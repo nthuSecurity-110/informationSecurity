@@ -3,10 +3,9 @@ import yaml
 class Block():
     def __init__(self, classname, filename):
         try:
-            print("path:", "./block/" + classname + "/" + filename + ".yml")
+            # print("path:", "./block/" + classname + "/" + filename + ".yml")
             with open("./block/" + classname + "/" + filename + ".yml", "r") as ymlFile:
                 Data = yaml.load(ymlFile ,Loader=yaml.SafeLoader)
-                print("data:", Data)
                 self.function = Data['function']
                 self.condition = Data['condition'] #from yaml file
                 self.description = Data['description']
@@ -24,7 +23,7 @@ class Block():
         print("description:", self.description)
         print("function:", self.function)
         print("condition:", self.condition)
-        print("argument:", self.argument)
+        # print("argument:", self.argument)
         print("In:", self.In)
         print("Out:", self.Out)
         print("="*30)

