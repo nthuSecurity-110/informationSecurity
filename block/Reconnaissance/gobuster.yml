@@ -1,0 +1,6 @@
+description: scan directory
+function: gobuster
+argument: []
+In: [IP]
+condition: 
+Out: [websites]

@@ -20,12 +20,12 @@ class Explore():
         # self.process = Process(target=self.exploring, args=())
         # nmap get basic info, fill into Data
         
-        explored_host = input("Which host you want to explore? (Testing default: 163.32.250.178)\n") # 163.32.250.178
+        explored_host = input("Which host you want to explore? (Testing default: 163.32.250.178)\n").strip() # 163.32.250.178
         if explored_host == '':
             explored_host = '163.32.250.178'
         print("START EXPLORING!")
 
-        L = os.popen("sudo nmap -sS -F -O -T4 140.114.206.90 | grep '/tcp\|/udp'").read().split('\n')
+        L = os.popen(f"sudo nmap -sS -F -O -T4 {explored_host} | grep '/tcp\|/udp'").read().split('\n')
         # processing nmap output
         p = [item.split('/')[0] for item in L if item.split('/')[0]!='']
         l = [item.split('/')[1] for item in L if item.split('/')[0]!='']
@@ -37,8 +37,8 @@ class Explore():
             'OS': None,
             'Port': p,
             'Apache': None,
-
         }
+        # print(self.Data)
 
     def compare_version(self, v1, v2):
         '''
@@ -152,8 +152,6 @@ class Explore():
                     print("It should be list!")
                     return False
 
-
-
     def match_condition_format(self, block):
         '''
         if condition mismatch, return false
@@ -182,7 +180,7 @@ class Explore():
         # deal with the missing ones (if there are)
         if missing_paras:
             print('There are some missing data.')
-            mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step:")
+            mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
             if mode == '1':
                 for para in missing_paras:
                     self.user_takeover(para)
@@ -208,17 +206,24 @@ class Explore():
             '''
 
     def user_takeover(self, lack_input):
-        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter(" +lack_input +"): ')")
-        
+        exec("self.Data['"+lack_input+"'] = input('Please input missing parameter (" + lack_input +"): ')")
+
     def run_class(self, Class):
         print("enter run_class")
-        files = os.listdir('./block/Class/{classname}'.format(classname=Class))
+        print("className:", Class)
+        files = os.listdir('./block/{classname}'.format(classname=Class))
         for file in files:
-            block = Block('Class/' + Class + '/' + file.split('.')[0])
-            block_func = getattr(Function, block.function) # get the required function from block
-            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-            args = block.argument
-            self.Data, match_condition = block_func(func_in, self.Data, args)
+            print("file:", file)
+            fileName = file.split('.')[0]
+
+            if fileName == '':
+                print("Not a valid yml file!")
+                break
+            else:
+                block = Block(Class, fileName)
+                block_func = getattr(Function, block.function) # get the required function from block
+                func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+                self.Data, match_condition = block_func(func_in, self.Data)
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
@@ -234,20 +239,27 @@ class Explore():
                     
                 for i in range(len(self.block_chain)): # for all blocks in block chain
                     blockname = self.block_chain[i]
-                    block = Block(blockname)
+                    classname = self.class_chain[i]
+                    block = Block(classname, blockname)
                     result = self.match_condition_format(block)
                     if result == True:
                         try:
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                             args = block.argument
-                            self.Data, match_condition = block_func(func_in, self.Data, args)
+                            self.Data, match_condition = block_func(func_in, self.Data) #error , args)
                             if match_condition:
                                 print("MATCH RULE~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")
                     elif result == False:
                         self.run_class(self.class_chain[i])
+                    else:
+                        print('There are some missing data.')
+                        mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
+                        if mode == '1':
+                    	    for para in result:
+                                self.user_takeover(para)
                     
                 # continue
         
@@ -264,3 +276,14 @@ class Explore():
         
     # def kill(self):
     #     self.process.kill()
+
+"""
+src: https://tryhackme.com/room/rrootme#
+ans: https://medium.com/@canturkbal/tryhackme-rootme-ctf-walkthrough-915a014a0cf2
+php_file: https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php
+Todo:
+1. gobuster (dirb)
+2. upload a file
+3. nc -lvp 1234
+4. get root(skip user.txt)
+"""
