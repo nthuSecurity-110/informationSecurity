@@ -1,4 +1,4 @@
 class_chain: [Reconnaissance, Initial Access, Initial Access, Privilege Escalation]
-block_chain: [gobuster, upload_file, netcat, get_root]
+block_chain: [gobuster, netcat, upload_file, get_root]
 # class_chain: [Initial Access, Initial Access, Privilege Escalation]
 # block_chain: [upload_file, netcat, get_root]

@@ -245,7 +245,7 @@ class Explore():
                     result = self.match_condition_format(block)
                     if result == True:
                         try:
-                            print("Go to /home/kali/Desktop, you would find reverse_shell.php5.\nUpload it to the web.")
+                            # print("Go to /home/kali/Desktop, you would find reverse_shell.php5.\nUpload it to the web.")
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                             args = block.argument
