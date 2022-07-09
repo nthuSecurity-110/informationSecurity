@@ -1,0 +1,7 @@
+description: ping it
+function: magic_function
+cmd: 'ping <IP>'
+argument: []
+In: [IP]
+condition: 
+Out: []

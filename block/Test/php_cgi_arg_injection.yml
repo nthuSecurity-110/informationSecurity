@@ -1,5 +1,6 @@
 description: metasploit tool for getting shell
 function: php_cgi_arg_injection
+cmd:
 argument: ['-r', 'php_cgi_arg_injection.rc']
 In: [Apache, IP]
 condition: 

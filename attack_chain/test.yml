@@ -1,0 +1,2 @@
+class_chain: [Test, Test, Test]
+block_chain: [ping, http_version, php_cgi_arg_injection]

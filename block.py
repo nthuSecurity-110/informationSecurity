@@ -9,6 +9,7 @@ class Block():
                 self.function = Data['function']
                 self.condition = Data['condition'] #from yaml file
                 self.description = Data['description']
+                self.cmd = Data['cmd']
                 self.argument = Data['argument']
                 self.In = Data['In']
                 self.Out = Data['Out']
