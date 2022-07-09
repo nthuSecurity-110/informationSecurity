@@ -6,7 +6,7 @@ import re
 Default = False
 
 class Function():
-    def http_version(func_in, Data, args, block_In):
+    def http_version(func_in, Data, args, cmd, block_In):
         # - msfconsole
         # - wait for 15s (msfconsole opening)
         # - use auxiliary/scanner/http/http_version
@@ -38,7 +38,7 @@ class Function():
         return Data, match
             
 
-    def php_cgi_arg_injection(func_in, Data, args, block_In):
+    def php_cgi_arg_injection(func_in, Data, args, cmd, block_In):
         # use exploit/multi/http/php_cgi_arg_injection
         # - set RHOSTS {IP}
         # - run
@@ -60,7 +60,7 @@ class Function():
         
         return Data, match
 
-    def metasploit(func_in, Data, args, block_In):
+    def metasploit(func_in, Data, args, cmd, block_In):
         match = Default # set default first
         script_name = ""
         for arg in args:
@@ -102,12 +102,12 @@ class Function():
 
         return Data, match 
         
-    def print_something(func_in, Data, args, block_In):
+    def print_something(func_in, Data, args, cmd, block_In):
         match = Default
         print("class chain is running~~")
         return Data, match
 
-    def gobuster(func_in, Data, args, block_In):
+    def gobuster(func_in, Data, args, cmd, block_In):
         match = Default
         proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
         for stdout_line in iter(proc.stdout.readline, b''):
@@ -120,7 +120,7 @@ class Function():
         # os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
         return Data, match
 
-    def create_file(func_in, Data, args, block_In):
+    def create_file(func_in, Data, args, cmd, block_In):
 
         match = Default        
         try:
@@ -135,11 +135,24 @@ class Function():
         
         return Data, match
 
-    def netcat(func_in, Data, args, block_In):
+    def netcat(func_in, Data, args, cmd, block_In):
         match = Default
         os.system(f"nc {Data['argument']} {func_in['port']}")
         return Data, match
 
-    def get_root(func_in, Data, args, block_In):
+    def get_root(func_in, Data, args, cmd, block_In):
+        match = Default
+        return Data, match
+
+    def magic_function(func_in, Data, args, cmd, block_In):
+        for input_token in func_in:
+            if ("<" + input_token + ">") in cmd:
+                new_cmd =  cmd.replace("<" + input_token + ">", Data[input_token])
+        print("in magic_function excute:", new_cmd.split(" "))
+        proc = Popen(new_cmd.split(" "), stdout=PIPE)
+        for stdout_line in iter(proc.stdout.readline, b''):
+            print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
+            if "Unreachable" in stdout_line.decode('utf-8'):
+                proc.kill()
         match = Default
         return Data, match
