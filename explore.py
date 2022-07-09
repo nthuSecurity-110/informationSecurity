@@ -224,11 +224,11 @@ class Explore():
                 block = Block(Class, fileName)
                 block_func = getattr(Function, block.function) # get the required function from block
                 func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In)
+                self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In, block.Out)
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
-        self.class_chain, self.block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
+        self.class_chain, self.block_chain = atk_chain["class_chain"], atk_chain["block_chain"]
 
     def exploring(self):
         path = os.walk("./attack_chain")
@@ -248,7 +248,7 @@ class Explore():
                             print("Go to /home/kali/Desktop, you would find reverse_shell.php5.\nUpload it to the web.")
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                            self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In) 
+                            self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In, block.Out) 
                             if match_condition:
                                 print("MATCH RULE~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain

