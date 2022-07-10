@@ -1,7 +1,7 @@
 description: ping it
 function: magic_function
-cmd: 'ping <IP>'
+cmd: 'ping -c 10 <IP>'
 argument: []
 In: [IP]
 condition: 
-Out: []
+Out: [Alive]

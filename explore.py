@@ -228,7 +228,7 @@ class Explore():
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
-        self.class_chain, self.block_chain = atk_chain["class_chain"], atk_chain["block_chain"]
+        self.class_chain, self.block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
 
     def exploring(self):
         path = os.walk("./attack_chain")
@@ -251,6 +251,8 @@ class Explore():
                             self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In, block.Out) 
                             if match_condition:
                                 print("MATCH RULE~~~!!!!\n")
+                            else:
+                                print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")
                     elif result == False:
