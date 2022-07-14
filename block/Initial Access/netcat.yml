@@ -1,7 +1,7 @@
 description: listen to the port
 function: netcat
-cmd:
 argument: ['-lvnp']
 In: [port]
 condition: 
 Out: []
+hint:

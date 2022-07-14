@@ -1,6 +1,5 @@
 description: upload file
 function: create_file
-cmd:
 In: [myIP,]
 condition: 
 Out: []
@@ -195,3 +194,4 @@ argument:
     }
 
     ?> 
+hint:

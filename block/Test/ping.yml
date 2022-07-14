@@ -1,7 +1,10 @@
 description: ping it
 function: magic_function
-cmd: 'ping -c 10 <IP>'
-argument: []
+argument: ['ping', '-c', '10', '<IP>']
 In: [IP]
 condition: 
 Out: [Alive]
+hint:
+  - "Hi there~~"
+  - "Here is a hint"
+  - "Good luck XD"

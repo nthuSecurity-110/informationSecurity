@@ -1,7 +1,7 @@
 description: get root
 function: get_root
-cmd:
 argument: []
 In: []
 condition: 
 Out: []
+hint:
