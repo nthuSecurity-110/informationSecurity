@@ -224,7 +224,7 @@ class Explore():
                 block = Block(Class, fileName)
                 block_func = getattr(Function, block.function) # get the required function from block
                 func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In)
+                self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In, block.Out)
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
@@ -248,9 +248,11 @@ class Explore():
                             print("Go to /home/kali/Desktop, you would find reverse_shell.php5.\nUpload it to the web.")
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                            self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In) 
+                            self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.cmd, block.In, block.Out) 
                             if match_condition:
                                 print("MATCH RULE~~~!!!!\n")
+                            else:
+                                print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")
                     elif result == False:

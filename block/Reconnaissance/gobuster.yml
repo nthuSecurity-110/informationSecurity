@@ -1,5 +1,6 @@
 description: scan directory
 function: gobuster
+cmd:
 argument: []
 In: [IP]
 condition: 
