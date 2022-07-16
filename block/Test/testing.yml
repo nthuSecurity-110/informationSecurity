@@ -1,0 +1,7 @@
+description: testing
+function: testing
+argument: ['hello', 'im', 'testing']
+In: []
+condition: 
+Out: []
+hint: 
