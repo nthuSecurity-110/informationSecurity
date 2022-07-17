@@ -1,7 +1,8 @@
 description: listen to the port
-function: netcat
-argument: ['-lvnp']
+function: magic_function
+argument: ['NOEXE','nc','-lvnp', <port>]
 In: [port]
 condition: 
 Out: []
 hint:
+  - Please open another terminal and enter `<cmd>`.
