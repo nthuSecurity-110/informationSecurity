@@ -20,15 +20,17 @@ class CreateRule():
         if is_agree.upper() == 'Y':
             view_format = int(input("The rules inside the yaml file have a few formats that you need to follow. Would you like to view the format? (1: yes, 2: no): "))
             if view_format == 1:
-                print('''Description: a brief introduction to the block.\n
-                        Function: the name of the function to use.\n
-                        Argument: The parameter that will be used when using the function, eg. -V of "nmap -V".\n
-                        In: Which inputs are required to execute this block.
-                        if there are multiple, separate them with commas. Put in square brackets at the end.\n
-                        Out: Expected information (output).
-                        if there are multiple, separate them with commas. Put in square brackets at the end.\n
-                        Condition: \n
-                        Hint: ''')
+                print('''
+                Description: a brief introduction to the block.\n
+                Function: the name of the function to use.\n
+                Argument: The parameter that will be used when using the function, eg. -V of "nmap -V".\n
+                In: Which inputs are required to execute this block.
+                if there are multiple, separate them with commas. Put in square brackets at the end.\n
+                Out: Expected information (output).
+                if there are multiple, separate them with commas. Put in square brackets at the end.\n
+                Condition: The conditions required to execute the function.\n
+                Hint: The hints that might help you.\n
+                ''')
             self.description = input("Please enter a brief description about the block: ")
             while self.description == '':
                 self.description = input("Description cannot be empty! Prompting for an input: ")
@@ -46,13 +48,13 @@ class CreateRule():
     def handle_input(self):
         self.argument = self.argument_items.split(' ')
         self.argument = [] if self.argument[0] == '' else self.argument
-        print("arguments:", self.argument)
+        # print("arguments:", self.argument)
         self.input = self.input_items.split(',')
         self.input = [] if self.input[0] == '' else self.input
-        print("input:", self.input)
+        # print("input:", self.input)
         self.output = self.output_items.split(',')
         self.output = [] if self.output[0] == '' else self.output
-        print("output:", self.output)
+        # print("output:", self.output)
     
     def create_yaml(self):
         self.dict[0] = "description: " + self.description + '\n'
@@ -69,8 +71,9 @@ class CreateRule():
         self.handle_input()
         self.create_yaml()
         path = 'block/' + self.folder + '/' + self.file_name + '.txt'
-        print(path)
+        yml_path = 'block/' + self.folder + '/' + self.file_name + '.yml'
         with open(path, 'w') as file:
             file.writelines(self.dict)
         p = Path(path)
         p.rename(p.with_suffix('.yml'))
+        print("Created " + yml_path + "!")
