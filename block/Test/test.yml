@@ -1,0 +1,7 @@
+description: testt
+function: test
+argument: ['testing']
+In: ['no']
+condition: no
+Out: ['no']
+hint: no
