@@ -1,7 +1,10 @@
-description: testt
+In:
+- test
+Out:
+- test
+argument:
+- test
+condition: null
+description: test
 function: test
-argument: ['testing']
-In: ['no']
-condition: no
-Out: ['no']
-hint: no
+hint: null

@@ -1,5 +1,7 @@
 import yaml
 import os
+import ast
+import re
 from pathlib import Path
 
 class CreateRule():
@@ -30,8 +32,10 @@ class CreateRule():
                 if there are multiple, separate them with commas. Put in square brackets at the end.\n
                 Out: Expected information (output).
                 if there are multiple, separate them with commas. Put in square brackets at the end.\n
-                Condition: The conditions required to execute the function.\n
-                Hint: The hints that might help you.\n
+                Condition: The conditions required to execute the function.
+                It should follow the pyyaml rule. (e.g. [{'or': ['Apache>3.1', {'and': ['80 in port', {'or': ['a==b', 'b==c']}]}]}])\n
+                Hint: The hints that might help you.
+                It should follow the pyyaml rule. (e.g. ["hi there~", "here is a hint.", "good luck! XD"])\n
                 ''')
             self.description = input("Please enter a brief description about the block: ")
             while self.description == '':
@@ -43,7 +47,11 @@ class CreateRule():
             self.input_items = input("Please enter the expected input(s), separated by a comma ',': ")
             self.output_items = input("Please enter the expected output(s), separated by a comma ',': ")
             self.condition = input("Please enter the condition if any: ")
+            self.condition = ast.literal_eval(self.condition)
+            self.condition = self.handle_conds(self.condition)
             self.hint = input("Please enter a hint if any: ")
+            self.hint = ast.literal_eval(self.hint)
+            self.hint = self.handle_hints(self.hint)
         else:
             print("Aborting...")
 
@@ -97,10 +105,30 @@ class CreateRule():
         self.dict[1] = "function: " + self.function + '\n'
         self.dict[2] = "argument: " + str(self.argument) + '\n'
         self.dict[3] = "In: " + str(self.input) + '\n'
-        self.dict[4] = "condition: " + self.condition + '\n'
+        self.dict[4] = "condition:\n" + self.condition
         self.dict[5] = "Out: " + str(self.output) + '\n'
-        self.dict[6] = "hint: " + self.hint + '\n'.replace(" ", ' ' + self.hint)
+        self.dict[6] = "hint:\n" + self.hint + '\n'.replace(" ", ' ' + self.hint)
         # print("selfdict:", self.dict)
+
+    def handle_conds(self, c):
+        with open("dumps/tmp_c.yml", "w") as ymlFile:
+            documents = yaml.dump(c, ymlFile)
+        p = Path("dumps/tmp_c.yml")
+        p.rename(p.with_suffix('.txt'))
+        f = open("dumps/tmp_c.txt", "r")
+        cond_lst = (f.readlines())
+        self.cond_str = ''.join(cond_lst)
+        return self.cond_str
+
+    def handle_hints(self, h):
+        with open("dumps/tmp_h.yml", "w") as ymlFile:
+            documents = yaml.dump(h, ymlFile)
+        p = Path("dumps/tmp_h.yml")
+        p.rename(p.with_suffix('.txt'))
+        f = open("dumps/tmp_h.txt", "r")
+        hints_lst = (f.readlines())
+        self.hints_str = ''.join(hints_lst)
+        return self.hints_str
 
     def write_file(self):
         self.prompt_input()
