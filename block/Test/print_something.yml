@@ -1,7 +1,7 @@
 description: print for debugging
 function: print_something
-cmd:
 argument: []
 In: []
 condition: 
 Out: []
+hint:
