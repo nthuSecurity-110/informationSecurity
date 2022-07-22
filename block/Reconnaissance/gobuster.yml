@@ -3,5 +3,6 @@ function: magic_function
 argument: ['gobuster', 'dir', '-u', <IP>, '-w', '/usr/share/wordlists/dirb/common.txt']
 In: [IP]
 condition: 
-Out: [/panel]
-hint:
+Out: []
+hint: 
+  - Can you find any existing page that is useful? (ex. 10.32.1.8/panel )
