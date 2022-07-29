@@ -1,0 +1,7 @@
+description: Nmap scan to get the usful info
+function: magic_function
+argument: ['nmap', '-A', <IP>]
+In: [IP]
+condition: 
+Out: []
+hint:

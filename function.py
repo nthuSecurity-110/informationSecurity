@@ -32,7 +32,7 @@ def get_output_data(Data, block_Out):
                     Data[para] = False
                 else:
                     Data[para] = user_input
-    print("update data:", Data)
+    # print("update data:", Data)
     return Data
 
 def check_output_data(Data, block_Out):
@@ -216,8 +216,10 @@ class Function():
                 temp = open('temp.txt', 'w')
                 temp.truncate(0)
                 for stdout_line in iter(proc.stdout.readline, b''):
-                    print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
-                    temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
+                    print("{}".format(stdout_line.decode('utf-8'))[:-1]) 
+                    temp.write("{}\n".format(stdout_line.decode('utf-8'))[:-1])
+                    # print("{}".format(stdout_line.decode('utf-8'))) 
+                    # temp.write("{}\n".format(stdout_line.decode('utf-8')))
             else:
                 args.remove('NOEXE')
         give_hint(block_hint, args)

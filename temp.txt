@@ -1,1 +1,25 @@
-===============================================================Gobuster v3.1.0by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)===============================================================[+] Url:                     http://10.10.121.21[+] Method:                  GET[+] Threads:                 10[+] Wordlist:                /usr/share/wordlists/dirb/common.txt[+] Negative Status codes:   404[+] User Agent:              gobuster/3.1.0[+] Timeout:                 10s===============================================================2022/07/21 08:06:40 Starting gobuster in directory enumeration mode===============================================================/.htaccess            (Status: 403) [Size: 277]/.hta                 (Status: 403) [Size: 277]/.htpasswd            (Status: 403) [Size: 277]/css                  (Status: 301) [Size: 310] [--> http://10.10.121.21/css/]/index.php            (Status: 200) [Size: 616]/js                   (Status: 301) [Size: 309] [--> http://10.10.121.21/js/]/panel                (Status: 301) [Size: 312] [--> http://10.10.121.21/panel/]/server-status        (Status: 403) [Size: 277]/uploads              (Status: 301) [Size: 314] [--> http://10.10.121.21/uploads/]===============================================================2022/07/21 08:09:03 Finished===============================================================
+
+======================================================
+ > shcheck.py - santoru ..............................
+------------------------------------------------------
+ Simple tool to check security headers on a webserver 
+======================================================
+
+[*] Analyzing headers of [94mhttps://8.8.8.8[0m
+[*] Effective URL: [94mhttps://dns.google/[0m
+[*] Header [92mX-XSS-Protection[0m is present! (Value: [93m0[0m)
+[*] Header [92mX-Frame-Options[0m is present! (Value: SAMEORIGIN)
+[*] Header [92mX-Content-Type-Options[0m is present! (Value: nosniff)
+[*] Header [92mStrict-Transport-Security[0m is present! (Value: max-age=31536000; includeSubDomains; preload)
+[*] Header [92mContent-Security-Policy[0m is present! (Value: object-src 'none';base-uri 'self';script-src 'nonce-rXKt1PiRMAvAyeoGA0xBCA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/honest_dns/1_0;frame-ancestors 'none')
+[!] Missing security header: [93mReferrer-Policy[0m
+[!] Missing security header: [93mExpect-CT[0m
+[!] Missing security header: [93mPermissions-Policy[0m
+[!] Missing security header: [93mCross-Origin-Embedder-Policy[0m
+[!] Missing security header: [93mCross-Origin-Resource-Policy[0m
+[!] Missing security header: [93mCross-Origin-Opener-Policy[0m
+-------------------------------------------------------
+[!] Headers analyzed for [94mhttps://dns.google/[0m
+[+] There are [92m5[0m security headers
+[-] There are not [91m6[0m security headers
+
