@@ -1,12 +1,9 @@
 description: Check security headers on a target website
 function: magic_function
-argument: ['docker', 'run', '-it', '--rm', 'shcheck', https://<IP>]
-In: [IP]
+argument: ['NOEXE','git', 'clone', 'https://github.com/m3liot/shcheck.git', '&&', 'cd', 'shcheck', '&&', 'python3', 'shcheck.py', <URL>, '&&', 'cd','..', '&&','rm','-r','-f','shcheck']
+In: [URL]
 condition: 
 Out: []
 hint:
-  - If you can't execute the cmd above, try cmds below. (open another window)
-  - pip3 install shcheck
-  - sudo apt install docker.io
-  - sudo chmod 666 /var/run/docker.sock
-  - docker build -t shcheck .
+  - Open another terminal, type the cmd below----
+  - <cmd>

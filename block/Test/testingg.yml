@@ -1,7 +1,7 @@
-description: block for testing purposes.
+description: testing block
 function: testing_function
 argument: ['hello', 'im', 'testing']
-In: ['this', 'is', 'input']
+In: ['this', 'is', 'inpu']
 condition:
 - or:
   - Apache>3.1

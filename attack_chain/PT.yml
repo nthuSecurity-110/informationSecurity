@@ -1,2 +1,0 @@
-class_chain: [Discovery, Discovery]
-block_chain: [nmap, shcheck,]

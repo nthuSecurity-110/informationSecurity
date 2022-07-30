@@ -1,0 +1,7 @@
+description:  test various HTTP methods against an URL(Press enter for 5 times!!!)
+function: magic_function
+argument: ['httpmethods', <URL>]
+In: [URL]
+condition: 
+Out: []
+hint:

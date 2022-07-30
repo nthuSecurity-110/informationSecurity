@@ -1,25 +1,106 @@
-
-======================================================
- > shcheck.py - santoru ..............................
-------------------------------------------------------
- Simple tool to check security headers on a webserver 
-======================================================
-
-[*] Analyzing headers of [94mhttps://8.8.8.8[0m
-[*] Effective URL: [94mhttps://dns.google/[0m
-[*] Header [92mX-XSS-Protection[0m is present! (Value: [93m0[0m)
-[*] Header [92mX-Frame-Options[0m is present! (Value: SAMEORIGIN)
-[*] Header [92mX-Content-Type-Options[0m is present! (Value: nosniff)
-[*] Header [92mStrict-Transport-Security[0m is present! (Value: max-age=31536000; includeSubDomains; preload)
-[*] Header [92mContent-Security-Policy[0m is present! (Value: object-src 'none';base-uri 'self';script-src 'nonce-rXKt1PiRMAvAyeoGA0xBCA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/honest_dns/1_0;frame-ancestors 'none')
-[!] Missing security header: [93mReferrer-Policy[0m
-[!] Missing security header: [93mExpect-CT[0m
-[!] Missing security header: [93mPermissions-Policy[0m
-[!] Missing security header: [93mCross-Origin-Embedder-Policy[0m
-[!] Missing security header: [93mCross-Origin-Resource-Policy[0m
-[!] Missing security header: [93mCross-Origin-Opener-Policy[0m
--------------------------------------------------------
-[!] Headers analyzed for [94mhttps://dns.google/[0m
-[+] There are [92m5[0m security headers
-[-] There are not [91m6[0m security headers
-
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     https://www.tesla.com
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2022/07/30 11:38:30 Starting gobuster in directory enumeration mode
+===============================================================
+/.hta                 (Status: 403) [Size: 206]
+/.htaccess            (Status: 403) [Size: 211]
+/.htpasswd            (Status: 403) [Size: 211]
+/.profile             (Status: 403) [Size: 210]
+/.svn                 (Status: 403) [Size: 206]
+/.svn/entries         (Status: 403) [Size: 214]
+/0                    (Status: 301) [Size: 0] [--> https://www.tesla.com/]
+/3                    (Status: 301) [Size: 0] [--> https://www.tesla.com/model3/design]
+/300                  (Status: 302) [Size: 0] [--> https://3.tesla.com/model3/design]  
+/32                   (Status: 302) [Size: 0] [--> https://3.tesla.com/model3/design]  
+/3g                   (Status: 302) [Size: 0] [--> https://3.tesla.com/model3/design]  
+/3rdparty             (Status: 302) [Size: 0] [--> https://3.tesla.com/model3/design]  
+/30                   (Status: 302) [Size: 0] [--> https://3.tesla.com/model3/design]  
+/about                (Status: 200) [Size: 456609]                                     
+/About                (Status: 200) [Size: 449884]                                     
+/admin                (Status: 401) [Size: 0]                                          
+/admin.cgi            (Status: 401) [Size: 0]                                          
+/admin_               (Status: 401) [Size: 0]                                          
+/admin.pl             (Status: 401) [Size: 0]                                          
+/admin_area           (Status: 401) [Size: 0]                                          
+/admin_banner         (Status: 401) [Size: 0]                                          
+/admin.php            (Status: 401) [Size: 0]                                          
+/admin_index          (Status: 401) [Size: 0]                                          
+/admin_c              (Status: 401) [Size: 0]                                          
+/admin_interface      (Status: 401) [Size: 0]                                          
+/Admin                (Status: 307) [Size: 0] [--> https://auth.tesla.com/oauth2/v1/authorize?client_id=teslaweb&response_type=code&scope=openid%20email%20ou_code%20profile&redirect_uri=https%3A//www.tesla.com/openid-connect/generic&state=g0VLezpIYkfbv_Eb5hv9pCJku9OSGd7Er0QNmifoHTk&locale=en-US]
+/admin_login          (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin_logon          (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin1               (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin2               (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin4_account       (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin4_colon         (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin3               (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin-admin          (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin-console        (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/adminhelp            (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admincontrol         (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admincp              (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admin-interface      (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administr8           (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administer           (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administrador        (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administracion       (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administrat          (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administratie        (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administration       (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administrator        (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/ADMIN                (Status: 307) [Size: 0] [--> https://auth.tesla.com/oauth2/v1/authorize?client_id=teslaweb&response_type=code&scope=openid%20email%20ou_code%20profile&redirect_uri=https%3A//www.tesla.com/openid-connect/generic&state=UpYaHV-_IJSw28X3RjrJQzSaNo9M_va_uUnKjXFMdTs&locale=en-US]
+/administratoraccounts (Status: 401) [Size: 0]                                                                                                                                                                                                                                                          
+/administrators       (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/adminlogin           (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/administrivia        (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/adminpro             (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/adminlogon           (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/adminpanel           (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admins               (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/adminsessions        (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/adminsql             (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/admintools           (Status: 401) [Size: 0]                                                                                                                                                                                                                                                           
+/all-wcprops          (Status: 403) [Size: 213]                                                                                                                                                                                                                                                         
+/app                  (Status: 301) [Size: 0] [--> https://www.tesla.com/support/tesla-app]                                                                                                                                                                                                             
+/at                   (Status: 302) [Size: 211] [--> http://www.tesla.com/en_AT/]                                                                                                                                                                                                                       
+/au                   (Status: 302) [Size: 211] [--> http://www.tesla.com/en_AU/]                                                                                                                                                                                                                       
+/batch                (Status: 307) [Size: 0] [--> https://auth.tesla.com/oauth2/v1/authorize?client_id=teslaweb&response_type=code&scope=openid%20email%20ou_code%20profile&redirect_uri=https%3A//www.tesla.com/openid-connect/generic&state=J7PaEHnL3GuyOEKS5CcKqkxc4STWrFMrsR19EpwiLDs&locale=en-US]
+/be                   (Status: 302) [Size: 211] [--> http://www.tesla.com/en_BE/]                                                                                                                                                                                                                       
+/blog                 (Status: 200) [Size: 459288]                                                                                                                                                                                                                                                      
+/Blog                 (Status: 200) [Size: 456161]                                                                                                                                                                                                                                                      
+/buy                  (Status: 302) [Size: 208] [--> http://www.tesla.com/own]                                                                                                                                                                                                                          
+/c                    (Status: 302) [Size: 0] [--> https://www.tesla.com/cybertruck/design]                                                                                                                                                                                                             
+/C                    (Status: 302) [Size: 0] [--> https://www.tesla.com/cybertruck/design]                                                                                                                                                                                                             
+/ca                   (Status: 302) [Size: 211] [--> http://www.tesla.com/en_CA/]                                                                                                                                                                                                                       
+/callback             (Status: 200) [Size: 252890]                                                                                                                                                                                                                                                      
+/careers              (Status: 200) [Size: 303974]                                                                                                                                                                                                                                                      
+/cgi-bin/             (Status: 301) [Size: 0] [--> https://www.tesla.com/cgi-bin]                                                                                                                                                                                                                       
+/ch                   (Status: 302) [Size: 211] [--> http://www.tesla.com/en_CH/]                                                                                                                                                                                                                       
+/cn                   (Status: 301) [Size: 0] [--> https://www.tesla.cn]                                                                                                                                                                                                                                
+/commercial           (Status: 200) [Size: 306216]                                                                                                                                                                                                                                                      
+/compare              (Status: 200) [Size: 242150]                                                                                                                                                                                                                                                      
+/Contact              (Status: 200) [Size: 475819]                                                                                                                                                                                                                                                      
+/contact              (Status: 200) [Size: 483080]                                                                                                                                                                                                                                                      
+/contactus            (Status: 302) [Size: 295] [--> https://auth.tesla.com/oauth2/v1/authorize?redirect_uri=https%3A%2F%2Fwww.tesla.com%2Fteslaaccount%2Fowner-xp%2Fauth%2Fcallback&response_type=code&client_id=ownership&scope=offline_access%20openid%20ou_code%20email&audience=https%3A%2F%2Fownership.tesla.com%2F&locale=en-US]
+/corporate            (Status: 301) [Size: 0] [--> https://www.tesla.com/fleet]                                                                                                                                                                                                                                                        
+/crossdomain.xml      (Status: 403) [Size: 217]                                                                                                                                                                                                                                                                                        
+/ct                   (Status: 302) [Size: 0] [--> https://www.tesla.com/cybertruck/design]                                                                                                                                                                                                                                            
+/customer             (Status: 301) [Size: 0] [--> https://www.tesla.com/customer-stories]                                                                                                                                                                                                                                             
+/customers            (Status: 301) [Size: 0] [--> https://www.tesla.com/customer-stories]                                                                                                                                                                                                                                             
+/de                   (Status: 302) [Size: 211] [--> http://www.tesla.com/de_DE/]                                                                                                                                                                                                                                                      
+/dc                   (Status: 302) [Size: 217] [--> http://www.tesla.com/washingtondc]                                                                                                                                                                                                                                                
+/de_DE                (Status: 200) [Size: 271109]                                                                                                                                                                                                                                                                                     
+/design               (Status: 302) [Size: 0] [--> https://www.tesla.com/models/design]                                                                                                                                                                                                                                                
+/designs              (Status: 302) [Size: 0] [--> https://www.tesla.com/models/design]                                                                                                                                                                                                                                                
+/destinations         (Status: 301) [Size: 0] [--> https://www.tesla.com/en_AU/campaign/destinations?redirect=no]                                                                                                                                                                                                                      
