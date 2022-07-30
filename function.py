@@ -42,7 +42,7 @@ def check_output_data(Data, block_Out):
             match = False
     return match
 
-def give_hint(hints, args):
+def give_hint(hints, args, func_in, Data):
     # flush input buffer, in case there are any unexpected user input before that affect input()
     tcflush(sys.stdin, TCIFLUSH)
     # user_input = input('press Enter to continue...\n')
@@ -51,6 +51,9 @@ def give_hint(hints, args):
         for hint in hints:
             if ("<cmd>") in hint:
                 hint =  hint.replace("<cmd>", cmd)
+            for _in in func_in:
+                if ("<" + str(_in) + ">") in hint:
+                    hint = hint.replace("<" + _in + ">", str(Data[_in]))
             print(hint)
             user_input = input('press Enter to continue...\n')
 
@@ -220,7 +223,7 @@ class Function():
                     temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
             else:
                 args.remove('NOEXE')
-        give_hint(block_hint, args)
+        give_hint(block_hint, args, func_in, Data)
         Data = get_output_data(Data, block_Out)
         match = check_output_data(Data, block_Out)
         return Data, match
