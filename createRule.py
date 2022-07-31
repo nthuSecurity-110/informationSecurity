@@ -33,7 +33,7 @@ class CreateRule():
                 Out: Expected information (output).
                 if there are multiple, separate them with commas. Put in square brackets at the end.\n
                 Condition: The conditions required to execute the function.
-                It should follow the pyyaml rule. (e.g. [{'or': ['Apache>3.1', {'and': ['80 in port', {'or': ['a==b', 'b==c']}]}]}])\n
+                It should follow the pyyaml rule. (e.g. (Apache > 3.1 || (80 in port && (a == b || b == c))))\n
                 Hint: The hints that might help you.
                 It should follow the pyyaml rule. (e.g. ["hi there~", "here is a hint.", "good luck! XD"])\n
                 ''')
@@ -217,9 +217,9 @@ class CreateRule():
         self.hints_str = ''.join(hints_lst)
         return self.hints_str
 
-    def add_rootme(self):
+    def add_pentest(self):
         try:
-            with open("attack_chain/rootme.yml", "r") as ymlFile:
+            with open("attack_chain/pentest.yml", "r") as ymlFile:
                 content = ymlFile.readlines()
             tmp_class = content[0][13:].strip()
             tmp_block = content[1][13:].strip()
@@ -254,7 +254,7 @@ class CreateRule():
             class_str = str(class_chain).replace("'", "")
             block_str = str(block_chain).replace("'", "")
             res = "class_chain: " + class_str + '\n' + "block_chain: " + block_str
-            attack_path = 'attack_chain/rootme.txt'
+            attack_path = 'attack_chain/pentest.txt'
             with open(attack_path, 'w') as file:
                 file.writelines(res)
             p = Path(attack_path)
@@ -280,6 +280,6 @@ class CreateRule():
                 p = Path(path)
                 p.rename(p.with_suffix('.yml'))
                 print("Created " + yml_path + "!")
-                self.add_rootme()
+                self.add_pentest()
         else:
             print("No file created!")
