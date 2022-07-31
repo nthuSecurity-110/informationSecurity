@@ -1,0 +1,9 @@
+description: mount a SMB file share
+function: magic_function
+argument: ['smbclient', '//<IP>/<user>']
+In: [IP, user]
+condition: 
+Out: []
+hint:
+  - Any useful files?
+  - You can use the command 'dir'
