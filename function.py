@@ -24,11 +24,11 @@ def get_output_data(Data, block_Out):
         except KeyError:
             Data[para] = None
         if Data[para] == None:
-            user_input = input("please find value of \"{para}\" in above output, and enter it (true/false):".format(para=para))
+            user_input = input("please find value of \"{para}\" in above output, and enter it:".format(para=para))
             if user_input != '':
-                if user_input.lower()[0] == 't':
+                if user_input.lower() == 'true':
                     Data[para] = True
-                elif user_input.lower()[0] == 'f' :
+                elif user_input.lower() == 'false' :
                     Data[para] = False
                 else:
                     Data[para] = user_input
