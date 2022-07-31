@@ -1,2 +1,2 @@
-class_chain: [Credential Access, Initial Access, Privilege Escalation]
+class_chain: [Credential Access, Credential Access, Privilege Escalation]
 block_chain: [ftp_anonymous_login, exploit_user, bypass_by_unix_binary]
