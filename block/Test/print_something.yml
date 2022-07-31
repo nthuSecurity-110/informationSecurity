@@ -1,0 +1,7 @@
+description: print for debugging
+function: print_something
+argument: []
+In: []
+condition: 
+Out: []
+hint:

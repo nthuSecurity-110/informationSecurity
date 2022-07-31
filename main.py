@@ -4,6 +4,7 @@ from utilities import *
 from checkLanHost import *
 from nodeData import *
 from explore import *
+from createRule import *
 import sys
 
 util = Helper()
@@ -11,13 +12,20 @@ util = Helper()
 if __name__ == '__main__':
     
     check = CheckLanHost()
+    generateRule = CreateRule()
     
     config = NetworkData_Linux()
     mode = Helper().choose_mode()
-    if mode == 2:
+    if mode == 1:
+        explore = Explore(config.getGateway11())
+        explore.exploring()
+    elif mode == 2:
         check.AllLanHost(config)
-    explore = Explore()
-    explore.exploring()
+    elif mode == 3:
+        generateRule.write_file()
+    else:
+        explore = Explore(config.getGateway11())
+        explore.exploring()
 
-    node = NodeData(check.getIP())
-    node.createDict()
+    # node = NodeData(check.getIP())
+    # node.createDict()

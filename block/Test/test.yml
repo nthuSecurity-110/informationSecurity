@@ -1,0 +1,12 @@
+description: testing
+function: testing
+argument: ['testing']
+In: ['testing']
+condition:
+- or:
+  - Apache > 3.1
+  - 1==1
+Out: ['testing']
+hint:
+- 'no'
+

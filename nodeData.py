@@ -8,7 +8,6 @@ class NodeData():
         self.ip = ip_list
         self.ip_yaml = []
         self.list_of_dict = []
-        print("self ip:", self.ip)
 
     def ipToList(self):
         for ip in self.ip:
@@ -38,7 +37,6 @@ class NodeData():
         self.yaml_format = [{'condition': 'nodeA',
                                 'AAA': [it for it in self.list_of_dict]
                             }]
-        print(self.yaml_format)
         
     def generateYaml(self):
         with open('data.yaml', 'w') as f:

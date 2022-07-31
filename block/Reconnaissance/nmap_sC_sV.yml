@@ -1,0 +1,8 @@
+description: use nmap to scan IP
+function: magic_function
+argument: ['nmap', '-sC', '-sV', <IP>]
+In: [IP]
+condition: 
+Out: []
+hint: 
+  - Is port 7070 open? (Y/n)

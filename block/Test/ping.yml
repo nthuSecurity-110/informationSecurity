@@ -1,0 +1,11 @@
+description: ping it
+function: magic_function
+argument: ['ping', '-c', '10', '<IP>']
+In: [IP]
+condition: 
+Out: [Alive]
+hint:
+  - "Hi there~~"
+  - "you are probing <IP>"
+  - "Here is a hint"
+  - "Good luck XD"

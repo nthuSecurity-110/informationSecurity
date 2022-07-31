@@ -12,11 +12,11 @@ class Helper:
         None
 
     def choose_mode(self): # Choose mode 1 will skip nmap discovery LAN. Default mode is 2.
-        mode = input("Choose the mode. 1 for specific target, 2 for no idea.\nMode:")
-        if mode in ['1','2']:
+        mode = input("Choose the mode.\n1: a specific target was known.\n2: search for a target!\n3: create a rule (yaml file)\nMode: ")
+        if mode in ['1', '2', '3']:
             return int(mode)
         else:
-            print("default mode: 1")
+            print("Default mode: 1")
             return 1
 
     def decimalToBinary(self, n):

@@ -4,6 +4,10 @@
 ### Setup
 - Run `git clone https://github.com/nthuSecurity-110/informationSecurity.git`
 - Run `pip install python-nmap`
+<<<<<<< HEAD
+=======
+- Run `pip install nmap`
+>>>>>>> islab/chelsea
 - Run `pip install multiprocess`
 - Run `pip install treelib`
 - Run `python main.py` in Windows to execute the program.
