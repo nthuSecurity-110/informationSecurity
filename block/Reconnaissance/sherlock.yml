@@ -1,0 +1,8 @@
+description: find username in other platform
+function: magic_function
+argument: ['sherlock', <username>]
+In: [username]
+condition: 
+Out: []
+hint: 
+  - Can you find any existing accounts with the username?

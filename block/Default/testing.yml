@@ -1,7 +1,7 @@
-description: y
-function: y
-argument: ['y']
-In: ['y']
+description: testing block
+function: testing_function
+argument: ['none']
+In: ['in']
 condition:
 - or:
   - Apache > 3.1
@@ -10,7 +10,7 @@ condition:
     - or:
       - a == b
       - b == c
-Out: ['y']
+Out: ['out']
 hint:
-- y
+- hello
 

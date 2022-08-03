@@ -1,0 +1,9 @@
+description: perform detailed off-line searches
+function: magic_function
+argument: ['searchsploit', '<software>', '<software_ver>']
+In: [software, software_ver]
+condition: 
+Out: []
+hint:
+  - How many exploits did you found?
+  - This time Google might be your best friend!

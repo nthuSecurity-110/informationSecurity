@@ -30,7 +30,6 @@ class Explore():
         p = [item.split('/')[0] for item in L if item.split('/')[0]!='']
         l = [item.split('/')[1] for item in L if item.split('/')[0]!='']
         s = [item.split('  ')[-1] for item in l]
-
         self.Data={
             'myIP': myIP,
             'IP': explored_host,
@@ -38,7 +37,7 @@ class Explore():
             'OS': None,
             'Port': p,
             'Apache': None,
-        }
+        }            
         # print(self.Data)
 
     def compare_version(self, v1, v2):
@@ -210,7 +209,7 @@ class Explore():
         exec("self.Data['"+lack_input+"'] = input('Please input missing parameter (" + lack_input +"): ')")
 
     def run_class(self, Class):
-        print("enter run_class")
+        print("\nenter run_class")
         print("className:", Class)
         files = os.listdir('./block/{classname}'.format(classname=Class))
         for file in files:

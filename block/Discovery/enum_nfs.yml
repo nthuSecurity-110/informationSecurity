@@ -1,0 +1,9 @@
+description: enumerating network file system
+function: magic_function
+argument: ['sudo', 'nmap', '-p', '111', '--script=nfs-ls,nfs-statfs,nfs-showmount', <IP>]
+In: [IP]
+condition: 
+Out: []
+hint:
+  - Any mounts?
+  - Probably in a /var format.

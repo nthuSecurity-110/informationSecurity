@@ -32,7 +32,7 @@ def get_output_data(Data, block_Out):
                     Data[para] = False
                 else:
                     Data[para] = user_input
-    print("update data:", Data)
+    # print("update data:", Data)
     return Data
 
 def check_output_data(Data, block_Out):
@@ -213,22 +213,42 @@ class Function():
         return Data, match
     '''
     def magic_function(func_in, Data, args, block_In, block_Out, block_hint):
+        flag = False
+        print("data: ", Data)
         for i in range(len(args)):
-            for input_token in func_in:
-                if ("<" + input_token + ">") in args[i]:
-                    args[i] =  args[i].replace("<" + input_token + ">", Data[input_token])
-        if args!=None and args!=[]:
-            if  args[0]!='NOEXE' :	
-                print("in magic_function excute:", concatenate_cmd(args))
-                proc = Popen(args, stdout=PIPE)
-                temp = open('temp.txt', 'w')
-                temp.truncate(0)
-                for stdout_line in iter(proc.stdout.readline, b''):
-                    print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
-                    temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
+            if flag == True:
+                break
             else:
-                args.remove('NOEXE')
-        give_hint(block_hint, args, func_in, Data)
+                for input_token in func_in:
+                    if ("<" + input_token + ">") in args[i]:
+                        if Data[input_token] == None:
+                            #TO DO: add user input to explore.Data, connect to user_takeover if possible
+                            print('There are some missing data. ' + input_token + ' cannot be empty!')
+                            mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
+                            if mode == '1':
+                                u_in = input("input " + input_token + ": ")
+                                args[i] =  args[i].replace("<" + input_token + ">", u_in)
+                            elif mode == '2':
+                                flag = True
+                                break
+                            else:
+                                flag = True
+                                break
+                        else:
+                            args[i] =  args[i].replace("<" + input_token + ">", Data[input_token])
+        if flag == False:
+            if args!=None and args!=[]:
+                if  args[0]!='NOEXE' :
+                    print("in magic_function excute:", concatenate_cmd(args))
+                    proc = Popen(args, stdout=PIPE)
+                    temp = open('temp.txt', 'w')
+                    temp.truncate(0)
+                    for stdout_line in iter(proc.stdout.readline, b''):
+                        print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
+                        temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
+                else:
+                    args.remove('NOEXE')
+            give_hint(block_hint, args, func_in, Data)
         Data = get_output_data(Data, block_Out)
         match = check_output_data(Data, block_Out)
         return Data, match

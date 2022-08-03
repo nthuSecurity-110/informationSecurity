@@ -1,7 +1,7 @@
 description: scan directory
 function: magic_function
-argument: ['gobuster', 'dir', '-u', <IP>, '-w', '/usr/share/wordlists/dirb/common.txt']
-In: [IP]
+argument: ['gobuster', 'dir', '-u', <URL>, '-w', '/usr/share/wordlists/dirb/common.txt']
+In: [URL]
 condition: 
 Out: []
 hint: 

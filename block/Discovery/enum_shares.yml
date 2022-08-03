@@ -1,0 +1,9 @@
+description: enumerating samba for shares
+function: magic_function
+argument: ['nmap', '-p', '445', '--script=smb-enum-shares.nse,smb-enum-users.nse', <IP>]
+In: [IP]
+condition: 
+Out: []
+hint:
+  - Did you found any shares?
+  - Perhaps there could be a user that you are interested in.
