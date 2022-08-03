@@ -1,0 +1,10 @@
+description: login as anonymous to find legitimate username for further exploit 
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+  - ftp in Service
+Out: [username]
+hint:
+  - open another terminal and login as anonymous with command `ftp anonymous@<IP>`
+  - explore the directory, and look for username

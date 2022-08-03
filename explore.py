@@ -112,13 +112,19 @@ class Explore():
 
     def evaluate_condition(self, condition):
         if isinstance(condition, str):
-            try:                 
-                # case that need to substitute the parameter with exact value store in self.Data
-                param = condition.split(" ", 1)[0]
-                print("param:", param)
-                new_condition = self.Data[param] + condition.split(" ", 1)[1]
-                print("condition:"+ new_condition)
-                return eval(new_condition)
+            try:      
+                # case of checking if something is in Data(list type) eg. http in Service
+                if "in" in condition:
+                    element, op, param_list = condition.split(" ")
+                    print("check if", element, "is in", self.Data[param_list])
+                    return element in self.Data[param_list]
+                # case that need to substitute the parameter with exact value store in self.Data eg. Apache == 2.49
+                else:
+                    param = condition.split(" ", 1)[0]
+                    print("param:", param)
+                    new_condition = self.Data[param] + condition.split(" ", 1)[1]
+                    print("condition:"+ new_condition)
+                    return eval(new_condition)
             except KeyError:
                 # the condition that can evalute directly eg.  '1==1'
                 return eval(condition)  
