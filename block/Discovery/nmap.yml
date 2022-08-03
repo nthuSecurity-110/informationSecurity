@@ -1,6 +1,6 @@
-description: Nmap scan to get the useful info
+description: Nmap scan to get the usful info
 function: magic_function
-argument: ['nmap', '-A', '-sV', '-T4', <IP>]
+argument: ['nmap', '-A', <IP>]
 In: [IP]
 condition: 
 Out: []

