@@ -1,0 +1,9 @@
+description: listen to the port
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint:
+  - In shell, enter `which python3`, do you see "/usr/bin/python3"? (Y/n)
+  - Then enter `python3 -c "import pty;pty.spawn('/bin/bash')"` to get bash.

@@ -6,5 +6,6 @@ condition:
 Out: [Alive]
 hint:
   - "Hi there~~"
+  - "you are probing <IP>"
   - "Here is a hint"
   - "Good luck XD"

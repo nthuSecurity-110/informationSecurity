@@ -235,7 +235,7 @@ class Explore():
         for root, directories, files in path:
             for file in files:
                 with open("./attack_chain/"+file, "r") as attack_chain:
-                    # print(yaml.load(attack_chain))
+                    #print(yaml.load(attack_chain))
                     self.load_block(attack_chain)
                     
                 for i in range(len(self.block_chain)): # for all blocks in block chain

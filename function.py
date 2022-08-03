@@ -42,7 +42,7 @@ def check_output_data(Data, block_Out):
             match = False
     return match
 
-def give_hint(hints, args):
+def give_hint(hints, args, func_in, Data):
     # flush input buffer, in case there are any unexpected user input before that affect input()
     tcflush(sys.stdin, TCIFLUSH)
     # user_input = input('press Enter to continue...\n')
@@ -51,7 +51,14 @@ def give_hint(hints, args):
         for hint in hints:
             if ("<cmd>") in hint:
                 hint =  hint.replace("<cmd>", cmd)
-            print(hint)
+            for data in Data:
+                if ("<" + str(data) + ">") in hint:
+                    hint = hint.replace("<" + data + ">", str(Data[data]))
+            if ("+FORMAT+") in hint:
+                hint =  hint.replace("+FORMAT+", "")
+                print(eval("f'{}'".format(hint)))
+            else:
+            	print(hint)
             user_input = input('press Enter to continue...\n')
 
 class Function():
@@ -177,19 +184,20 @@ class Function():
     '''
     def create_file(func_in, Data, args, block_In, block_Out, block_hint):
         try:
-            with open(f'/home/{getpass.getuser()}/Desktop/reverse_shell.php5', 'w') as f:
+            with open(f'/home/{getpass.getuser()}/Desktop/{args[1]}', 'w') as f:
                 file = args[0]
                 # for i in range(len(args)):
                     # file = file.replace("REPLACE_IT_IP", Data[block_In[i]])
-                file = file.replace("REPLACE_IT_IP", Data[block_In[0]])
-                file = file.replace("REPLACE_IT_PORT", Data[block_In[1]])
+                for i in block_In:
+                    file = file.replace(f"REPLACE_IT_{i}", Data[i])
                 f.write(file)
         except FileNotFoundError:
             print(f'Fail to create a file on path:/home/{getpass.getuser()}/Desktop/')
-        print(f"\nGo to /home/{getpass.getuser()}/Desktop, you would find reverse_shell.php5.")
-        print(f"Upload it to the {Data['IP']}/"+"{"+"existing page you found"+"}."+f" ex: {Data['IP']}/panel")
-        print(f"Go to the {Data['IP']}/uploads page, click the file to execute (Make sure you listening to the port first).\n")
-        result = input("After you get shell, press enter to move on next step.\n")
+        # print(f"\nGo to /home/{getpass.getuser()}/Desktop/, you would find {args[1]}.")
+        # print(f"Upload it to the {Data['IP']}/"+"{"+"existing page you found"+"}."+f" ex: {Data['IP']}/panel")
+        # print(f"Go to the {Data['IP']}/uploads page, click the file to execute (Make sure you listening to the port first).\n")
+        # result = input("After you get shell, press enter to move on next step.\n")
+        give_hint(block_hint, args, func_in, Data)
         match = check_output_data(Data, block_Out)
         return Data, match
 
@@ -210,7 +218,7 @@ class Function():
                 if ("<" + input_token + ">") in args[i]:
                     args[i] =  args[i].replace("<" + input_token + ">", Data[input_token])
         if args!=None and args!=[]:
-            if  args[0]!='NOEXE' :
+            if  args[0]!='NOEXE' :	
                 print("in magic_function excute:", concatenate_cmd(args))
                 proc = Popen(args, stdout=PIPE)
                 temp = open('temp.txt', 'w')
@@ -220,7 +228,7 @@ class Function():
                     temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
             else:
                 args.remove('NOEXE')
-        give_hint(block_hint, args)
+        give_hint(block_hint, args, func_in, Data)
         Data = get_output_data(Data, block_Out)
         match = check_output_data(Data, block_Out)
         return Data, match
