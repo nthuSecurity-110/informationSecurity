@@ -1,0 +1,12 @@
+description: check the user have any sudo permission that we can use to escalate
+function: magic_function
+argument: []
+In: []
+condition:
+Out: []
+hint:
+  - run `sudo -l` to see the user's sudo permission
+  - check the command out on https://gtfobins.github.io/
+  - run the recommended command to escalate
+  - run `whoami` to check if you get root 
+
