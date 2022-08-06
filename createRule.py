@@ -27,7 +27,8 @@ class CreateRule():
                 print('''
                 Description: a brief introduction to the block.\n
                 Function: the name of the function to use.\n
-                Argument: The parameter that will be used when using the function, eg. -V of "nmap -V".\n
+                Argument: The parameter that will be used when using the function, eg. -V of "nmap -V".
+                If there are anything that needs the user's input, put them in between brackets '<>'.\n
                 In: Which inputs are required to execute this block.
                 if there are multiple, separate them with commas. Put in square brackets at the end.\n
                 Out: Expected information (output).
@@ -43,11 +44,21 @@ class CreateRule():
             self.function = input("Function: ")
             while self.function == '':
                 self.function = input("Function cannot be empty: ")
-            self.argument_items = input("Parameters: ")
+            self.argument_items = input("Arguments: ")
             self.input_items = input("Input(s): ")
             self.output_items = input("Output(s): ")
             self.condition = input("Condition: ")
-            self.hint = input("Hint: ")
+            print("Hint: (type '-' to end the input)")
+            hint_lst = []
+            inp = ''
+            while True:
+                inp = input()
+                if inp == '-':
+                    print("Done receiving output.")
+                    break
+                else:
+                    hint_lst.append(inp)
+            self.hint = hint_lst
         else:
             print("Aborting...")
 
@@ -94,21 +105,16 @@ class CreateRule():
         else:
             self.argument = self.argument_items.split(' ')
             self.argument = [] if self.argument[0] == '' else self.argument
-            # print("arguments:", self.argument)
             tmp_input = self.input_items.split(',')
             tmp_input = [] if tmp_input[0] == '' else tmp_input
             for items in tmp_input:
                 self.input.append(items.strip())
-            # print("input:", self.input)
             tmp_output = self.output_items.split(',')
             tmp_output = [] if tmp_output[0] == '' else tmp_output
             for items in tmp_output:
                 self.output.append(items.strip())
-            # print("output:", self.output)
-            print("conds: ", self.condition)
             self.condition = ast.literal_eval(self.condition)
             self.condition = self.handle_conds(self.condition)
-            self.hint = ast.literal_eval(self.hint)
             self.hint = self.handle_hints(self.hint)
             return 0
     
