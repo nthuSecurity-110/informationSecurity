@@ -17,6 +17,8 @@ class CreateRule():
         self.create_folder = 'Y'
         self.is_overwrite = 'Y'
         self.is_agree = 'N'
+        self.attack_path = ''
+        self.overwrite = False
 
     def prompt_contents(self):
         ask_user = "File: " + self.file_name + "\nFolder: " + self.folder + "\nVerify? (y/n): "
@@ -27,7 +29,8 @@ class CreateRule():
                 print('''
                 Description: a brief introduction to the block.\n
                 Function: the name of the function to use.\n
-                Argument: The parameter that will be used when using the function, eg. -V of "nmap -V".\n
+                Argument: The parameter that will be used when using the function, eg. -V of "nmap -V".
+                If there are anything that needs the user's input, put them in between brackets '<>'.\n
                 In: Which inputs are required to execute this block.
                 if there are multiple, separate them with commas. Put in square brackets at the end.\n
                 Out: Expected information (output).
@@ -43,11 +46,21 @@ class CreateRule():
             self.function = input("Function: ")
             while self.function == '':
                 self.function = input("Function cannot be empty: ")
-            self.argument_items = input("Parameters: ")
+            self.argument_items = input("Arguments: ")
             self.input_items = input("Input(s): ")
             self.output_items = input("Output(s): ")
             self.condition = input("Condition: ")
-            self.hint = input("Hint: ")
+            print("Hint: (type '-' to end the input)")
+            hint_lst = []
+            inp = ''
+            while True:
+                inp = input()
+                if inp == '-':
+                    print("Done receiving output.")
+                    break
+                else:
+                    hint_lst.append(inp)
+            self.hint = hint_lst
         else:
             print("Aborting...")
 
@@ -94,21 +107,16 @@ class CreateRule():
         else:
             self.argument = self.argument_items.split(' ')
             self.argument = [] if self.argument[0] == '' else self.argument
-            # print("arguments:", self.argument)
             tmp_input = self.input_items.split(',')
             tmp_input = [] if tmp_input[0] == '' else tmp_input
             for items in tmp_input:
                 self.input.append(items.strip())
-            # print("input:", self.input)
             tmp_output = self.output_items.split(',')
             tmp_output = [] if tmp_output[0] == '' else tmp_output
             for items in tmp_output:
                 self.output.append(items.strip())
-            # print("output:", self.output)
-            print("conds: ", self.condition)
             self.condition = ast.literal_eval(self.condition)
             self.condition = self.handle_conds(self.condition)
-            self.hint = ast.literal_eval(self.hint)
             self.hint = self.handle_hints(self.hint)
             return 0
     
@@ -217,48 +225,65 @@ class CreateRule():
         self.hints_str = ''.join(hints_lst)
         return self.hints_str
 
-    def add_pentest(self):
+    def append_attack_chain(self):
         try:
-            with open("attack_chain/pentest.yml", "r") as ymlFile:
-                content = ymlFile.readlines()
-            tmp_class = content[0][13:].strip()
-            tmp_block = content[1][13:].strip()
-            class_chain = ''
-            for c in tmp_class:
-                if c == '[':
-                    class_chain += "['"
-                elif c == ']':
-                    class_chain += "']"
-                elif c == ',':
-                    class_chain += "', '"
-                else:
-                    class_chain += c
-            block_chain = ''
-            for b in tmp_block:
-                if b == '[':
-                    block_chain += "['"
-                elif b == ']':
-                    block_chain += "']"
-                elif b == ',':
-                    block_chain += "', '"
-                else:
-                    block_chain += b
-            class_chain = ast.literal_eval(class_chain)
-            block_chain = ast.literal_eval(block_chain)
-            class_chain.append(self.folder)
-            block_chain.append(self.file_name)
-            class_chain = [elm.strip() for elm in class_chain]
-            block_chain = [elm.strip() for elm in block_chain]
-            print(class_chain)
-            print(block_chain)
-            class_str = str(class_chain).replace("'", "")
-            block_str = str(block_chain).replace("'", "")
-            res = "class_chain: " + class_str + '\n' + "block_chain: " + block_str
-            attack_path = 'attack_chain/pentest.txt'
-            with open(attack_path, 'w') as file:
-                file.writelines(res)
-            p = Path(attack_path)
-            p.rename(p.with_suffix('.yml'))
+            if self.overwrite == True:
+                class_chain = []
+                block_chain = []
+                class_chain.append(self.folder)
+                block_chain.append(self.file_name)
+                class_chain = [elm.strip() for elm in class_chain]
+                block_chain = [elm.strip() for elm in block_chain]
+                print(class_chain)
+                print(block_chain)
+                class_str = str(class_chain).replace("'", "")
+                block_str = str(block_chain).replace("'", "")
+                res = "class_chain: " + class_str + '\n' + "block_chain: " + block_str
+                attack_path = self.attack_path + '.txt'
+                with open(attack_path, 'w') as file:
+                    file.writelines(res)
+                p = Path(attack_path)
+                p.rename(p.with_suffix('.yml'))
+                self.overwrite = False
+            else:
+                with open(self.attack_path + '.yml', "r") as ymlFile:
+                    content = ymlFile.readlines()
+                tmp_class = content[0][13:].strip()
+                tmp_block = content[1][13:].strip()
+                class_chain = ''
+                for c in tmp_class:
+                    if c == '[':
+                        class_chain += "['"
+                    elif c == ']':
+                        class_chain += "']"
+                    elif c == ',':
+                        class_chain += "', '"
+                    else:
+                        class_chain += c
+                block_chain = ''
+                for b in tmp_block:
+                    if b == '[':
+                        block_chain += "['"
+                    elif b == ']':
+                        block_chain += "']"
+                    elif b == ',':
+                        block_chain += "', '"
+                    else:
+                        block_chain += b
+                class_chain = ast.literal_eval(class_chain)
+                block_chain = ast.literal_eval(block_chain)
+                class_chain.append(self.folder)
+                block_chain.append(self.file_name)
+                class_chain = [elm.strip() for elm in class_chain]
+                block_chain = [elm.strip() for elm in block_chain]
+                class_str = str(class_chain).replace("'", "")
+                block_str = str(block_chain).replace("'", "")
+                res = "class_chain: " + class_str + '\n' + "block_chain: " + block_str
+                attack_path = self.attack_path + '.txt'
+                with open(attack_path, 'w') as file:
+                    file.writelines(res)
+                p = Path(attack_path)
+                p.rename(p.with_suffix('.yml'))
         except FileNotFoundError:
             print("Attack chain does not exist!")
 
@@ -280,6 +305,58 @@ class CreateRule():
                 p = Path(path)
                 p.rename(p.with_suffix('.yml'))
                 print("Created " + yml_path + "!")
-                self.add_pentest()
         else:
             print("No file created!")
+
+    def overwrite_ac(self):
+        self.overwrite = True
+        attack_path_yml = self.attack_path + '.yml'
+        f = open(attack_path_yml,"w")
+        f.close()
+        while True:
+            create_block = input("Create block? (y/n) ")
+            if create_block.upper() == 'N':
+                break
+            else:
+                self.write_file()
+                self.append_attack_chain()
+        
+    def create_attack_chain(self):
+        create_block = 'y'
+        fld_name = "backup_attack_chain"
+        fld_name = input("Attack chain folder: ")
+        is_fld = os.path.isdir(fld_name)
+        if is_fld == False:
+            create_fold = input("Folder does not exist! Create a new folder? (y/n) ")
+            if create_fold.upper() == 'Y':
+                os.mkdir(fld_name)
+                fl_name = input("File name: ")
+                while fl_name == '':
+                    fl_name = input("File name cannot be empty: ")
+                self.attack_path = fld_name + '/' + fl_name
+                self.overwrite_ac()
+            else:
+                print("Cannot continue without folder.")
+        else:
+            fl_name = input("File name: ")
+            while fl_name == '':
+                fl_name = input("File name cannot be empty: ")
+            self.attack_path = fld_name + '/' + fl_name
+            attack_path_yml = self.attack_path + '.yml'
+            is_fl = os.path.isfile(attack_path_yml)
+            if is_fl == True:
+                ow_fl = input("File exists! Append (A)/Overwrite (O)/Cancel (C)? ")
+                if ow_fl.upper() == 'A':
+                    while True:
+                        create_block = input("Create block? (y/n) ")
+                        if create_block.upper() == 'N':
+                            break
+                        else:
+                            self.write_file()
+                            self.append_attack_chain()
+                elif ow_fl.upper() == 'O':
+                    self.overwrite_ac()
+                else:
+                    print("Abort mission.")
+            else:
+                self.overwrite_ac()
