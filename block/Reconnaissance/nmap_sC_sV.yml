@@ -5,4 +5,4 @@ In: [IP]
 condition: 
 Out: []
 hint: 
-  - Is port 7070 open? (Y/n)
+  - Is port 7070 open? (y/N)

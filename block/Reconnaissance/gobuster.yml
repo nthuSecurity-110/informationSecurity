@@ -5,4 +5,4 @@ In: [URL]
 condition: 
 Out: []
 hint: 
-  - Can you find any existing page that is useful? (ex. 10.32.1.8/panel )
+  - Can you find any existing page that is useful (ex. 10.32.1.8/panel)? (y/N)

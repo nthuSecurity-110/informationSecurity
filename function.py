@@ -24,7 +24,7 @@ def get_output_data(Data, block_Out):
         except KeyError:
             Data[para] = None
         if Data[para] == None:
-            user_input = input("please find value of \"{para}\" in above output, and enter it:".format(para=para))
+            user_input = input("please find value of \"{para}\" in above output, and enter it: ".format(para=para))
             if user_input != '':
                 if user_input.lower() == 'true':
                     Data[para] = True
@@ -51,15 +51,23 @@ def give_hint(hints, args, func_in, Data):
         for hint in hints:
             if ("<cmd>") in hint:
                 hint =  hint.replace("<cmd>", cmd)
-            for data in Data:
-                if ("<" + str(data) + ">") in hint:
-                    hint = hint.replace("<" + data + ">", str(Data[data]))
-            if ("+FORMAT+") in hint:
-                hint =  hint.replace("+FORMAT+", "")
-                print(eval("f'{}'".format(hint)))
+            # if ("+FORMAT+") in hint:
+            #     hint =  hint.replace("+FORMAT+", "")
+            #     print(eval("f'{}'".format(hint)))
+            # else:
+            #	 print(hint)
+            print(eval("f'''{}'''".format(hint)))
+            
+            if hint.lower().find('(y/n)') >= 0:
+            	user_input = input('Please enter y/n: '	)
+            	while user_input.lower() != 'y' and user_input.lower() != 'n':
+            		user_input = input('Please enter y/n: ')
+            	if user_input.lower() == 'n':
+            		return False
+            	print('')
             else:
-            	print(hint)
-            user_input = input('press Enter to continue...\n')
+            	user_input = input('press Enter to continue...\n')
+    return True
 
 class Function():
     def http_version(func_in, Data, args, block_In, block_Out, block_hint):
@@ -214,7 +222,8 @@ class Function():
     '''
     def magic_function(func_in, Data, args, block_In, block_Out, block_hint):
         flag = False
-        print("data: ", Data)
+        hint_result = True
+        print("data: ", Data, "\n")
         for i in range(len(args)):
             if flag == True:
                 break
@@ -248,7 +257,7 @@ class Function():
                         temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
                 else:
                     args.remove('NOEXE')
-            give_hint(block_hint, args, func_in, Data)
+            hint_result = give_hint(block_hint, args, func_in, Data)
         Data = get_output_data(Data, block_Out)
-        match = check_output_data(Data, block_Out)
+        match = check_output_data(Data, block_Out) & hint_result
         return Data, match

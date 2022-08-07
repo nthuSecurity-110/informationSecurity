@@ -243,7 +243,8 @@ class Explore():
         path = os.walk("./attack_chain")
         for root, directories, files in path:
             for file in files:
-                with open("./attack_chain/"+file, "r") as attack_chain:
+                # with open("./attack_chain/"+file, "r") as attack_chain:
+                with open("./attack_chain/pentest.yml", "r") as attack_chain:
                     #print(yaml.load(attack_chain))
                     self.load_block(attack_chain)
                     
@@ -254,7 +255,6 @@ class Explore():
                     result = self.match_condition_format(block)
                     if result == True:
                         try:
-                            # print("Go to /home/kali/Desktop, you would find reverse_shell.php5.\nUpload it to the web.")
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                             self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
@@ -262,6 +262,7 @@ class Explore():
                                 print("MATCH RULE~~~!!!!\n")
                             else:
                                 print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
+                                self.run_class(self.class_chain[i])
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")
                     elif result == False:
@@ -278,6 +279,7 @@ class Explore():
                                 self.user_takeover(para)
                     
                 # continue
+                break
         
         # time.sleep(5)
         # tree = Tree()

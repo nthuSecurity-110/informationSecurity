@@ -6,5 +6,5 @@ condition:
   - ftp in Service
 Out: [username]
 hint:
-  - open another terminal and login as anonymous with command `ftp anonymous@<IP>`
-  - explore the directory, and look for username
+  - Open another terminal and login as anonymous with command `ftp anonymous@{Data['IP']}`.
+  - Explore the directory, and look for username.

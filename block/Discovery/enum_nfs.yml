@@ -5,5 +5,4 @@ In: [IP]
 condition: 
 Out: []
 hint:
-  - Any mounts?
-  - Probably in a /var format.
+  - Any mounts? Probably in a /var format. (y/N)
