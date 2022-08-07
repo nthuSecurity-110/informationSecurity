@@ -4,6 +4,8 @@ from multiprocess import Process
 from nodeData import *
 from treelib import Tree, Node
 from block import Block
+from termios import tcflush, TCIFLUSH
+import sys
 import time
 import os
 import yaml
@@ -243,14 +245,15 @@ class Explore():
         path = os.walk("./attack_chain")
         for root, directories, files in path:
             for file in files:
-                # with open("./attack_chain/"+file, "r") as attack_chain:
-                with open("./attack_chain/pentest.yml", "r") as attack_chain:
+                with open("./attack_chain/"+file, "r") as attack_chain:
                     #print(yaml.load(attack_chain))
                     self.load_block(attack_chain)
                     
                 for i in range(len(self.block_chain)): # for all blocks in block chain
                     blockname = self.block_chain[i]
                     classname = self.class_chain[i]
+                    # flush input buffer, in case there are any unexpected user input before
+                    tcflush(sys.stdin, TCIFLUSH)
                     block = Block(classname, blockname)
                     result = self.match_condition_format(block)
                     if result == True:
@@ -279,7 +282,6 @@ class Explore():
                                 self.user_takeover(para)
                     
                 # continue
-                break
         
         # time.sleep(5)
         # tree = Tree()

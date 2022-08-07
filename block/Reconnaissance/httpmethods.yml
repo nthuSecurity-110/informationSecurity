@@ -9,4 +9,4 @@ hint:
   - Open another terminal, enter `git clone https://github.com/ShutdownRepo/httpmethods`.
   - Enter `cd httpmethods`.
   - Enter `sudo python3 setup.py install`.
-  - After installation done, enter `httpmethods {Data['URL']}`.\n(Need press Enter for FIVE times!!!).
+  - After installation done, execute `httpmethods {Data['URL']}`.\n(Need press Enter for FIVE times!!!).

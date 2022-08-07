@@ -1,9 +1,13 @@
 description: Check security headers on a target website
 function: magic_function
-argument: ['NOEXE','git', 'clone', 'https://github.com/m3liot/shcheck.git', '&&', 'cd', 'shcheck', '&&', 'python3', 'shcheck.py', <URL>, '&&', 'cd','..', '&&','rm','-r','-f','shcheck']
+argument: []
 In: [URL]
 condition: 
 Out: []
 hint:
-  - Open another terminal, type the cmd below----
-  - <cmd>
+  - "Open another terminal, type the cmd below:"
+  - "`git clone https://github.com/m3liot/shcheck.git`"
+  - "`cd shcheck`"
+  - "`python3 shcheck.py {Data['URL']}`"
+  - "`cd ..`"
+  - "`rm -r -f shcheck`"
