@@ -234,8 +234,6 @@ class CreateRule():
                 block_chain.append(self.file_name)
                 class_chain = [elm.strip() for elm in class_chain]
                 block_chain = [elm.strip() for elm in block_chain]
-                print(class_chain)
-                print(block_chain)
                 class_str = str(class_chain).replace("'", "")
                 block_str = str(block_chain).replace("'", "")
                 res = "class_chain: " + class_str + '\n' + "block_chain: " + block_str
@@ -360,3 +358,34 @@ class CreateRule():
                     print("Abort mission.")
             else:
                 self.overwrite_ac()
+
+    def insert_ac(self):
+        print("Where to insert the block?")
+        ac_folder = input("Attack chain folder: ")
+        ac_file = input("Attack chain file: ")
+        self.attack_path = ac_folder + '/' + ac_file
+        ac_exist = os.path.isfile(self.attack_path + '.yml')
+        if ac_exist:
+            print("Found attack chain. Fetching block info:")
+            print("Where is the block located?:")
+            self.folder = input("Folder name: ")
+            self.file_name = input("Block name: ")
+            block_exist = os.path.isfile('block/' + self.folder + '/' + self.file_name + '.yml')
+            if block_exist:
+                self.overwrite = False
+                self.append_attack_chain()
+                print("Block successfully inserted to " + self.attack_path + '.yml')
+            else:
+                new_block = input("Block doest not exist!\nCreate a new block? (y/n) ")
+                if new_block.upper() == 'Y':
+                    self.write_file()
+                    self.overwrite = False
+                    self.append_attack_chain()
+                else:
+                    print("Abort mission.")
+        else:
+            new_ac = input("Attack chain does not exist!\nCreate a new one? (y/n) ")
+            if new_ac.upper() == 'Y':
+                self.create_attack_chain()
+            else:
+                print("Abort mission.")
