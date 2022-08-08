@@ -5,4 +5,4 @@ In: [username]
 condition: 
 Out: []
 hint: 
-  - Can you find any existing accounts with the username?
+  - Can you find any existing accounts with the username? (y/N)

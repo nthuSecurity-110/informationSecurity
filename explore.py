@@ -4,6 +4,8 @@ from multiprocess import Process
 from nodeData import *
 from treelib import Tree, Node
 from block import Block
+from termios import tcflush, TCIFLUSH
+import sys
 import time
 import os
 import yaml
@@ -250,11 +252,12 @@ class Explore():
                 for i in range(len(self.block_chain)): # for all blocks in block chain
                     blockname = self.block_chain[i]
                     classname = self.class_chain[i]
+                    # flush input buffer, in case there are any unexpected user input before
+                    tcflush(sys.stdin, TCIFLUSH)
                     block = Block(classname, blockname)
                     result = self.match_condition_format(block)
                     if result == True:
                         try:
-                            # print("Go to /home/kali/Desktop, you would find reverse_shell.php5.\nUpload it to the web.")
                             block_func = getattr(Function, block.function) # get the required function from block
                             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                             self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
@@ -262,6 +265,7 @@ class Explore():
                                 print("MATCH RULE~~~!!!!\n")
                             else:
                                 print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
+                                self.run_class(self.class_chain[i])
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")
                     elif result == False:
