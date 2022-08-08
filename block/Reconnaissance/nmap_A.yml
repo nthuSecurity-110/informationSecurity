@@ -1,7 +1,8 @@
 description: Nmap scan to get the useful info
 function: magic_function
-argument: ['nmap', '-A', <IP>]
+argument: []
 In: [IP]
 condition: 
 Out: []
 hint:
+  - "[EXE]nmap -A {Data['IP']}"

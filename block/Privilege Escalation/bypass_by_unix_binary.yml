@@ -6,7 +6,7 @@ condition:
 Out: []
 hint:
   - Run `sudo -l` to see the user's sudo permission.
-  - Check the command out on https://gtfobins.github.io/
+  - Check the command out on https://gtfobins.github.io/.
   - Run the recommended command to escalate.
-  - Run `whoami` to check if you get root .
+  - Run `whoami` to check if you get root.
 

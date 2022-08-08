@@ -45,8 +45,8 @@ def check_output_data(Data, block_Out):
 
 def give_hint(hints, args, func_in, Data):
     # flush input buffer, in case there are any unexpected user input before that affect input()
-    tcflush(sys.stdin, TCIFLUSH)
-    cmd = concatenate_cmd(args)
+    # tcflush(sys.stdin, TCIFLUSH)
+    # cmd = concatenate_cmd(args)
     if hints!=None:
         for hint in hints:
             # if ("<cmd>") in hint:
@@ -56,6 +56,9 @@ def give_hint(hints, args, func_in, Data):
             #     print(eval("f'{}'".format(hint)))
             # else:
             #	 print(hint)
+            
+            # flush input buffer, in case there are any unexpected user input before that affect input()
+            tcflush(sys.stdin, TCIFLUSH)
             if ("[EXE]") in hint:
                 hint =  hint.replace("[EXE]", "")
                 hint = eval("f'''{}'''".format(hint))
@@ -80,17 +83,18 @@ def give_hint(hints, args, func_in, Data):
             elif ("[INPUT]") in hint:
             	hint =  hint.replace("[INPUT]", "")
             	Data[hint] = input(f'Please find value of "{hint}" in above output and enter it (enter "None" if no data): ')
-            	if Data[hint] == "None":
+            	if Data[hint].lower() == "none":
             		return False
             else:
-            	try:
-            		print(eval("f'''{}'''".format(hint)))
-            	except KeyError as k:
-            		# print(k.args[0])
-            		Data[k.args[0]] = input(f'Please find value of "{k.args[0]}" in above output and enter it (enter "None" if no data): ')
-            		if Data[k.args[0]] == "None":
-            			return False
-            		print(eval("f'''{}'''".format(hint)))
+            	while 1:
+            		try:
+            			print(eval("f'''{}'''".format(hint)))
+            			break
+            		except KeyError as k:
+            			# print(k.args[0])
+            			Data[k.args[0]] = input(f'Please find value of "{k.args[0]}" in above output and enter it (enter "None" if no data): ')
+            			if Data[k.args[0]].lower() == "none":
+            				return False
             if hint.lower().find('(y/n)') >= 0:
             	user_input = input('Please enter y/n: '	)
             	while user_input.lower() != 'y' and user_input.lower() != 'n':
@@ -256,34 +260,35 @@ class Function():
                 break
             else:
                 for input_token in func_in:
-                    if ("<" + input_token + ">") in args[i]:
-                        if Data[input_token] == None:
-                            #TO DO: add user input to explore.Data, connect to user_takeover if possible
-                            print('There are some missing data. ' + input_token + ' cannot be empty!')
-                            mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
-                            if mode == '1':
-                                u_in = input("input " + input_token + ": ")
-                                args[i] =  args[i].replace("<" + input_token + ">", u_in)
-                            elif mode == '2':
-                                flag = True
-                                break
-                            else:
-                                flag = True
-                                break
+                    # if ("<" + input_token + ">") in args[i]:
+                    if Data[input_token] == None:
+                        # TO DO: Add user input to continue. Data, connect to user_takeover if possible.
+                        print('There are some missing data. ' + input_token + ' cannot be empty!')
+                        mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
+                        if mode == '1':
+                            u_in = input("Input " + input_token + ": ")
+                            # args[i] =  args[i].replace("<" + input_token + ">", u_in)
+                            Data[input_token] = u_in
+                        elif mode == '2':
+                            flag = True
+                            break
                         else:
-                            args[i] =  args[i].replace("<" + input_token + ">", Data[input_token])
+                            flag = True
+                            break
+                    # else:
+                    #     args[i] =  args[i].replace("<" + input_token + ">", Data[input_token])
         if flag == False:
-            if args!=None and args!=[]:
-                if  args[0]!='NOEXE' :
-                    print("in magic_function excute:", concatenate_cmd(args))
-                    proc = Popen(args, stdout=PIPE)
-                    temp = open('temp.txt', 'w')
-                    temp.truncate(0)
-                    for stdout_line in iter(proc.stdout.readline, b''):
-                        print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
-                        temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
-                else:
-                    args.remove('NOEXE')
+            # if args!=None and args!=[]:
+            #     if  args[0]!='NOEXE' :
+            #         print("in magic_function excute:", concatenate_cmd(args))
+            #         proc = Popen(args, stdout=PIPE)
+            #         temp = open('temp.txt', 'w')
+            #         temp.truncate(0)
+            #         for stdout_line in iter(proc.stdout.readline, b''):
+            #             print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
+            #             temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
+            #     else:
+            #         args.remove('NOEXE')
             hint_result = give_hint(block_hint, args, func_in, Data)
         Data = get_output_data(Data, block_Out)
         match = check_output_data(Data, block_Out) & hint_result

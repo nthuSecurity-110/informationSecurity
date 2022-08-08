@@ -1,8 +1,9 @@
 description: scan directory
 function: magic_function
-argument: ['gobuster', 'dir', '-u', <URL>, '-w', '/usr/share/wordlists/dirb/common.txt']
+argument: []
 In: [URL]
 condition: 
 Out: []
 hint: 
+  - "[EXE]gobuster dir -u {Data['URL']} -w /usr/share/wordlists/dirb/common.txt"
   - Can you find any existing page that is useful (ex. 10.32.1.8/panel)? (y/N)
