@@ -1,0 +1,14 @@
+description: Polaris--collecting ip info
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint:
+  - "Before using Polaris, open another terminal and type the following 3 commands:"
+  - git clone https://github.com/doimet/Polaris.git
+  - cd Polaris
+  - pip3 install -r requirements.txt -i https://pypi.douban.com/simple/
+  - The following command is used for collecting ip info
+  - python3 Cli.py --input ip:{Data['IP']} collect
+  - If you won't use Polaris later, delete it with `cd .. && rm -f -r Polaris`
