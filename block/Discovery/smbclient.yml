@@ -5,5 +5,4 @@ In: [IP, user]
 condition: 
 Out: []
 hint:
-  - Any useful files?
-  - You can use the command 'dir'
+  - Any useful files? You can use the command 'dir' (y/N)

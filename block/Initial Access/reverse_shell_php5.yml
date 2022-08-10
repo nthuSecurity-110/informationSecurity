@@ -196,6 +196,7 @@ argument:
     ?> 
   - reverse_shell.php5
 hint:
-  - +FORMAT+\nGo to /home/{getpass.getuser()}/Desktop/, you would find {args[1]}.
-  - "Upload it to the <IP>/{existing page you found}, ex: <IP>/panel."
-  - Go to the <IP>/uploads page, click the file to execute (Make sure you listening to the port first).
+  - \nGo to /home/{getpass.getuser()}/Desktop/, you would find {args[1]}.
+  - "Upload it to the {Data['IP']}/[existing page you found], ex: {Data['IP']}/panel."
+  - Open another terminal, enter `nc -lnvp {Data['port']}` to listen to port.
+  - Go to the {Data['IP']}/uploads page, click the file to execute.

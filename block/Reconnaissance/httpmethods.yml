@@ -1,7 +1,12 @@
-description:  test various HTTP methods against an URL(Press enter for 5 times!!!)
+description:  test various HTTP methods against an URL
 function: magic_function
-argument: ['httpmethods', <URL>]
+argument: []
 In: [URL]
 condition: 
 Out: []
 hint:
+  - Please install httpmethods first (if already installed, skip next 3 steps).
+  - Open another terminal, enter `git clone https://github.com/ShutdownRepo/httpmethods`.
+  - Enter `cd httpmethods`.
+  - Enter `sudo python3 setup.py install`.
+  - After installation done, execute `httpmethods {Data['URL']}`.\n(Need press Enter for FIVE times!!!).

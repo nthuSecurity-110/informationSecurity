@@ -5,5 +5,4 @@ In: [IP]
 condition: 
 Out: []
 hint:
-  - Did you found any shares?
-  - Perhaps there could be a user that you are interested in.
+  - Did you found any shares? Perhaps there could be a user that you are interested in. (y/N)

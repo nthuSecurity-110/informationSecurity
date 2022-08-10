@@ -6,6 +6,7 @@ from numpy import mat
 from packaging import version
 from subprocess import Popen, PIPE
 import re
+import subprocess
 from termios import tcflush, TCIFLUSH
 import sys
 
@@ -24,7 +25,7 @@ def get_output_data(Data, block_Out):
         except KeyError:
             Data[para] = None
         if Data[para] == None:
-            user_input = input("please find value of \"{para}\" in above output, and enter it:".format(para=para))
+            user_input = input("Please find value of \"{para}\" in above output, and enter it: ".format(para=para))
             if user_input != '':
                 if user_input.lower() == 'true':
                     Data[para] = True
@@ -44,22 +45,66 @@ def check_output_data(Data, block_Out):
 
 def give_hint(hints, args, func_in, Data):
     # flush input buffer, in case there are any unexpected user input before that affect input()
-    tcflush(sys.stdin, TCIFLUSH)
-    # user_input = input('press Enter to continue...\n')
-    cmd = concatenate_cmd(args)
+    # tcflush(sys.stdin, TCIFLUSH)
+    # cmd = concatenate_cmd(args)
     if hints!=None:
         for hint in hints:
-            if ("<cmd>") in hint:
-                hint =  hint.replace("<cmd>", cmd)
-            for data in Data:
-                if ("<" + str(data) + ">") in hint:
-                    hint = hint.replace("<" + data + ">", str(Data[data]))
-            if ("+FORMAT+") in hint:
-                hint =  hint.replace("+FORMAT+", "")
-                print(eval("f'{}'".format(hint)))
+            # if ("<cmd>") in hint:
+            #     hint =  hint.replace("<cmd>", cmd)
+            # if ("+FORMAT+") in hint:
+            #     hint =  hint.replace("+FORMAT+", "")
+            #     print(eval("f'{}'".format(hint)))
+            # else:
+            #	 print(hint)
+            
+            # flush input buffer, in case there are any unexpected user input before that affect input()
+            tcflush(sys.stdin, TCIFLUSH)
+            if ("[EXE]") in hint:
+                hint =  hint.replace("[EXE]", "")
+                hint = eval("f'''{}'''".format(hint))
+                print(f"[EXE] {hint}")
+                # 1st subprocess way
+                proc = os.popen(hint)
+                print(proc.read())
+                proc.close()
+                
+                # 2nd subprocess way
+                # hint_list = hint.split()
+                # proc = subprocess.check_call(hint_list)
+                
+                # 3rd subprocess way
+                # hint_list = hint.split()
+                # proc = Popen(hint_list, stdout=PIPE)
+                # temp = open('temp.txt', 'w')
+                # temp.truncate(0)
+                # for stdout_line in iter(proc.stdout.readline, b''):
+                #     print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
+                #     temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
+            elif ("[INPUT]") in hint:
+            	hint =  hint.replace("[INPUT]", "")
+            	Data[hint] = input(f'Please find value of "{hint}" in above output and enter it (enter "None" if no data): ')
+            	if Data[hint].lower() == "none":
+            		return False
             else:
-            	print(hint)
-            user_input = input('press Enter to continue...\n')
+            	while 1:
+            		try:
+            			print(eval("f'''{}'''".format(hint)))
+            			break
+            		except KeyError as k:
+            			# print(k.args[0])
+            			Data[k.args[0]] = input(f'Please find value of "{k.args[0]}" in above output and enter it (enter "None" if no data): ')
+            			if Data[k.args[0]].lower() == "none":
+            				return False
+            if hint.lower().find('(y/n)') >= 0:
+            	user_input = input('Please enter y/n: '	)
+            	while user_input.lower() != 'y' and user_input.lower() != 'n':
+            		user_input = input('Please enter y/n: ')
+            	if user_input.lower() == 'n':
+            		return False
+            	print('')
+            else:
+            	user_input = input('press Enter to continue...\n')
+    return True
 
 class Function():
     def http_version(func_in, Data, args, block_In, block_Out, block_hint):
@@ -186,17 +231,11 @@ class Function():
         try:
             with open(f'/home/{getpass.getuser()}/Desktop/{args[1]}', 'w') as f:
                 file = args[0]
-                # for i in range(len(args)):
-                    # file = file.replace("REPLACE_IT_IP", Data[block_In[i]])
                 for i in block_In:
                     file = file.replace(f"REPLACE_IT_{i}", Data[i])
                 f.write(file)
         except FileNotFoundError:
             print(f'Fail to create a file on path:/home/{getpass.getuser()}/Desktop/')
-        # print(f"\nGo to /home/{getpass.getuser()}/Desktop/, you would find {args[1]}.")
-        # print(f"Upload it to the {Data['IP']}/"+"{"+"existing page you found"+"}."+f" ex: {Data['IP']}/panel")
-        # print(f"Go to the {Data['IP']}/uploads page, click the file to execute (Make sure you listening to the port first).\n")
-        # result = input("After you get shell, press enter to move on next step.\n")
         give_hint(block_hint, args, func_in, Data)
         match = check_output_data(Data, block_Out)
         return Data, match
@@ -214,41 +253,43 @@ class Function():
     '''
     def magic_function(func_in, Data, args, block_In, block_Out, block_hint):
         flag = False
-        print("data: ", Data)
+        hint_result = True
+        print("data: ", Data, "\n")
         for i in range(len(args)):
             if flag == True:
                 break
             else:
                 for input_token in func_in:
-                    if ("<" + input_token + ">") in args[i]:
-                        if Data[input_token] == None:
-                            #TO DO: add user input to explore.Data, connect to user_takeover if possible
-                            print('There are some missing data. ' + input_token + ' cannot be empty!')
-                            mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
-                            if mode == '1':
-                                u_in = input("input " + input_token + ": ")
-                                args[i] =  args[i].replace("<" + input_token + ">", u_in)
-                            elif mode == '2':
-                                flag = True
-                                break
-                            else:
-                                flag = True
-                                break
+                    # if ("<" + input_token + ">") in args[i]:
+                    if Data[input_token] == None:
+                        # TO DO: Add user input to continue. Data, connect to user_takeover if possible.
+                        print('There are some missing data. ' + input_token + ' cannot be empty!')
+                        mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
+                        if mode == '1':
+                            u_in = input("Input " + input_token + ": ")
+                            # args[i] =  args[i].replace("<" + input_token + ">", u_in)
+                            Data[input_token] = u_in
+                        elif mode == '2':
+                            flag = True
+                            break
                         else:
-                            args[i] =  args[i].replace("<" + input_token + ">", Data[input_token])
+                            flag = True
+                            break
+                    # else:
+                    #     args[i] =  args[i].replace("<" + input_token + ">", Data[input_token])
         if flag == False:
-            if args!=None and args!=[]:
-                if  args[0]!='NOEXE' :
-                    print("in magic_function excute:", concatenate_cmd(args))
-                    proc = Popen(args, stdout=PIPE)
-                    temp = open('temp.txt', 'w')
-                    temp.truncate(0)
-                    for stdout_line in iter(proc.stdout.readline, b''):
-                        print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
-                        temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
-                else:
-                    args.remove('NOEXE')
-            give_hint(block_hint, args, func_in, Data)
+            # if args!=None and args!=[]:
+            #     if  args[0]!='NOEXE' :
+            #         print("in magic_function excute:", concatenate_cmd(args))
+            #         proc = Popen(args, stdout=PIPE)
+            #         temp = open('temp.txt', 'w')
+            #         temp.truncate(0)
+            #         for stdout_line in iter(proc.stdout.readline, b''):
+            #             print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
+            #             temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
+            #     else:
+            #         args.remove('NOEXE')
+            hint_result = give_hint(block_hint, args, func_in, Data)
         Data = get_output_data(Data, block_Out)
-        match = check_output_data(Data, block_Out)
+        match = check_output_data(Data, block_Out) & hint_result
         return Data, match
