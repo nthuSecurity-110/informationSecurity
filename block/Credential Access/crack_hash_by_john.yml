@@ -1,0 +1,10 @@
+description: crash hash file by john
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint: 
+  - "store the hash in the file named \"hashfile\""
+  - "[EXE]john hashfile --wordlist=/usr/share/wordlists/rockyou.txt && john --show hashfile"
+  - try login with the username and password found above, eg. `ssh root@{Data['IP']}`

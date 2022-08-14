@@ -1,0 +1,15 @@
+description: crack gpg file
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint: 
+  - "Are there .asc file and .pgp file?(y/n)"
+  - "[INPUT]asc_filename"
+  - "[INPUT]pgp_filename"
+  - "[EXE]gpg2john {Data['asc_filename']} > hash"
+  - "[EXE]john hash --wordlist=/usr/share/wordlists/rockyou.txt && john --show hash"
+  - "If successful, we get the password"
+  - "[EXE]gpg --import {Data['asc_filename']}"
+  - "[EXE]gpg --decrypt {Data['pgp_filename']}"
