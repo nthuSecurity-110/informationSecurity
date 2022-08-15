@@ -1,0 +1,9 @@
+description: look for directory by dirb
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint: 
+  - "[EXE]dirb http://{Data['IP']}/ /usr/share/wordlists/dirb/common.txt"
+  - Do you find any useful directory?(y/N)
