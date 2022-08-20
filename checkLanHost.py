@@ -6,7 +6,6 @@ import nmap
 from datetime import datetime
 from netaddr import IPAddress
 from trace import *
-from multiprocess import Process
 from nodeData import *
 # from subprocess import Popen, PIPE
 # import os
@@ -191,13 +190,10 @@ class CheckLanHost:
     def callback_result(self, host, scan_result):
         print('\n'+stars+'\n')
         if scan_result != None and scan_result['scan'] != None and scan_result['scan'] != {}:
-            # print(scan_result['scan'])
             prGreen(f"{'Data found for host ' + host}")
             self.format_output(scan_result['scan'])
         else:
             prRed(f"{'No available data for host ' + host}")
-    # def test_callback(self, host, scan_result):
-    #     print(scan_result)
 
     def getIP(self):
         return self.ip_list
@@ -208,12 +204,8 @@ class CheckLanHost:
         wireless_lan_subnet = config.getSubnet11()
         mask_num = wireless_lan_subnet
 
-        # cmd = input("Choose an option: '-sS'/'-sP'/'-sL'/'-PS'/'-PU': ")
         cmd = '-sS -F -O -T4' 
-        cmd+=" --min-hostgroup 20"
-        # cmd = "-sn"
-        # the fastest parameters I find so far
-        # cmd+=" --min-rate 10"
+        cmd += " --min-hostgroup 20"
 
         start_time = datetime.now()
         AsyncScan = nmap.PortScannerAsync()
@@ -226,15 +218,7 @@ class CheckLanHost:
             LAN_ip=trace.IPlist[i]
             mask_num = 24 if LAN_ip != wireless_lan_gateway else mask_num
             LAN_ip = LAN_ip + '/' + str(mask_num)
-            # LAN_ip = LAN_ip + '/' + str(30)
-            
-            # p = Popen(['nmap -sn '+ ip], stdout=PIPE)
-            # p = Popen(['nmap', '-sn ', ip], stdout=PIPE)
-            # outputText = str(p.communicate()[0]).split(' ')
-            
-            # outputText = os.popen("nmap -sn "+ip).read()
-            # print(f'outputText: {outputText}')
-            
+
             prYellow('\n' + 96*'#' + "START SCANNING" + 95*'#' + '\n')
             print(f"{'scanning LAN under '+LAN_ip:^205s}")
 
@@ -244,9 +228,7 @@ class CheckLanHost:
 
             for ip in hosts_list:
                 self.ip_list.append(ip)
-                # test = input("test input in checkLanHost.py")
                 AsyncScan.scan(hosts=ip, arguments=cmd, callback=self.callback_result, sudo=True)
-                # AsyncScan.scan(hosts=ip, arguments=cmd, callback=self.test_callback, sudo=True)
                 while AsyncScan.still_scanning():
                     AsyncScan.wait(2)
         

@@ -1,8 +1,6 @@
 from sympy import evaluate
 from function import Function
-from multiprocess import Process
 from nodeData import *
-from treelib import Tree, Node
 from block import Block
 from termios import tcflush, TCIFLUSH
 import sys
@@ -16,7 +14,7 @@ class Explore():
     """
     This is used for exploring one specific host. 
     To parallelize the execution between "exploring" and "nmap searching"
-    We use subprocess here, which has to be use very carefully.
+    We use subprocess here, which has to be used very carefully.
     """
     def __init__(self,myIP):
         # self.process = Process(target=self.exploring, args=())
@@ -181,8 +179,6 @@ class Explore():
                 self.Data[para] = None
             
             if self.Data[para] == None:
-                # print(f'missing data "{para}"')
-                # self.user_takeover(para)
                 missing_paras.append(para)
 
         # deal with the missing ones (if there are)

@@ -81,29 +81,29 @@ def give_hint(hints, args, func_in, Data):
                 #     print("{}".format(stdout_line.decode('utf-8')).rstrip()) 
                 #     temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
             elif ("[INPUT]") in hint:
-            	hint =  hint.replace("[INPUT]", "")
-            	Data[hint] = input(f'Please find value of "{hint}" in above output and enter it (enter "None" if no data): ')
-            	if Data[hint].lower() == "none":
-            		return False
+                hint =  hint.replace("[INPUT]", "")
+                Data[hint] = input(f'Please find value of "{hint}" in above output and enter it (enter "None" if no data): ')
+                if Data[hint].lower() == "none":
+                    return False
             else:
-            	while 1:
-            		try:
-            			print(eval("f'''{}'''".format(hint)))
-            			break
-            		except KeyError as k:
+                while 1:
+                    try:
+                        print(eval("f'''{}'''".format(hint)))
+                        break
+                    except KeyError as k:
             			# print(k.args[0])
-            			Data[k.args[0]] = input(f'Please find value of "{k.args[0]}" in above output and enter it (enter "None" if no data): ')
-            			if Data[k.args[0]].lower() == "none":
-            				return False
+                        Data[k.args[0]] = input(f'Please find value of "{k.args[0]}" in above output and enter it (enter "None" if no data): ')
+                        if Data[k.args[0]].lower() == "none":
+                            return False
             if hint.lower().find('(y/n)') >= 0:
-            	user_input = input('Please enter y/n: '	)
-            	while user_input.lower() != 'y' and user_input.lower() != 'n':
-            		user_input = input('Please enter y/n: ')
-            	if user_input.lower() == 'n':
-            		return False
-            	print('')
+                user_input = input('Please enter y/n: '	)
+                while user_input.lower() != 'y' and user_input.lower() != 'n':
+                    user_input = input('Please enter y/n: ')
+                if user_input.lower() == 'n':
+                    return False
+                print('')
             else:
-            	user_input = input('press Enter to continue...\n')
+                user_input = input('press Enter to continue...\n')
     return True
 
 class Function():
