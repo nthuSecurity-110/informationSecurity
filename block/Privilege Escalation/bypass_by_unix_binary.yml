@@ -6,7 +6,8 @@ condition:
 Out: []
 hint:
   - Run `sudo -l` to see the user's sudo permission.
-  - Check the command out on https://gtfobins.github.io/.
-  - Run the recommended command to escalate.
+  - If the allowed command is ALL, enter `sudo bash`
+  - If not, check the command out on https://gtfobins.github.io/. and Run the recommended command to escalate.
   - Run `whoami` to check if you get root.
+  - If you failed with this user, you can try another user.
 
