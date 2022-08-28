@@ -274,8 +274,8 @@ class Explore():
         path = os.walk("./attack_chain")
         for root, directories, files in path:
             for file in files:
-                # with open("./attack_chain/"+file, "r") as attack_chain:
-                with open("./attack_chain/rootme.yml", "r") as attack_chain:
+                with open("./attack_chain/"+file, "r") as attack_chain:
+                # with open("./attack_chain/.yml", "r") as attack_chain:
                     #print(yaml.load(attack_chain))
                     self.load_block(attack_chain)
                     
@@ -299,11 +299,10 @@ class Explore():
                         except AttributeError: # if block use undefined function, skip to next chain
                             print(f"Function '{block.function}' is not defined, skip to next chain.")
                     elif result == False:
+                        self.run_class(self.class_chain[i])
                         if not self.match_condition_format(block):
                             print("fail to get needed data by run_class, skip")
                             break
-                        else:
-                            self.run_class(self.class_chain[i])
                     else:
                         print('There are some missing data..')
                         mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")

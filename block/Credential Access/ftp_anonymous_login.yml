@@ -7,4 +7,4 @@ condition:
 Out: []
 hint:
   - Open another terminal and login as anonymous with command `ftp anonymous@{Data['IP']}`.
-  - Explore the directory, and look for username or any suspicious file or directory(if there is, get them).
+  - Explore and look for username or any suspicious file or directory (if there is, get them).

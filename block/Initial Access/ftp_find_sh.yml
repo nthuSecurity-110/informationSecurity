@@ -1,0 +1,11 @@
+description: find script running at remote
+function: magic_function
+argument: []
+In: []
+condition: 
+  - ftp in Service
+Out: []
+hint:
+  - Use `get {{filename}}` to fetch files from remote and check them.
+  - Is there any .sh file running on server? (y/N)
+  - "[INPUT]ftp_sh_filename"
