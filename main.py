@@ -23,6 +23,8 @@ if __name__ == '__main__':
         check.AllLanHost(config)
     elif mode == 3:
         generateRule.create_attack_chain()
+    elif mode == 4:
+        generateRule.insert_ac()
     else:
         explore = Explore(config.getGateway11())
         explore.exploring()

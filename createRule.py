@@ -4,6 +4,8 @@ import ast
 import re
 from pathlib import Path
 
+invalid_chars = re.compile("#% &{}\<>*?/ $!'\":@+`|=")
+
 class CreateRule():
     def __init__(self):
         self.description = ''
@@ -38,7 +40,6 @@ class CreateRule():
                 Condition: The conditions required to execute the function.
                 It should follow the pyyaml rule. (e.g. (Apache > 3.1 || (80 in port && (a == b || b == c))))\n
                 Hint: The hints that might help you.
-                It should follow the pyyaml rule. (e.g. ["hi there~", "here is a hint.", "good luck! XD"])\n
                 ''')
             self.description = input("Description: ")
             while self.description == '':
@@ -50,7 +51,7 @@ class CreateRule():
             self.input_items = input("Input(s): ")
             self.output_items = input("Output(s): ")
             self.condition = input("Condition: ")
-            print("Hint: (type '-' to end the input)")
+            print("Hint: (type '-' to end the input)\nNote:\n1. When inserting an executable command, type '[EXE]' before the command.\n2. If there is a user's input in the command, wrap it with '{}'")
             hint_lst = []
             inp = ''
             while True:
@@ -76,7 +77,7 @@ class CreateRule():
                 if self.create_folder.upper() == 'Y':
                     new_path = 'block/' + self.folder
                     os.mkdir(new_path)
-                    self.file_name = input("File name: ")
+                    self.file_name = input("Block file name: ")
                     while self.file_name == '':
                         self.file_name = input("File name cannot be empty: ")
                     self.path_file = new_path + '/' + self.file_name
@@ -84,7 +85,7 @@ class CreateRule():
                 else:
                     print("Can't continue, sorry!")
             else:
-                self.file_name = input("File name: ")
+                self.file_name = input("Block file name: ")
                 while self.file_name == '':
                     self.file_name = input("File name cannot be empty: ")
                 path_file = 'block/' + self.folder + '/' + self.file_name + '.yml'
@@ -234,8 +235,6 @@ class CreateRule():
                 block_chain.append(self.file_name)
                 class_chain = [elm.strip() for elm in class_chain]
                 block_chain = [elm.strip() for elm in block_chain]
-                print(class_chain)
-                print(block_chain)
                 class_str = str(class_chain).replace("'", "")
                 block_str = str(block_chain).replace("'", "")
                 res = "class_chain: " + class_str + '\n' + "block_chain: " + block_str
@@ -330,7 +329,7 @@ class CreateRule():
             create_fold = input("Folder does not exist! Create a new folder? (y/n) ")
             if create_fold.upper() == 'Y':
                 os.mkdir(fld_name)
-                fl_name = input("File name: ")
+                fl_name = input("Attack chain file name: ")
                 while fl_name == '':
                     fl_name = input("File name cannot be empty: ")
                 self.attack_path = fld_name + '/' + fl_name
@@ -338,7 +337,7 @@ class CreateRule():
             else:
                 print("Cannot continue without folder.")
         else:
-            fl_name = input("File name: ")
+            fl_name = input("Attack chain file name: ")
             while fl_name == '':
                 fl_name = input("File name cannot be empty: ")
             self.attack_path = fld_name + '/' + fl_name
@@ -360,3 +359,34 @@ class CreateRule():
                     print("Abort mission.")
             else:
                 self.overwrite_ac()
+
+    def insert_ac(self):
+        print("Where to insert the block?")
+        ac_folder = input("Attack chain folder: ")
+        ac_file = input("Attack chain file: ")
+        self.attack_path = ac_folder + '/' + ac_file
+        ac_exist = os.path.isfile(self.attack_path + '.yml')
+        if ac_exist:
+            print("Found attack chain. Fetching block info:")
+            print("Where is the block located?:")
+            self.folder = input("Block folder: ")
+            self.file_name = input("Block file name: ")
+            block_exist = os.path.isfile('block/' + self.folder + '/' + self.file_name + '.yml')
+            if block_exist:
+                self.overwrite = False
+                self.append_attack_chain()
+                print("Block successfully inserted to " + self.attack_path + '.yml')
+            else:
+                new_block = input("Block doest not exist!\nCreate a new block? (y/n) ")
+                if new_block.upper() == 'Y':
+                    self.write_file()
+                    self.overwrite = False
+                    self.append_attack_chain()
+                else:
+                    print("Abort mission.")
+        else:
+            new_ac = input("Attack chain does not exist!\nCreate a new one? (y/n) ")
+            if new_ac.upper() == 'Y':
+                self.create_attack_chain()
+            else:
+                print("Abort mission.")

@@ -1,0 +1,8 @@
+description: Scan a target WordPress URL and enumerate any plugins that are installed
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint:
+  - "[EXE]wpscan --url http://{Data['IP']} --enumerate p"

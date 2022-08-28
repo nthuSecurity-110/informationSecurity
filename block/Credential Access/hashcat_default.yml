@@ -1,0 +1,10 @@
+description: let hashcat automatically detect the hash type, then crack it
+function: magic_function
+argument: []
+In: []
+condition:
+Out: []
+hint:
+  - "paste hash content in the file `hashfile` and save it"
+  - "[EXE]hashcat hashfile /usr/share/wordlists/dirb/common.txt"
+  - "Did it crack successfully?(y/N)"

@@ -1,0 +1,11 @@
+description: login ssh as user
+function: magic_function
+argument: []
+In: ['IP']
+condition:
+Out: []
+hint:
+  - "[INPUT]username"
+  - open another terminal, and enter `ssh {Data['username']}@{Data['IP']}`
+  - Explore the machine. Is there any useful file?
+  - If you want to download file, open another terminal, and enter `scp {Data['username']}@{Data['IP']}:/path/to/remote/file /path/to/local/file`

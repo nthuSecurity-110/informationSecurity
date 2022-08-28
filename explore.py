@@ -1,8 +1,6 @@
 from sympy import evaluate
 from function import Function
-from multiprocess import Process
 from nodeData import *
-from treelib import Tree, Node
 from block import Block
 from termios import tcflush, TCIFLUSH
 import sys
@@ -16,15 +14,24 @@ class Explore():
     """
     This is used for exploring one specific host. 
     To parallelize the execution between "exploring" and "nmap searching"
-    We use subprocess here, which has to be use very carefully.
+    We use subprocess here, which has to be used very carefully.
     """
     def __init__(self,myIP):
         # self.process = Process(target=self.exploring, args=())
         # nmap get basic info, fill into Data
 
-        explored_host = input("Which host you want to explore? (Testing default: 163.32.250.178)\n").strip() # 163.32.250.178
+        explored_host = input("Which host you want to explore? (Testing default: 99.83.179.177)\n").strip() # 99.83.179.177
+        url = input('Input target url(ex: https://hackmd.io/):\n')
+
         if explored_host == '':
-            explored_host = '163.32.250.178'
+            explored_host = '99.83.179.177'
+        if url == '':
+            url = 'https://hackmd.io/'
+        
+        self.Data={
+            'URL': url
+        }
+        
         print("START EXPLORING!")
 
         L = os.popen(f"sudo nmap -sS -F -O -T4 {explored_host} | grep '/tcp\|/udp'").read().split('\n')
@@ -32,15 +39,39 @@ class Explore():
         p = [item.split('/')[0] for item in L if item.split('/')[0]!='']
         l = [item.split('/')[1] for item in L if item.split('/')[0]!='']
         s = [item.split('  ')[-1] for item in l]
-        self.Data={
-            'myIP': myIP,
-            'IP': explored_host,
-            'Service': s,
-            'OS': None,
-            'Port': p,
-            'Apache': None,
-        }            
-        # print(self.Data)
+        # self.Data={
+        #     'myIP': myIP,
+        #     'IP': explored_host,
+        #     'Service': s,
+        #     'OS': None,
+        #     'Port': p,
+        #     'Apache': None,
+        # }
+        self.Data['myIP']= myIP
+        self.Data['IP']= explored_host
+        self.Data['Service']= s
+        self.Data['OS']= None
+        self.Data['Port']= p
+        self.Data['Apache']= None
+
+        print(f'self.data:\n{self.Data}\n')
+        
+        print(f'{"*"*15}Begin initial reconnaissance{"*"*15}\n')
+        Recon_files = ['nmap_A', 'gobuster']
+
+        for i in range(len(Recon_files)):
+            blockname = Recon_files[i]
+            if(blockname == 'gobuster' and '80' not in self.Data['Port']):
+                continue
+            
+            tcflush(sys.stdin, TCIFLUSH)
+            block = Block('Reconnaissance', blockname)
+            block_func = getattr(Function, block.function) # get the required function from block
+            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+            self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint)
+        print(f'{"*"*15}End initial reconnaissance{"*"*15}\n')
+        
+
 
     def compare_version(self, v1, v2):
         '''
@@ -181,8 +212,6 @@ class Explore():
                 self.Data[para] = None
             
             if self.Data[para] == None:
-                # print(f'missing data "{para}"')
-                # self.user_takeover(para)
                 missing_paras.append(para)
 
         # deal with the missing ones (if there are)
