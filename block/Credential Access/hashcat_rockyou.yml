@@ -1,0 +1,12 @@
+description: let hashcat automatically detect the hash type, then crack it
+function: magic_function
+argument: []
+In: []
+condition:
+Out: []
+hint:
+  - "paste hash content in the file `hashfile` and save it"
+  - "save the file 'https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt' in /usr/share/wordlists/dirb/"
+  - "If the command below takes too long to run, open a new terminal."
+  - "[EXE]hashcat -m 1800 hashfile /usr/share/wordlists/dirb/rockyou.txt"
+  - "What is the root password?"

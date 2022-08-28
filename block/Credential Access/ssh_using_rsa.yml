@@ -1,0 +1,11 @@
+description: login ssh as user using RSA ID
+function: magic_function
+argument: []
+In: ['username', 'IP']
+condition:
+Out: []
+hint:
+  - In other terminal, run these commands
+  - "sudo chmod 600 id_rsa"
+  - "ssh -i id_rsa {Data['username']}@{Data['IP']}"
+  - Explore the machine. Are there any useful files?

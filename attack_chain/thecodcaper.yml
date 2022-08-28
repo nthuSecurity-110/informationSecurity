@@ -1,0 +1,2 @@
+class_chain: [Reconnaissance, Reconnaissance, Credential Access, Credential Access, Privilege Escalation, Privilege Escalation, Credential Access]
+block_chain: [nmap_sS_sV_A, gobuster_big, sqlmap, ssh_using_rsa, linenum, pwntools, hashcat_rockyou]
