@@ -245,7 +245,8 @@ class Explore():
         path = os.walk("./attack_chain")
         for root, directories, files in path:
             for file in files:
-                with open("./attack_chain/"+file, "r") as attack_chain:
+                # with open("./attack_chain/"+file, "r") as attack_chain:
+                with open("./attack_chain/rootme.yml", "r") as attack_chain:
                     #print(yaml.load(attack_chain))
                     self.load_block(attack_chain)
                     
@@ -282,6 +283,7 @@ class Explore():
                                 self.user_takeover(para)
                     
                 # continue
+                break
         
         # time.sleep(5)
         # tree = Tree()
