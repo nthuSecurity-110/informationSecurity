@@ -20,7 +20,7 @@ class Explore():
         # self.process = Process(target=self.exploring, args=())
         # nmap get basic info, fill into Data
 
-        explored_host = input("Which host you want to explore? (Testing default: 99.83.179.177)\n").strip() # 99.83.179.177
+        explored_host = input("Which host you want to explore? (ex: 99.83.179.177)\n").strip() # 99.83.179.177
         url = input('Input target url(ex: https://hackmd.io/):\n')
 
         if explored_host == '':
@@ -54,7 +54,7 @@ class Explore():
         self.Data['Port']= p
         self.Data['Apache']= None
 
-        print(f'self.data:\n{self.Data}\n')
+        # print(f'self.data:\n{self.Data}\n')
         
         print(f'{"*"*15}Begin initial reconnaissance{"*"*15}\n')
         Recon_files = ['nmap_A', 'gobuster']
@@ -71,7 +71,32 @@ class Explore():
             self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint)
         print(f'{"*"*15}End initial reconnaissance{"*"*15}\n')
         
+        print("Choose the attack chain you want to use from the following table.\n"+'='*30)
+        atk_chain_list = []
+        path = os.walk("./attack_chain")
+        for root, directories, files in path:
+            for file in files:
+                atk_chain_list.append(file)
+        
+        for i in range(len(atk_chain_list)):
+            print(f'{i}: {atk_chain_list[i]}')
+        print('='*30)
+        chosen_atk_chain = input("Enter the atk chain number you choose.\nIf choose more than one chains, seperate it with space.\n(ex. 1 2 5)\n")
 
+        while(1):
+            try: # filter the invalid atk chain idx (have to be number)
+                chosen_atk_chain = [ int(x) for x in chosen_atk_chain.split(' ') ]
+                break
+            except ValueError:
+                chosen_atk_chain = input("Enter the atk chain number you choose.\nIf choose more than one chains, seperate it with space.\n(ex. 1 2 5)\n")
+                continue
+
+        self.chosen_atk_chains = []
+        for idx in chosen_atk_chain:
+            # filter the invalid idx range and repeated chosen chain
+            if idx <len(atk_chain_list) and idx>-1 and atk_chain_list[idx] not in self.chosen_atk_chains:
+                self.chosen_atk_chains.append(atk_chain_list[idx])
+        print(f'You choose {len(self.chosen_atk_chains)} valid atk chain: {self.chosen_atk_chains}')
 
     def compare_version(self, v1, v2):
         '''
@@ -271,44 +296,46 @@ class Explore():
         self.class_chain, self.block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
 
     def exploring(self):
-        path = os.walk("./attack_chain")
-        for root, directories, files in path:
-            for file in files:
-                with open("./attack_chain/"+file, "r") as attack_chain:
-                    #print(yaml.load(attack_chain))
-                    self.load_block(attack_chain)
-                    
-                for i in range(len(self.block_chain)): # for all blocks in block chain
-                    blockname = self.block_chain[i]
-                    classname = self.class_chain[i]
-                    # flush input buffer, in case there are any unexpected user input before
-                    tcflush(sys.stdin, TCIFLUSH)
-                    block = Block(classname, blockname)
-                    result = self.match_condition_format(block)
-                    if result == True:
-                        try:
-                            block_func = getattr(Function, block.function) # get the required function from block
-                            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                            self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
-                            if match_condition:
-                                print("MATCH RULE~~~!!!!\n")
-                            else:
-                                print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
-                                self.run_class(self.class_chain[i])
-                        except AttributeError: # if block use undefined function, skip to next chain
-                            print(f"Function '{block.function}' is not defined, skip to next chain.")
-                    elif result == False:
-                        if not self.match_condition_format(block):
-                            print("fail to get needed data by run_class, skip")
-                            break
+        # path = os.walk("./attack_chain")
+        # for root, directories, files in path:
+        #     for file in files:
+        for file in self.chosen_atk_chains:
+            print("\n"+'*'*20+"Running atk chain:"+file+'*'*20+"\n")
+            with open("./attack_chain/"+file, "r") as attack_chain:
+                #print(yaml.load(attack_chain))
+                self.load_block(attack_chain)
+                
+            for i in range(len(self.block_chain)): # for all blocks in block chain
+                blockname = self.block_chain[i]
+                classname = self.class_chain[i]
+                # flush input buffer, in case there are any unexpected user input before
+                tcflush(sys.stdin, TCIFLUSH)
+                block = Block(classname, blockname)
+                result = self.match_condition_format(block)
+                if result == True:
+                    try:
+                        block_func = getattr(Function, block.function) # get the required function from block
+                        func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+                        self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
+                        if match_condition:
+                            print("MATCH RULE~~~!!!!\n")
                         else:
+                            print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
                             self.run_class(self.class_chain[i])
+                    except AttributeError: # if block use undefined function, skip to next chain
+                        print(f"Function '{block.function}' is not defined, skip to next chain.")
+                elif result == False:
+                    if not self.match_condition_format(block):
+                        print("fail to get needed data by run_class, skip")
+                        break
                     else:
-                        print('There are some missing data..')
-                        mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
-                        if mode == '1':
-                    	    for para in result:
-                                self.user_takeover(para)
+                        self.run_class(self.class_chain[i])
+                else:
+                    print('There are some missing data..')
+                    mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
+                    if mode == '1':
+                        for para in result:
+                            self.user_takeover(para)
                     
                 # continue
         
