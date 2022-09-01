@@ -1,0 +1,11 @@
+description: scan directory
+function: magic_function
+argument: []
+In: ['URL']
+condition: 
+Out: []
+hint:
+  - Open a new terminal.
+  - run "gobuster dir -u {Data['URL']} -x php,txt,html -w /usr/share/wordlists/dirb/big.txt"
+  - Pay attention the files, one may grant you some useful information!
+  - Try and visit http://<IP>/<file_name>.
