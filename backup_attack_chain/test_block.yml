@@ -1,0 +1,3 @@
+class_chain: [Discovery]
+block_chain: [wpscan]
+tag:
