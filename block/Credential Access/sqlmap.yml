@@ -1,0 +1,18 @@
+description: detecting and exploiting SQL injections and taking over of database servers
+function: magic_function
+argument: []
+In: ['IP']
+condition: 
+Out: []
+hint: 
+  - In an opened terminal, run "sqlmap -u http://{Data['IP']}/administrator.php --forms --dump"
+  - Did you find any username and password?
+  - Login to the admin login page!
+  - Type the command "find / -name *pass* -type f"
+  - Check for any suspicious files.
+  - Did you notice the path /var/hidden/pass?
+  - Try opening it! Then, save the password/
+  - Next, we are going to access the RSA ID.
+  - Type "cat /home/pingu/.ssh/id_rsa" in the command box.
+  - Save it as a "id_rsa" file in your local machine.
+  - Use "touch" and "nano"

