@@ -1,0 +1,3 @@
+class_chain: [Reconnaissance, Initial Access, Privilege Escalation]
+block_chain: [nmap_couchDB, couchDB_find_info, get_root_by_bash_history]
+tag:

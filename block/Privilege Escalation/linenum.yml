@@ -1,0 +1,15 @@
+description: search for possible ways to priv esc
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint:
+  - "[EXE]wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh"
+  - "[EXE]scp LinEnum.sh {Data['username']}@{Data['IP']}:/tmp"
+  - On {Data['username']}'s machine, execute these commands
+  - "cd /tmp/"
+  - "ls -la"
+  - "chmod +x LinEnum.sh"
+  - "./LinEnum.sh"
+  - Look into the suid files. Any interesting paths?

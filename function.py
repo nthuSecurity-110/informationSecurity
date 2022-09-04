@@ -82,9 +82,15 @@ def give_hint(hints, args, func_in, Data):
                 #     temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
             elif ("[INPUT]") in hint:
                 hint =  hint.replace("[INPUT]", "")
-                Data[hint] = input(f'Please find value of "{hint}" in above output and enter it (enter "None" if no data): ')
-                if Data[hint].lower() == "none":
+                ipt = input(f'Please find value of "{hint}" in above output and enter it (enter "None" if no data): ')
+                if ipt.lower() == "none":
                     return False
+                
+                try:
+                	Data[hint].append(ipt)
+                	print(Data[hint])
+                except KeyError:
+                	Data[hint] = ipt
             else:
                 while 1:
                     try:

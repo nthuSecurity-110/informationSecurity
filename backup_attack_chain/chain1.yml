@@ -1,2 +1,0 @@
-class_chain: [scanner, exploit]
-block_chain: [http_version, php_cgi_arg_injection]
