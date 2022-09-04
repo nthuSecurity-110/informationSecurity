@@ -59,20 +59,20 @@ class Explore():
 
         #print(f'self.data:\n{self.Data}\n')
         
-        print(f'{"*"*15}Begin initial reconnaissance{"*"*15}\n')
-        Recon_files = ['nmap_A', 'gobuster']
+        # print(f'{"*"*15}Begin initial reconnaissance{"*"*15}\n')
+        # Recon_files = ['nmap_A', 'gobuster']
 
-        for i in range(len(Recon_files)):
-            blockname = Recon_files[i]
-            if(blockname == 'gobuster' and '80' not in self.Data['Port']):
-                continue
+        # for i in range(len(Recon_files)):
+        #     blockname = Recon_files[i]
+        #     if(blockname == 'gobuster' and '80' not in self.Data['Port']):
+        #         continue
             
-            tcflush(sys.stdin, TCIFLUSH)
-            block = Block('Reconnaissance', blockname)
-            block_func = getattr(Function, block.function) # get the required function from block
-            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-            self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint)
-        print(f'{"*"*15}End initial reconnaissance{"*"*15}\n')
+        #     tcflush(sys.stdin, TCIFLUSH)
+        #     block = Block('Reconnaissance', blockname)
+        #     block_func = getattr(Function, block.function) # get the required function from block
+        #     func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+        #     self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint)
+        # print(f'{"*"*15}End initial reconnaissance{"*"*15}\n')
         while(1):
             try:
                 mnl_or_auto = int(input('Show suggested chain(1) or manually choose from all chains(2)?\n'))
@@ -316,38 +316,39 @@ class Explore():
         self.class_chain, self.block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
 
     def exploring(self):
-        path = os.walk("./attack_chain")
-        for root, directories, files in path:
-            for file in files:
-                with open("./attack_chain/"+file, "r") as attack_chain:
-                # with open("./attack_chain/.yml", "r") as attack_chain:
-                    #print(yaml.load(attack_chain))
-                    self.load_block(attack_chain)
-                    
-                for i in range(len(self.block_chain)): # for all blocks in block chain
-                    blockname = self.block_chain[i]
-                    classname = self.class_chain[i]
-                    # flush input buffer, in case there are any unexpected user input before
-                    tcflush(sys.stdin, TCIFLUSH)
-                    block = Block(classname, blockname)
-                    result = self.match_condition_format(block)
-                    if result == True:
-                        try:
-                            block_func = getattr(Function, block.function) # get the required function from block
-                            func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
-                            self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
-                            if match_condition:
-                                print("MATCH RULE~~~!!!!\n")
-                            else:
-                                print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
-                                self.run_class(self.class_chain[i])
-                        except AttributeError: # if block use undefined function, skip to next chain
-                            print(f"Function '{block.function}' is not defined, skip to next chain.")
-                    elif result == False:
-                        self.run_class(self.class_chain[i])
-                        if not self.match_condition_format(block):
-                            print("fail to get needed data by run_class, skip")
-                            break
+        #path = os.walk("./attack_chain")
+        #for root, directories, files in path:
+        for file in self.selected_chains:
+            print("\n"+'*'*20+"Running atk chain:"+file+'*'*20+"\n")
+            with open("./attack_chain/"+file, "r") as attack_chain:
+                #print(yaml.load(attack_chain))
+                self.load_block(attack_chain)
+                
+            for i in range(len(self.block_chain)): # for all blocks in block chain
+                blockname = self.block_chain[i]
+                classname = self.class_chain[i]
+                # flush input buffer, in case there are any unexpected user input before
+                tcflush(sys.stdin, TCIFLUSH)
+                block = Block(classname, blockname)
+                result = self.match_condition_format(block)
+                if result == True:
+                    try:
+                        block_func = getattr(Function, block.function) # get the required function from block
+                        func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+                        self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
+                        if match_condition:
+                            print("MATCH RULE~~~!!!!\n")
+                        else:
+                            print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
+                            self.run_class(self.class_chain[i])
+                    except AttributeError as k: # if block use undefined function, skip to next chain
+                        print(f"Function '{block.function}' is not defined, skip to next chain.")
+                        # print(k)
+                elif result == False:
+                    self.run_class(self.class_chain[i])
+                    if not self.match_condition_format(block):
+                        print("fail to get needed data by run_class, skip")
+                        break
                     else:
                         self.run_class(self.class_chain[i])
                 else:
@@ -358,7 +359,6 @@ class Explore():
                             self.user_takeover(para)
                     
                 # continue
-                break
         
         # time.sleep(5)
         # tree = Tree()
