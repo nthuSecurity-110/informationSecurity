@@ -1,0 +1,2 @@
+class_chain: [Credential Access, Credential Access, Credential Access, Privilege Escalation]
+block_chain: [postgres_login, postgres_copy_from_program_cmd_exec, ssh_login, bypass_by_unix_binary]

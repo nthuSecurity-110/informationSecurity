@@ -1,0 +1,7 @@
+use auxiliary/scanner/postgres/postgres_login
+
+set RHOSTS 10.10.150.161
+
+run
+
+exit
