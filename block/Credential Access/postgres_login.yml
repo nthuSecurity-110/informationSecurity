@@ -1,0 +1,8 @@
+description: scan postgres username and password
+function: metasploit
+argument: ['-r', 'postgres_login.rc']
+In: ['IP']
+condition:
+  - postgresql in Service
+Out: []
+hint:
