@@ -64,7 +64,7 @@ class Explore():
 
         for i in range(len(Recon_files)):
             blockname = Recon_files[i]
-            if(blockname == 'gobuster' and '80' not in self.Data['Port']):
+            if(blockname == 'gobuster' and '80' not in self.Data['Port'] and '443' not in self.Data['Port']):
                 continue
             
             tcflush(sys.stdin, TCIFLUSH)
@@ -73,6 +73,7 @@ class Explore():
             func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
             self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint)
         print(f'{"*"*15}End initial reconnaissance{"*"*15}\n')
+        
         while(1):
             try:
                 mnl_or_auto = int(input('Show suggested chain(1) or manually choose from all chains(2)?\n'))
