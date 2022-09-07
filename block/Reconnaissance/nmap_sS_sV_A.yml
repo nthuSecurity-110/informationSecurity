@@ -5,8 +5,4 @@ In: [IP]
 condition: 
 Out: []
 hint:
-  #- "[EXE]nmap -A {Data['IP']}"
-  - "[EXE]cd block; ls;"
-  - I am hint
-  - "[EXE]mkdir temp"
-  - "[EXE]ls"
+  - "[EXE]sudo nmap -sS -sV -A {Data['IP']}"

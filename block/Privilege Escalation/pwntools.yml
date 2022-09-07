@@ -1,0 +1,15 @@
+description: Binary Exploitation
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint:
+  - In {Data['username']}'s machine execute these commands
+  - "gdb /opt/secret/root"
+  - "r < <(cyclic 50)"
+  - "cyclic -l 0x6161616c"
+  - How many characters if input are needed to overwrite EIP?
+  - Copy contents of pwntool.py to {Data['username']}'s machine and execute it. Here's the content
+  - "[EXE]cat pwntool.py"
+  - Look at the root!

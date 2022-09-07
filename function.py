@@ -229,6 +229,9 @@ class Function():
     '''
     def create_file(func_in, Data, args, block_In, block_Out, block_hint):
         try:
+            if "[" in args[1]:
+            	args[1] = eval(args[1])
+            	# print(f'/home/{getpass.getuser()}/Desktop/{args[1]}')
             with open(f'/home/{getpass.getuser()}/Desktop/{args[1]}', 'w') as f:
                 file = args[0]
                 for i in block_In:
@@ -253,7 +256,7 @@ class Function():
     '''
     def magic_function(func_in, Data, args, block_In, block_Out, block_hint):
         flag = False
-        hint_result = True
+        hint_result = False
         print("data: ", Data, "\n")
         for i in range(len(args)):
             if flag == True:
