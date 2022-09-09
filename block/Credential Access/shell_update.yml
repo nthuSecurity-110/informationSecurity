@@ -12,4 +12,3 @@ hint:
   - export TERM=xterm
   - Continue finding useful info
   - (For example, type `cd /var/backups/mike_home_backup`, and then `cat .bash_history`, maybe you can find useful info)
-  
