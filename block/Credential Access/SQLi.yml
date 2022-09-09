@@ -1,0 +1,10 @@
+description: SQL injection
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint: 
+  - Try to type SQLi code in url bar, or login page. (ex. `admin' or '1'='1'#`)
+  - Can you find anything interesting? (y/N)
+  - Continue finding useful info...
