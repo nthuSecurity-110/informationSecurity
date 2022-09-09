@@ -1,2 +1,3 @@
 class_chain: [Reconnaissance, Reconnaissance, Credential Access]
 block_chain: [nmap_sS_sV_A, gobuster_big, sqlmap]
+tag:
