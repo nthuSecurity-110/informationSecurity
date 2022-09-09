@@ -200,3 +200,4 @@ hint:
   - "Upload it to the {Data['IP']}/[existing page you found], ex: {Data['IP']}/panel."
   - Open another terminal, enter `nc -lnvp {Data['port']}` to listen to port.
   - Go to the {Data['IP']}/uploads page, click the file to execute.
+  - If the terminal you just opend has no reaction, try to rename the filename extension from `.php5` to `.php` 

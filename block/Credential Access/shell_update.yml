@@ -1,0 +1,15 @@
+description: update shell
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint: 
+  - Type the following 4 cmd in another terminal which has gotten the shell
+  - /usr/bin/script -qc /bin/bash /dev/null
+  - click control+z to background the shell
+  - stty raw -echo; fg
+  - export TERM=xterm
+  - Continue finding useful info
+  - (For example, type `cd /var/backups/mike_home_backup`, and then `cat .bash_history`, maybe you can find useful info)
+  
