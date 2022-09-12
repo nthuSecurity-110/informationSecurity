@@ -3,3 +3,4 @@
 class_chain: [Reconnaissance, Initial Access, Privilege Escalation]
 block_chain: [gobuster, reverse_shell_php5, get_root_by_python]
 tag: 
+change_type: data
