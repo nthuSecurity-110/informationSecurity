@@ -10,6 +10,7 @@ import time
 import os
 import yaml
 import nmap
+from createMdReport import *
 
 from xmlrpc.client import Boolean, boolean
 class Explore():
@@ -366,6 +367,8 @@ class Explore():
         # print("tree show:", tree.show())
         # print("tree depth:", tree.depth())
         print("done exploring!")
+        createMD = MdReport(self.Data)
+        createMD.createMd()
 
     # def start(self):
     #     self.process.start()
