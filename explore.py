@@ -357,7 +357,9 @@ class Explore():
                     if mode == '1':
                         for para in result:
                             self.user_takeover(para)
-                    
+                            
+            privilege_escalation = getattr(Function, "privilege_escalation")
+            privilege_escalation(func_in, self.Data)        
                 # continue
         
         # time.sleep(5)
