@@ -1,0 +1,5 @@
+# class_chain: [Credential Access, Initial Access, Initial Access, Initial Access, Privilege Escalation]
+# block_chain: [ftp_anonymous_login, ftp_find_sh, reverse_shell_python, get_bash_by_python, get_root_by_env]
+class_chain: [Credential Access, Initial Access, Initial Access, Initial Access]
+block_chain: [ftp_anonymous_login, ftp_find_sh, reverse_shell_python, get_bash_by_python]
+tag:

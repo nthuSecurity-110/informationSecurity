@@ -301,7 +301,7 @@ class Function():
             if len(block_list) == 0:
                 print("OUT OF BLOCKS QQ")
                 break
-            print("\nChoose the block you want to use from the following.\n"+'='*30)
+            print("\nChoose the block you want to use to get root from the following.\n"+'='*30)
             for i in range(len(block_list)):
                 print(f'{i}: {block_list[i]}')
             print('='*30)

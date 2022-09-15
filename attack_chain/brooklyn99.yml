@@ -1,3 +1,5 @@
-class_chain: [Credential Access, Credential Access, Privilege Escalation]
-block_chain: [ftp_anonymous_login, exploit_user, bypass_by_unix_binary]
+# class_chain: [Credential Access, Credential Access, Privilege Escalation]
+# block_chain: [ftp_anonymous_login, exploit_user, bypass_by_unix_binary]
+class_chain: [Credential Access, Credential Access]
+block_chain: [ftp_anonymous_login, exploit_user]
 tag:
