@@ -1,8 +1,0 @@
-description: Nmap scan to get the useful info
-function: magic_function
-argument: []
-In: [IP]
-condition: 
-Out: []
-hint:
-  - "[EXE]sudo nmap -sS -sV -A {Data['IP']}"

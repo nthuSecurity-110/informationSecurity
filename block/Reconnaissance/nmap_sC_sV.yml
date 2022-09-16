@@ -1,9 +1,0 @@
-description: use nmap to scan IP
-function: magic_function
-argument: []
-In: [IP]
-condition: 
-Out: []
-hint:
-  - "[EXE] nmap -sC -sV {Data['IP']}"
-  - Is port 7070 open? (y/N)
