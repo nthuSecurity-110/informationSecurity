@@ -1,0 +1,11 @@
+description: use nmap to find whether there is couchDB service
+function: magic_function
+argument: []
+In: [IP]
+condition:
+  - ssh in Service
+Out: []
+hint:
+  - "[EXE]nmap -sC -sV -p5984 {Data['IP']}"
+  - Is there CouchDB service? (y/N)
+  - "[INPUT]Service"

@@ -1,4 +1,4 @@
-class_chain: [Initial Access, Credential Access, Initial Access, Privilege Escalation]
-block_chain: [CVE-2020-1938, ssh_login, crack_gpg, bypass_by_unix_binary]
+class_chain: [Initial Access, Credential Access, Initial Access]
+block_chain: [CVE-2020-1938, ssh_login, crack_gpg]
 tag:
 change_type: service

