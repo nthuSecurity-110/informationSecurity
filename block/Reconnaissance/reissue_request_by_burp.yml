@@ -1,0 +1,14 @@
+description: Reissue requests with Burp Repeater
+function: magic_function
+argument: []
+In: ['URL']
+condition: 
+  - 80 in Port
+Out: []
+hint:
+  - Please open Burp Suite.
+  - Launch Burp's browser by clicking Proxy > Intercept > Open Browser
+  - Visit {Data['URL']} by the browser
+  - Go to Proxy > HTTP history tab, right-click the request you want to repeat and click `Send to Repeater`
+  - Go to Repeater tab, modify the request if you want, then click `Send` to send it
+  - If successful, you get the response

