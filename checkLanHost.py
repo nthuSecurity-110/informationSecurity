@@ -4,7 +4,6 @@ def prYellow(skk): print("\033[93m {}\033[00m" .format(skk))
 
 import nmap
 from datetime import datetime
-from netaddr import IPAddress
 from trace import *
 from nodeData import *
 # from subprocess import Popen, PIPE

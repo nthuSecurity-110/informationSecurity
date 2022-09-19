@@ -1,6 +1,4 @@
-import sys
 import subprocess
-from itertools import groupby
   
 class NetworkData_Linux:
     '''

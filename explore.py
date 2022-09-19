@@ -1,17 +1,12 @@
 from curses.ascii import isdigit
-from unittest import result
-from sympy import evaluate
 from function import Function
 from nodeData import *
 from block import Block
 from termios import tcflush, TCIFLUSH
 import sys
-import time
 import os
 import yaml
-import nmap
 
-from xmlrpc.client import Boolean, boolean
 class Explore():
     """
     This is used for exploring one specific host. 

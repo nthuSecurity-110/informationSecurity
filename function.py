@@ -1,12 +1,8 @@
-from inspect import Parameter
 import os
 import getpass
-from matplotlib.pyplot import hist
-from numpy import mat
 from packaging import version
 from subprocess import Popen, PIPE
 import re
-import subprocess
 from termios import tcflush, TCIFLUSH
 import sys
 
