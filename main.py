@@ -5,7 +5,6 @@ from checkLanHost import *
 from nodeData import *
 from explore import *
 from createRule import *
-import sys
 
 util = Helper()
     

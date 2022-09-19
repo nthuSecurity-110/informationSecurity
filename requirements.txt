@@ -1,0 +1,6 @@
+ruamel.yaml.clib==0.2.2
+more-itertools==4.2.0
+python-nmap==0.7.1
+ruamel.yaml==0.16.12
+PyYAML==6.0
+packaging==20.9
