@@ -1,0 +1,19 @@
+description: find infomation in CouchDB
+function: magic_function
+argument: []
+In: []
+condition: 
+  - or:
+    - CouchDB in Service
+    - couchDB in Service
+Out: []
+hint:
+  - Go to http://{Data['IP']}:5984/_utils to find more infomation.
+  - Or open another terminal, use `curl -X GET http://{Data['IP']}:5984/_all_dbs` to checkout databases.
+  - Use `curl -X GET http://{Data['IP']}:5984/{{db_name}}/_all_docs` to find document id.
+  - Use `curl -X GET http://{Data['IP']}:5984/{{db_name}}/{{doc_id}}` to fetch document.
+  - Can you find any account and password? (y/N)
+  - "[INPUT]CouchDB_account"
+  - "[INPUT]CouchDB_password"
+  - Open another terminal, enter `ssh {Data['CouchDB_account']}@{Data['IP']}`.
+  - "Enter password: {Data['CouchDB_password']} to login."

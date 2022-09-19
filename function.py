@@ -5,6 +5,7 @@ from subprocess import Popen, PIPE
 import re
 from termios import tcflush, TCIFLUSH
 import sys
+from block import Block
 
 Default = False
 
@@ -78,9 +79,15 @@ def give_hint(hints, args, func_in, Data):
                 #     temp.write("{}\n".format(stdout_line.decode('utf-8')).rstrip())
             elif ("[INPUT]") in hint:
                 hint =  hint.replace("[INPUT]", "")
-                Data[hint] = input(f'Please find value of "{hint}" in above output and enter it (enter "None" if no data): ')
-                if Data[hint].lower() == "none":
+                ipt = input(f'Please find value of "{hint}" in above output and enter it (enter "None" if no data): ')
+                if ipt.lower() == "none":
                     return False
+                
+                try:
+                	Data[hint].append(ipt)
+                	print(Data[hint])
+                except KeyError:
+                	Data[hint] = ipt
             else:
                 while 1:
                     try:
@@ -101,6 +108,7 @@ def give_hint(hints, args, func_in, Data):
             else:
                 user_input = input('press Enter to continue...\n')
     return True
+            
 
 class Function():
     def http_version(func_in, Data, args, block_In, block_Out, block_hint):
@@ -250,6 +258,50 @@ class Function():
         match = check_output_data(Data, block_Out)
         return Data, match
     '''
+    
+    def privilege_escalation(func_in, Data):
+        print("Choose the block you want to use to get root from the following.\n"+'='*30)
+        block_list = []
+        path = os.walk("./block/Privilege Escalation")
+        for root, directories, files in path:
+            for file in files:
+                block_list.append(file)
+        
+        for i in range(len(block_list)):
+            print(f'{i}: {block_list[i]}')
+        print('='*30)
+        
+        while(1):
+            user_input = input("Please input a number: ")
+            while(1):
+                try:
+                    user_input = int(user_input)
+                    if user_input < 0 or user_input >= len(block_list):
+                        user_input = input("Out of range. Please input again: ")
+                    else:
+                        print("")
+                        break
+                except ValueError:
+                    user_input = input("Please input number: ")
+            block = Block("Privilege Escalation", block_list[user_input].replace(".yml",""))
+            result = give_hint(block.hint, block.argument, func_in, Data)
+            if result:
+                success = input("Does escalation success? Please input yes/no: ")
+                while success.lower() != "yes" and success.lower() != "no":
+                    success = input('Please input "yes" or "no": ')
+                if success.lower() == "yes":
+                    print("SUCCESS TO GET ROOT!!")
+                    break
+            
+            block_list.remove(block_list[user_input])
+            if len(block_list) == 0:
+                print("OUT OF BLOCKS QQ")
+                break
+            print("\nChoose the block you want to use to get root from the following.\n"+'='*30)
+            for i in range(len(block_list)):
+                print(f'{i}: {block_list[i]}')
+            print('='*30)
+    
     def magic_function(func_in, Data, args, block_In, block_Out, block_hint):
         flag = False
         hint_result = False
