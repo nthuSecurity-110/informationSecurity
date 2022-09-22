@@ -1,0 +1,10 @@
+description: "check ip:port webpage to find infomation"
+function: magic_function
+argument: []
+In: [IP]
+condition:
+Out: []
+hint:
+  - "Check webpage: {Data['IP']}:<port>\nFor all port in {Data['Port']}."
+  - Is there any interesting service? (y/N)
+  - "[INPUT]Service"
