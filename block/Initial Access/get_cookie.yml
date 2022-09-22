@@ -1,0 +1,9 @@
+description: get http header for argument change test (AC test)
+function: magic_function
+argument: []
+In: [URL]
+condition: 
+Out: []
+hint: 
+  - "[EXE]curl -c cookies.txt {Data['URL']}"
+  - The cookies.txt is stored at ./cookies.txt
