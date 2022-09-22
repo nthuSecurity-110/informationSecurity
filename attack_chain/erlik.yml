@@ -1,0 +1,4 @@
+class_chain: [Reconnaissance, Initial Access]
+block_chain: [check_port_page, wsdl_sql_injection]
+tag:
+change_type: 
