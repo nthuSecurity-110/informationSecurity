@@ -1,3 +1,4 @@
 class_chain: [Discovery, Discovery, Discovery, Discovery, Initial Access]
 block_chain: [nmap_getver, enum_shares, smbclient, enum_nfs, searchsploit]
 tag:
+change_type: argument

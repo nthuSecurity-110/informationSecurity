@@ -1,0 +1,12 @@
+description: SQL injection
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint: 
+  - Try to type SQLi code in url bar, or login page. (ex. `admin' or '1'='1'#`)
+  - You can find `SQL Injection Auth Bypass Payloads` here--https://github.com/payloadbox/sql-injection-payload-list
+  - Another option, do the same thing automatically with burp--https://pentestlab.blog/2013/02/25/sql-injection-authentication-bypass-with-burp/
+  - Can you find anything interesting? (y/N)
+  - Continue finding useful info...

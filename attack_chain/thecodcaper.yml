@@ -1,2 +1,4 @@
-class_chain: [Reconnaissance, Reconnaissance, Credential Access]
-block_chain: [nmap_sS_sV_A, gobuster_big, sqlmap]
+Sclass_chain: [Reconnaissance, Credential Access]
+block_chain: [gobuster_big, sqlmap]
+tag: 
+change_type: data
