@@ -1,0 +1,5 @@
+class_chain: [Reconnaissance, Credential Access, Credential Access, Privilege Escalation, Privilege Escalation]
+block_chain: [sqlmap_get_dbname_and_content, crack_hash_by_john, ssh_login, bypass_by_unix_binary, get_root_by_edit_service_file]
+tag:
+  Service: ['http']
+change_type: code, argument

