@@ -1,0 +1,11 @@
+description: crack username and password 
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint:
+  - open another terminal
+  - "If you know the username but don't know the password, enter `ncrack -user <username> -P /usr/share/wordlists/dirb/common.txt {Data['IP']}:<port>`\n
+  If you don't know username but know the password enter `ncrack -U /usr/share/wordlists/dirb/common.txt -pass <password> {Data['IP']}:<port>`\n
+  If you neither have username nor the password, enter ncrack -U /usr/share/wordlists/dirb/common.txt -P /usr/share/wordlists/dirb/common.txt {Data['IP']}:<port>`"

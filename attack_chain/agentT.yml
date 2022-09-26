@@ -2,4 +2,4 @@ class_chain: [Reconnaissance, Initial Access]
 block_chain: [nmap_http_php_version, php-8.1.0-dev-exploit]
 tag:
   Port: ['80']
-change_type: argument
+  PT: ['01', '07']
