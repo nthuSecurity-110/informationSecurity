@@ -1,18 +1,15 @@
 from curses.ascii import isdigit
-from unittest import result
-from sympy import evaluate
 from function import Function
 from nodeData import *
 from block import Block
 from termios import tcflush, TCIFLUSH
 import sys
-import time
 import os
 import yaml
 import nmap
 from createMdReport import *
 
-from xmlrpc.client import Boolean, boolean
+
 class Explore():
     """
     This is used for exploring one specific host. 
@@ -343,9 +340,11 @@ class Explore():
                         else:
                             print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
                             self.run_class(self.class_chain[i])
-                    except AttributeError: # if block use undefined function, skip to next chain
+                    except AttributeError as k: # if block use undefined function, skip to next chain
                         print(f"Function '{block.function}' is not defined, skip to next chain.")
+                        # print(k)
                 elif result == False:
+                    self.run_class(self.class_chain[i])
                     if not self.match_condition_format(block):
                         print("fail to get needed data by run_class, skip")
                         break
@@ -357,7 +356,9 @@ class Explore():
                     if mode == '1':
                         for para in result:
                             self.user_takeover(para)
-                    
+                            
+            privilege_escalation = getattr(Function, "privilege_escalation")
+            privilege_escalation(func_in, self.Data)        
                 # continue
         
         # time.sleep(5)

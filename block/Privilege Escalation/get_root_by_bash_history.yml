@@ -1,0 +1,10 @@
+description: get root by checking bash history
+function: magic_function
+argument: []
+In: []
+condition: 
+Out: []
+hint:
+  - Please enter `cat ~/.bash_history` in shell you got.
+  - Can you find any past command that is helpful? (y/N)
+  - Copy and paste the command you found, and you will be root (use "whoami" to check).
