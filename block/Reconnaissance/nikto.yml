@@ -1,0 +1,9 @@
+description: scan the host by nikto
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint: 
+  - "[EXE]nikto -h {Data['IP']}"
+  - Do you find anything useful?(y/N)

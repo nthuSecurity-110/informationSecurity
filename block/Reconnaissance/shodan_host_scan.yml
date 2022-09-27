@@ -1,0 +1,8 @@
+description: scan the host by shodan
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+Out: []
+hint: 
+  - "[EXE]shodan host {Data['IP']}"

@@ -1,0 +1,9 @@
+description: crack ftp username and password 
+function: magic_function
+argument: []
+In: [IP]
+condition: 
+  - ftp in Service
+Out: []
+hint:
+  - "open another terminal, and enter `ncrack ftp://{Data['IP']}`"

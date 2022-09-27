@@ -1,4 +1,5 @@
-class_chain: [Credential Access, Initial Access, Credential Access]
-block_chain: [ftp_anonymous_login, crack_gpg, crack_hash_by_john]
+class_chain: [Credential Access, Initial Access, Credential Access, Credential Access]
+block_chain: [ftp_anonymous_login, crack_gpg, crack_hash_by_john, ssh_login]
 tag:
-change_type: service
+  Service: ['ftp']
+  PT: ['02', '03', '04', '13']

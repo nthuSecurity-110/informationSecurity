@@ -1,4 +1,4 @@
-class_chain: [Reconnaissance, Initial Access]
-block_chain: [gobuster, reverse_shell_php5]
-tag:
-change_type: data
+class_chain: [Reconnaissance, Initial Access, Privilege Escalation]
+block_chain: [gobuster, reverse_shell_php5, get_root_by_python]
+tag: 
+  PT: ['05', '08', '13']

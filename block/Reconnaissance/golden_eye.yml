@@ -1,0 +1,10 @@
+description: DDoS by golden eye
+function: magic_function
+argument: []
+In: [URL]
+condition: 
+Out: []
+hint: 
+  - "open another terminal, enter `goldeneye {Data['URL']}`"
+  - "check if the sevice is unable to work well after above attack(y/N)"
+  - "stop attacking by entering ctrl+C"

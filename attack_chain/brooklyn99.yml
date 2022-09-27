@@ -1,4 +1,5 @@
 class_chain: [Credential Access, Credential Access]
 block_chain: [ftp_anonymous_login, exploit_user]
 tag:
-change_type: data
+  Service: ['ftp']
+  PT: ['03', '04', '05', '13']

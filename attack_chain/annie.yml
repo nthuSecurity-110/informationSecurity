@@ -1,4 +1,4 @@
 class_chain: [Reconnaissance, Initial Access, Initial Access]
 block_chain: [nmap_sC_sV, CVE-2020–13160, get_bash_by_python]
 tag:
-change_type: data
+  PT: ['01', '05']

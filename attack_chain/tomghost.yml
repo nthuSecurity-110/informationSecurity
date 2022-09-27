@@ -1,4 +1,5 @@
 class_chain: [Initial Access, Credential Access, Initial Access]
 block_chain: [CVE-2020-1938, ssh_login, crack_gpg]
 tag:
-change_type: service
+  Service: ['ajp13']
+  PT: ['01', '05', '08']

@@ -1,4 +1,4 @@
 class_chain: [Credential Access,Initial Access,Credential Access]
 block_chain: [SQLi,reverse_shell_php5,shell_update]
 tag:
-change_type: argument
+  PT: ['01', '08']

@@ -1,0 +1,10 @@
+description: use owasp-zap
+function: magic_function
+argument: []
+In: [URL]
+condition: 
+Out: []
+hint: 
+  - open another terminal and enter `owasp-zap`
+  - enter the target url `{Data['URL']}` in the Quick Start tab
+  - checkout if there's any alert
