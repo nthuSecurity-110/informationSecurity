@@ -301,6 +301,90 @@ class Function():
             for i in range(len(block_list)):
                 print(f'{i}: {block_list[i]}')
             print('='*30)
+            
+    def run_single_block(func_in, Data, match_condition_format):
+        type_list = ['Credential Access', 'Discovery', 'Execution', 'Initial Access', 'Reconnaissance']
+        
+        while(1):
+            print("Choose what type of block you want to run.\n"+'='*30)
+            for i in range(len(type_list)):
+                print(f'{i}: {type_list[i]}')
+            print('='*30)
+            
+            type_num = input("Please input a number: ")
+            while(1):
+                try:
+                    type_num = int(type_num)
+                    if type_num < 0 or type_num >= len(type_list):
+                        type_num = input("Out of range. Please input again: ")
+                    else:
+                        print("")
+                        break
+                except ValueError:
+                    type_num = input("Please input number: ")
+                
+                
+            print("Choose the block you want to run.\n"+'='*30)
+            block_list = []
+            path = os.walk(f"./block/{type_list[type_num]}")
+            for root, directories, files in path:
+                for file in files:
+                    block_list.append(file)
+            
+            for i in range(len(block_list)):
+                print(f'{i}: {block_list[i]}')
+            print('='*30)
+            
+            while(1):
+                block_num = input("Please input a number: ")
+                while(1):
+                    try:
+                        block_num = int(block_num)
+                        if block_num < 0 or block_num >= len(block_list):
+                            block_num = input("Out of range. Please input again: ")
+                        else:
+                            print("")
+                            break
+                    except ValueError:
+                        block_num = input("Please input number: ")
+                        
+                block = Block(type_list[type_num], block_list[block_num].replace(".yml",""))
+                result = match_condition_format(block)
+                if result == True:
+                        try:
+                            block_func = getattr(Function, block.function) # get the required function from block
+                            func_in = {item:Data[item] for item in block.In} # find the function input from Data
+                            Data, match_condition = block_func(func_in, Data, block.argument, block.In, block.Out, block.hint) 
+                            if match_condition:
+                                print("Block execution done.\n")
+                            else:
+                                print("The block can't match condition. End execution.")
+                        except AttributeError: # if block use undefined function, skip
+                            print(f"Function '{block.function}' is not defined, skip.")
+                else:
+                    print("The block can't match condition. End execution.")
+                    
+                success = input(f"\nDo you want to run other blocks in {type_list[type_num]}? Please input yes/no: ")
+                while success.lower() != "yes" and success.lower() != "no":
+                    success = input('Please input "yes" or "no": ')
+                if success.lower() == "no":
+                    break
+                
+                block_list.remove(block_list[block_num])
+                if len(block_list) == 0:
+                    print("OUT OF BLOCKS QQ")
+                    break
+                print("\nChoose the block you want to run from the following.\n"+'='*30)
+                for i in range(len(block_list)):
+                    print(f'{i}: {block_list[i]}')
+                print('='*30)
+                
+            success = input(f"\nDo you want to run another type of blocks? Please input yes/no: ")
+            while success.lower() != "yes" and success.lower() != "no":
+                success = input('Please input "yes" or "no": ')
+            if success.lower() == "no":
+                break
+    	
     
     def magic_function(func_in, Data, args, block_In, block_Out, block_hint):
         flag = False
