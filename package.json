@@ -1,0 +1,25 @@
+{
+  "name": "informationsecurity",
+  "version": "1.0.0",
+  "description": "An open-source tool that assists penetration testers in their work.",
+  "main": "index.jsx",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nthuSecurity-110/informationSecurity.git"
+  },
+  "author": "Chelsea 歐家秀、Jose 徐祈、Jessica 梁家燕、Michelle 莊晴雯、Sakura 林姸廷",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nthuSecurity-110/informationSecurity/issues"
+  },
+  "homepage": "https://github.com/nthuSecurity-110/informationSecurity#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  }
+}

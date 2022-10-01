@@ -1,5 +1,6 @@
 from mdutils.mdutils import MdUtils
 from mdutils import Html
+import markdown
 from explore import *
 
 class MdReport:
@@ -21,3 +22,10 @@ class MdReport:
         mdFile.new_paragraph("Apache:" + str(self.data['Apache']))
 
         mdFile.create_md_file()
+
+        with open('Report.md', 'r') as f:
+            text = f.read()
+            html = markdown.markdown(text)
+
+        with open('Report.html', 'w') as f:
+            f.write(html)
