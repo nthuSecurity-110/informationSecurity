@@ -58,7 +58,7 @@ class Explore():
         #print(f'self.data:\n{self.Data}\n')
         
         print(f'{"*"*15}Begin initial reconnaissance{"*"*15}\n')
-        Recon_files = ['nmap_A', 'gobuster']
+        Recon_files = [] #['nmap_A', 'gobuster']
 
         for i in range(len(Recon_files)):
             blockname = Recon_files[i]
@@ -78,7 +78,6 @@ class Explore():
                 if(mnl_or_auto==1 or mnl_or_auto==2):
                     break
             except ValueError:
-                mnl_or_auto = int(input('Show suggested chain(1) or manually choose from all chains(2)?\n'))
                 continue
         
         if (mnl_or_auto ==1):
@@ -357,9 +356,62 @@ class Explore():
                         for para in result:
                             self.user_takeover(para)
                             
-            privilege_escalation = getattr(Function, "privilege_escalation")
-            privilege_escalation(func_in, self.Data)        
-                # continue
+        while(1):
+            print("\nPlease choose next step: \n1. Run other attack chains \n2. Run single block \n3. Privilege escalation \n4. End execution\n")
+            while(1):
+                next_step = input("Next step: ")
+                if next_step in ['1', '2', '3', '4']:
+                    break
+            if next_step == '1':
+                self.modify_selected_chains()
+                
+                for file in self.selected_chains:
+                    print("\n"+'*'*20+"Running atk chain:"+file+'*'*20+"\n")
+                    with open("./attack_chain/"+file, "r") as attack_chain:
+                        self.load_block(attack_chain)
+                        
+                    for i in range(len(self.block_chain)): # for all blocks in block chain
+                        blockname = self.block_chain[i]
+                        classname = self.class_chain[i]
+                        # flush input buffer, in case there are any unexpected user input before
+                        tcflush(sys.stdin, TCIFLUSH)
+                        block = Block(classname, blockname)
+                        result = self.match_condition_format(block)
+                        if result == True:
+                            try:
+                                block_func = getattr(Function, block.function) # get the required function from block
+                                func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
+                                self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
+                                if match_condition:
+                                    print("MATCH RULE~~~!!!!\n")
+                                else:
+                                    print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
+                                    self.run_class(self.class_chain[i])
+                            except AttributeError as k: # if block use undefined function, skip to next chain
+                                print(f"Function '{block.function}' is not defined, skip to next chain.")
+                        elif result == False:
+                            self.run_class(self.class_chain[i])
+                            if not self.match_condition_format(block):
+                                print("Fail to get needed data by run_class, skip.")
+                                break
+                            else:
+                                self.run_class(self.class_chain[i])
+            elif next_step == '2':
+                try:
+                    run_single_block = getattr(Function, "run_single_block")
+                    run_single_block(func_in, self.Data, self.match_condition_format)
+                except UnboundLocalError:
+                    func_in = {}
+                    run_single_block(func_in, self.Data, self.match_condition_format)
+            elif next_step == '3':
+                try:
+                	privilege_escalation = getattr(Function, "privilege_escalation")
+                	privilege_escalation(func_in, self.Data)
+                except UnboundLocalError:
+                	func_in = {}
+                	privilege_escalation(func_in, self.Data)
+            elif next_step == '4':
+                break
         
         # time.sleep(5)
         # tree = Tree()
