@@ -1,7 +1,10 @@
 from curses.ascii import isdigit
+
+from rx import merge
 from function import Function
 from nodeData import *
 from block import Block
+from record import Record
 from termios import tcflush, TCIFLUSH
 import sys
 import os
@@ -54,6 +57,8 @@ class Explore():
         self.Data['Port']= p
         self.Data['Apache']= None
         self.selected_chains = []
+        self.record = Record()
+        self.record.add_target_host_info(self.Data)
 
         #print(f'self.data:\n{self.Data}\n')
         
@@ -288,7 +293,7 @@ class Explore():
     def user_takeover(self, lack_input):
         exec("self.Data['"+lack_input+"'] = input('Please input missing parameter (" + lack_input +"): ')")
 
-    def run_class(self, Class):
+    def run_class(self, Class, Out):
         print("\nenter run_class")
         print("className:", Class)
         files = os.listdir('./block/{classname}'.format(classname=Class))
@@ -308,10 +313,15 @@ class Explore():
                     self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint)
                 else:
                     continue
+        for output in Out:
+            if self.Data[output] == None:
+                return False
+        return True
 
     def load_block(self, attack_chain):
         atk_chain = yaml.load(attack_chain, Loader=yaml.SafeLoader)
         self.class_chain, self.block_chain= atk_chain["class_chain"], atk_chain["block_chain"]
+        return atk_chain
 
     def exploring(self):
         #path = os.walk("./attack_chain")
@@ -320,8 +330,20 @@ class Explore():
             print("\n"+'*'*20+"Running atk chain:"+file+'*'*20+"\n")
             with open("./attack_chain/"+file, "r") as attack_chain:
                 #print(yaml.load(attack_chain))
-                self.load_block(attack_chain)
+                atk_chain = self.load_block(attack_chain)
                 
+                print("tag", atk_chain['tag'])
+                self.record.ini_chain_info(file, atk_chain['tag'])
+
+            # load chain info to report
+            for i in range(len(self.block_chain)): # for all blocks in block chain
+                blockname = self.block_chain[i]
+                classname = self.class_chain[i]
+                tcflush(sys.stdin, TCIFLUSH)
+                block = Block(classname, blockname, False)
+                self.record.add_chain_info(file, classname, blockname, block)
+                
+            chain_success_flag = True
             for i in range(len(self.block_chain)): # for all blocks in block chain
                 blockname = self.block_chain[i]
                 classname = self.class_chain[i]
@@ -335,26 +357,29 @@ class Explore():
                         func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                         self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
                         if match_condition:
+                            self.record.add_block_mark(file, blockname, True)
                             print("MATCH RULE~~~!!!!\n")
                         else:
                             print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
-                            self.run_class(self.class_chain[i])
+                            if self.run_class(self.class_chain[i], block.Out):
+                                self.record.add_block_mark(file, blockname, True)
+                            else:
+                                chain_success_flag = False
+                                break
                     except AttributeError as k: # if block use undefined function, skip to next chain
                         print(f"Function '{block.function}' is not defined, skip to next chain.")
+                        chain_success_flag = False
+                        break
                         # print(k)
                 elif result == False:
-                    self.run_class(self.class_chain[i])
+                    self.run_class(self.class_chain[i], block.Out)
                     if not self.match_condition_format(block):
-                        print("fail to get needed data by run_class, skip")
+                        print("fail to get needed data by run_class, skip this chain")
+                        chain_success_flag = False
                         break
-                    else:
-                        self.run_class(self.class_chain[i])
-                else:
-                    print('There are some missing data..')
-                    mode = input("Please choose next step. 1 for user take over, 2 for running other class methods.\nNext step: ")
-                    if mode == '1':
-                        for para in result:
-                            self.user_takeover(para)
+            
+            self.record.add_chain_mark(file, chain_success_flag)
+            self.record.add_chain_status(file)
                             
         while(1):
             print("\nPlease choose next step: \n1. Run other attack chains \n2. Run single block \n3. Privilege escalation \n4. End execution\n")
@@ -368,8 +393,19 @@ class Explore():
                 for file in self.selected_chains:
                     print("\n"+'*'*20+"Running atk chain:"+file+'*'*20+"\n")
                     with open("./attack_chain/"+file, "r") as attack_chain:
-                        self.load_block(attack_chain)
+                        atk_chain = self.load_block(attack_chain)
+
+                        self.record.ini_chain_info(file, atk_chain['tag'])
+
+                    # load chain info to report
+                    for i in range(len(self.block_chain)): # for all blocks in block chain
+                        blockname = self.block_chain[i]
+                        classname = self.class_chain[i]
+                        tcflush(sys.stdin, TCIFLUSH)
+                        block = Block(classname, blockname, False)
+                        self.record.add_chain_info(file, classname, blockname, block)
                         
+                    chain_success_flag = True
                     for i in range(len(self.block_chain)): # for all blocks in block chain
                         blockname = self.block_chain[i]
                         classname = self.class_chain[i]
@@ -383,33 +419,45 @@ class Explore():
                                 func_in = {item:self.Data[item] for item in block.In} # find the function input from Data
                                 self.Data, match_condition = block_func(func_in, self.Data, block.argument, block.In, block.Out, block.hint) 
                                 if match_condition:
+                                    self.record.add_block_mark(file, blockname, True)
                                     print("MATCH RULE~~~!!!!\n")
                                 else:
                                     print("FAIL TO GET DESIRED OUTPUT~~~!!!!\n")
-                                    self.run_class(self.class_chain[i])
+                                    if self.run_class(self.class_chain[i], block.Out):
+                                        self.record.add_block_mark(file, blockname, True)
+                                    else:
+                                        chain_success_flag = False
+                                        break
                             except AttributeError as k: # if block use undefined function, skip to next chain
                                 print(f"Function '{block.function}' is not defined, skip to next chain.")
+                                chain_success_flag = False
+                                break
                         elif result == False:
-                            self.run_class(self.class_chain[i])
+                            self.run_class(self.class_chain[i], block.Out)
                             if not self.match_condition_format(block):
                                 print("Fail to get needed data by run_class, skip.")
+                                chain_success_flag = False
                                 break
-                            else:
-                                self.run_class(self.class_chain[i])
+                    self.record.add_chain_mark(file, chain_success_flag)
+                    self.record.add_chain_status(file)
             elif next_step == '2':
                 try:
                     run_single_block = getattr(Function, "run_single_block")
-                    run_single_block(func_in, self.Data, self.match_condition_format)
+                    single_block_record = run_single_block(func_in, self.Data, self.match_condition_format)
+                    self.record.chain_record = {**self.record.chain_record, **single_block_record.chain_record}
                 except UnboundLocalError:
                     func_in = {}
-                    run_single_block(func_in, self.Data, self.match_condition_format)
+                    single_block_record = run_single_block(func_in, self.Data, self.match_condition_format)
+                    self.record.chain_record = {**self.record.chain_record, **single_block_record.chain_record}
             elif next_step == '3':
                 try:
-                	privilege_escalation = getattr(Function, "privilege_escalation")
-                	privilege_escalation(func_in, self.Data)
+                    privilege_escalation = getattr(Function, "privilege_escalation")
+                    priv_esc_record = privilege_escalation(func_in, self.Data)
+                    self.record.chain_record = {**self.record.chain_record, **priv_esc_record.chain_record}
                 except UnboundLocalError:
-                	func_in = {}
-                	privilege_escalation(func_in, self.Data)
+                    func_in = {}
+                    priv_esc_record = privilege_escalation(func_in, self.Data)
+                    self.record.chain_record = {**self.record.chain_record, **priv_esc_record.chain_record}
             elif next_step == '4':
                 break
         
@@ -419,6 +467,7 @@ class Explore():
         # tree.create_node(identifier='root_nmapScan',data=root_data)
         # print("tree show:", tree.show())
         # print("tree depth:", tree.depth())
+        self.record.gen_report()
         print("done exploring!")
         createMD = MdReport(self.Data)
         createMD.createMd()

@@ -1,7 +1,7 @@
 import yaml
 
 class Block():
-    def __init__(self, classname, filename):
+    def __init__(self, classname, filename, show_info=True):
         try:
             # print("path:", "./block/" + classname + "/" + filename + ".yml")
             with open("./block/" + classname + "/" + filename + ".yml", "r") as ymlFile:
@@ -13,7 +13,8 @@ class Block():
                 self.In = Data['In']
                 self.Out = Data['Out']
                 self.hint = Data['hint']
-                self.blockInfo()
+                if show_info:
+                    self.blockInfo()
                 self.valid = True
         except FileNotFoundError:
             print(f"Block '{filename}' does not exist. Skipping it!")

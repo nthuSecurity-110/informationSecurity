@@ -1,0 +1,125 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><title>pentesting report</title>
+    <style type="text/css" media="all">
+        @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800")
+    </style>
+    <style type="text/css" media="all">
+        html, body, div, span {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+            -webkit-text-size-adjust: none;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 60%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+        }
+
+    </style></head>
+<header style="width: 100%; border-bottom: 1px dotted #ccc; padding: 20px 0; margin: 0 0 20px 20;">pentest report</header>
+
+<h1>result</h1>
+<img src="status_pie.jpg">
+
+<h1>target host information</h1>
+<p>IP: 99.83.179.177</p>
+<p>Service: ['http', 'https']</p>
+<p>OS: None</p>
+<p>Port: ['80', '443']</p>
+<p>Apache: None</p>
+
+<h1>attack chain overview</h1>
+<table>
+<tr>
+<th>chain name</th>
+<th>tags</th>
+<th>result</th>
+</tr>
+<tr>
+<td>annie.yml</td>
+<td>#PT01 #PT05 </td>
+<td>get shell</td>
+</tr>
+<tr>
+<td>postgres_login.yml</td>
+<td></td>
+<td>fail</td>
+</tr>
+<tr>
+<td>pwntools.yml</td>
+<td></td>
+<td>fail</td>
+</tr>
+</table>
+<h1>attack chain details</h1>
+<table>
+<tr>
+<th colspan="4">annie.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<th>class</th>
+<td colspan="1">Reconnaissance</td>
+<td colspan="1">Initial Access</td>
+<td colspan="1">Initial Access</td>
+<td rowspan="3">get shell</td></tr>
+<tr>
+<th>block</th>
+<td class="sucessful_block">nmap_sC_sV</td>
+<td class="sucessful_block">CVE-2020–13160</td>
+<td class="sucessful_block">get_bash_by_python</td>
+</tr>
+<tr>
+<th>tags</th>
+<td  colspan="3">#PT01 #PT05 </tr>
+</td>
+</table>
+<table>
+<tr>
+<th colspan="2">postgres_login.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<th>class</th>
+<td colspan="1">Credential Access</td>
+<td rowspan="3">fail</td></tr>
+<tr>
+<th>block</th>
+<td class="failed_block">postgres_login.yml</td>
+</tr>
+<tr>
+<th>tags</th>
+<td  colspan="1"></tr>
+</td>
+</table>
+<table>
+<tr>
+<th colspan="2">pwntools.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<th>class</th>
+<td colspan="1">Privilege Escalation</td>
+<td rowspan="3">fail</td></tr>
+<tr>
+<th>block</th>
+<td class="failed_block">pwntools.yml</td>
+</tr>
+<tr>
+<th>tags</th>
+<td  colspan="1"></tr>
+</td>
+</table>
+
+
+</html>
