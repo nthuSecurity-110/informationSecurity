@@ -1,7 +1,6 @@
 from os import stat
-from unittest import result
 import matplotlib.pyplot as plt
-from sympy import content
+from datetime import date
 
 class Record():
     """
@@ -14,6 +13,7 @@ class Record():
 
     def add_target_host_info(self, Data):
         self.target_host_info['IP'] = Data['IP']
+        self.target_host_info['URL'] = Data['URL']
         self.target_host_info['Service'] = Data['Service']
         self.target_host_info['OS'] = Data['OS']
         self.target_host_info['Port'] = Data['Port']
@@ -91,7 +91,7 @@ class Record():
     def gen_report(self):
         print(self.target_host_info)
         print(self.chain_record)
-        report_file = open('./report/report.html', 'w+')
+        report_file = open('./report/report_{date}.html'.format(date=date.today().strftime('%Y-%m-%d')), 'w+')
         title = self.gen_head()
         success_rate = self.gen_success_rate()
         target_host_info = self.gen_target_host_info()
@@ -110,26 +110,30 @@ class Record():
     def gen_head(self):
         template = open("report_template.html", "r").read()
         head = template.split("<p>content</p>")[0]
+        head = head + "<h3>Date: {date}</h3>".format(date=date.today().strftime('%Y-%m-%d'))
         return head
     
     def gen_success_rate(self):
         labels = ['fail', 'else', 'get data', 'get shell', 'get root']
         count = [0, 0, 0, 0, 0]
-        colors = ['tab:blue', 'tab:cyan', 'tab:gray', 'tab:orange', 'tab:red']
+        colors = ['#003049', '#7f908f', '#c1121f', '#9d0910', '#780000']
         for k in self.chain_record.keys():
             status = self.chain_record[k]['status']
             idx = status + 1
             count[idx] = count[idx] + 1
         
         fig, ax = plt.subplots()
-
-        labels = [label for label in labels if count[labels.index(label)] != 0]
-        count = [c for c in count if c != 0]
+      
+        #remove 0%
+        while 0 in count:              
+            colors.remove(colors[count.index(0)])
+            labels.remove(labels[count.index(0)])
+            count.remove(0)
         
-        ax.pie(count, labels = labels, colors = colors, autopct=lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '')
+        ax.pie(count, labels = labels, colors = colors, autopct=lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '', pctdistance=1.25)
         plt.axis('equal')
         plt.legend(loc = "best")
-        plt.savefig("./report/status_pie.jpg")
+        plt.savefig("./report/status_pie_{date}.jpg".format(date=date.today().strftime('%Y-%m-%d')), transparent=True, dpi=300)
         plt.close()
 
         content = "<h1>result</h1>\n"
@@ -139,9 +143,26 @@ class Record():
     def gen_target_host_info(self):
         content = "<h1>target host information</h1>\n"
         content = content + "<p>IP: {IP}</p>\n".format(IP=str(self.target_host_info['IP']))
-        content = content + "<p>Service: {Service}</p>\n".format(Service=str(self.target_host_info['Service']))
-        content = content + "<p>OS: {OS}</p>\n".format(OS=str(self.target_host_info['OS']))
-        content = content + "<p>Port: {Port}</p>\n".format(Port=str(self.target_host_info['Port']))
+        content = content + "<p>URL: {URL}</p>\n".format(URL=str(self.target_host_info['URL']))
+        if isinstance(self.target_host_info['Service'], list):
+            content = content + "<p>Service:"
+            for s in self.target_host_info['Service']:
+                content = content + " " + s
+                if self.target_host_info['Service'].index(s) != len(self.target_host_info['Service'])-1:
+                    content = content + ","
+            content = content + " </p>\n"
+        else:
+            content = content + "<p>Service: {Service}</p>\n".format(Service=str(self.target_host_info['Service']))
+        content = content + "<p>OS: {OS}</p>\n".format(OS=str(self.target_host_info['OS']))        
+        if isinstance(self.target_host_info['Port'], list):
+            content = content + "<p>Port:"
+            for p in self.target_host_info['Port']:
+                content = content + " " + p
+                if self.target_host_info['Port'].index(p) != len(self.target_host_info['Port'])-1:
+                    content = content + ","
+            content = content + " </p>\n"
+        else:
+            content = content + "<p>Port: {Port}</p>\n".format(Port=str(self.target_host_info['Port']))
         content = content + "<p>Apache: {Apache}</p>\n\n".format(Apache=str(self.target_host_info['Apache']))
         return content
 
@@ -176,36 +197,54 @@ class Record():
             content = content + "<table>\n"
             num_block = len(self.chain_record[chain_name]['block_list'].keys())
             
-            content = content + "<tr>\n" + "<th colspan=\"{col}\">{chain_name}</th>\n".format(col=num_block+1, chain_name=chain_name) + "<th colspan=\"1\">result</th>\n" + "</tr>\n"
-            #class row
-            content = content + "<tr>\n" + "<th>class</th>\n"
-            block_list = self.chain_record[chain_name]['block_list']
-            for block_name in block_list:
-                content = content + "<td colspan=\"1\">" + block_list[block_name]['class_name'] + "</td>\n"
-            status_list = ['fail', 'else', 'get data', 'get shell', 'get root']
-            content = content + "<td rowspan=\"3\">{result}</td>".format(result=status_list[self.chain_record[chain_name]['status']+1])
-            content = content + "</tr>\n"
+            #head row
+            content = content + "<tr>\n" + "<th width=\"60%\">{chain_name}</th>\n".format(chain_name=chain_name) + "<th colspan=\"1\">result</th>\n" + "</tr>\n"
+            #chain part
+            content = content + "<tr>\n" + "<td width=\"60%\">\n" + "<table class=\"chain\">\n"
             
-            #block row
-            content = content + "<tr>\n" + "<th>block</th>\n"
             block_list = self.chain_record[chain_name]['block_list']
-
             class_suc = ""
+            
+            #class part
+            content = content + "<tr>\n" + "<th class=\"chain\">class</th>\n"           
             for block_name in block_list:
                 if block_list[block_name]['success'] == True:
-                    class_suc = "sucessful_block"
+                    class_suc = "success"
                 else:
-                    class_suc = "failed_block"
+                    class_suc = "fail"
+                content = content + "<td class=\"{successful}\">".format(successful=class_suc) + block_list[block_name]['class_name'] + "</td>\n"
+            content = content + "</tr>"
+
+            #block row
+            content = content + "<tr>\n" + "<th class=\"chain\">block</th>\n"
+            for block_name in block_list:
+                if block_list[block_name]['success'] == True:
+                    class_suc = "success"
+                else:
+                    class_suc = "fail"
                 content = content + "<td class=\"{successful}\">".format(successful=class_suc) + block_name + "</td>\n"
             content = content + "</tr>\n"
 
-            #tag row
-            content = content + "<tr>\n" + "<th>tags</th>\n" +"<td  colspan=\"{num_block}\">".format(num_block=num_block)
-            for t in self.chain_record[chain_name]['tag']:
-                content = content + t + " "            
+            #info row
+            content = content + "<tr>\n" + "<th class=\"chain\">info</th>\n"
+            for block_name in block_list:
+                if block_list[block_name]['success'] == True:
+                    class_suc = "success"
+                else:
+                    class_suc = "fail"
+                content = content + "<td class=\"{successful}\">".format(successful=class_suc) + block_list[block_name]['description'] + "</td>\n"
             content = content + "</tr>\n"
-            
-            content = content + "</td>\n" + "</table>\n"
+
+            #tag row
+            content = content + "<tr>\n" + "<th class=\"chain\">tags</th>\n" +"<td class=\"chain\" colspan=\"{num_block}\">".format(num_block=num_block)
+            for t in self.chain_record[chain_name]['tag']:
+                content = content + "<span class=\"tag\">" + t + "</span>"
+            content = content + "</td>\n" + "</tr>\n" + "</table>\n"
+
+            #result part
+            status_list = ['fail', 'else', 'get data', 'get shell', 'get root']
+            content = content + "</td>\n" + "<td>{result}</td>".format(result=status_list[self.chain_record[chain_name]['status']+1])
+            content = content + "</tr>\n" + "</table>\n"
         return content
 
     def gen_foot(self):
@@ -214,9 +253,9 @@ class Record():
         return foot
 
     def test(self):
-        self.target_host_info = {'IP': '99.83.179.177', 'Service': ['http', 'https'], 'OS': None, 'Port': ['80', '443'], 'Apache': None}
+        self.target_host_info = {'IP': '99.83.179.177', 'URL': 'https://hackmd.io/', 'Service': ['http', 'https'], 'OS': None, 'Port': ['80', '443'], 'Apache': None}
         self.chain_record = {'annie.yml': {'block_list': {'nmap_sC_sV': {'class_name': 'Reconnaissance', 'block_name': 'nmap_sC_sV', 'description': 'Nmap scan to get the useful info', 'success': True}, 'CVE-2020–13160': {'class_name': 'Initial Access', 'block_name': 'CVE-2020–13160', 'description': 'create and send reverse shell by python2', 'success': True}, 'get_bash_by_python': {'class_name': 'Initial Access', 'block_name': 'get_bash_by_python', 'description': 'get bash through python', 'success': True}}, 'status': 2, 'success': True, 'tag': ['#PT01', '#PT05']}, 'postgres_login.yml': {'block_list': {'postgres_login.yml': {'class_name': 'Credential Access', 'block_name': 'postgres_login.yml', 'description': 'scan postgres username and password', 'success': False}}, 'status': -1, 'success': False, 'tag': []}, 'pwntools.yml': {'block_list': {'pwntools.yml': {'class_name': 'Privilege Escalation', 'block_name': 'pwntools.yml', 'description': 'Binary Exploitation', 'success': False}}, 'status': -1, 'success': False, 'tag': []}} 
         self.gen_report()
 
-# test_record = Record()
-# test_record.test()
+test_record = Record()
+test_record.test()
