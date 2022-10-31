@@ -193,7 +193,7 @@ class Record():
 
     def gen_detail(self):
         content = "<h1>Attack chain details</h1>\n"
-        content = content + "<table class=\"legend\">\n" + "<tr>\n" + "<td class=\"success\">excution successful</td>\n" + "<td class=\"fail\">excution failed</td>\n" + "</tr>\n" + "</table>\n"
+        content = content + "<table class=\"legend\">\n" + "<tr>\n" + "<td class=\"success\">successful excution</td>\n" + "<td class=\"fail\">failed excution</td>\n" + "</tr>\n" + "</table>\n"
         for chain_name in self.chain_record.keys():
             content = content + "<table>\n"
             num_block = len(self.chain_record[chain_name]['block_list'].keys())
