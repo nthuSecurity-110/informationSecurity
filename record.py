@@ -136,7 +136,7 @@ class Record():
         plt.savefig("./report/status_pie_{date}.jpg".format(date=date.today().strftime('%Y-%m-%d')), transparent=True, dpi=300)
         plt.close()
 
-        content = "<h1>Success Rate</h1>\n"
+        content = "<h1>Pentest Result</h1>\n"
         content = content + "<img src=\"status_pie.jpg\">\n\n"
         return content
 
