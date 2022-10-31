@@ -114,7 +114,7 @@ class Record():
         return head
     
     def gen_success_rate(self):
-        labels = ['fail', 'else', 'get data', 'get shell', 'get root']
+        labels = ['fail', 'ineffective', 'get data', 'get shell', 'get root']
         count = [0, 0, 0, 0, 0]
         colors = ['#003049', '#7f908f', '#c1121f', '#9d0910', '#780000']
         for k in self.chain_record.keys():
@@ -184,7 +184,7 @@ class Record():
                 content = content + t + " "
             content = content + "</td>\n"
             #result
-            status_list = ['fail', 'else', 'get data', 'get shell', 'get root']
+            status_list = ['fail', 'ineffective', 'get data', 'get shell', 'get root']
             content = content + "<td>" +  status_list[self.chain_record[chain_name]['status']+1] +"</td>\n"
             
             content = content + "</tr>\n"
@@ -243,7 +243,7 @@ class Record():
             content = content + "</td>\n" + "</tr>\n" + "</table>\n"
 
             #result part
-            status_list = ['fail', 'else', 'get data', 'get shell', 'get root']
+            status_list = ['fail', 'ineffective', 'get data', 'get shell', 'get root']
             content = content + "</td>\n" + "<td>{result}</td>".format(result=status_list[self.chain_record[chain_name]['status']+1])
             content = content + "</tr>\n" + "</table>\n"
         return content
