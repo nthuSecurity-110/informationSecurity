@@ -112,7 +112,135 @@
         </style></head>
     <header style="width: 100%;  padding: 20px 0; margin: 0 0 20px 20; font-size: 200%;">NTHU Information Security</header>
 <div>
-    <p>content</p>
+    <h2>Date: 2022-10-31</h3><h1>Result</h1>
+<img src="status_pie.jpg">
+
+<h1>Target host information</h1>
+<p>IP: 99.83.179.177</p>
+<p>URL: https://hackmd.io/</p>
+<p>Service: http, https </p>
+<p>OS: None</p>
+<p>Port: 80, 443 </p>
+<p>Apache: None</p>
+
+<h1>Attack chain overview</h1>
+<table>
+<tr>
+<th>chain name</th>
+<th>tags</th>
+<th>result</th>
+</tr>
+<tr>
+<td>annie.yml</td>
+<td>#PT01 #PT05 </td>
+<td>get shell</td>
+</tr>
+<tr>
+<td>postgres_login.yml</td>
+<td></td>
+<td>fail</td>
+</tr>
+<tr>
+<td>pwntools.yml</td>
+<td></td>
+<td>fail</td>
+</tr>
+</table>
+<h1>Attack chain details</h1>
+<table class="legend">
+<tr>
+<td class="success">excution successful</td>
+<td class="fail">excution failed</td>
+</tr>
+</table>
+<table>
+<tr>
+<th width="60%">annie.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="success">Reconnaissance</td>
+<td class="success">Initial Access</td>
+<td class="success">Initial Access</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="success">nmap_sC_sV</td>
+<td class="success">CVE-2020–13160</td>
+<td class="success">get_bash_by_python</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="success">Nmap scan to get the useful info</td>
+<td class="success">create and send reverse shell by python2</td>
+<td class="success">get bash through python</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="3"><span class="tag">#PT01</span><span class="tag">#PT05</span></td>
+</tr>
+</table>
+</td>
+<td>get shell</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">postgres_login.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="fail">Credential Access</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="fail">postgres_login.yml</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="fail">scan postgres username and password</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="1"></td>
+</tr>
+</table>
+</td>
+<td>fail</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">pwntools.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="fail">Privilege Escalation</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="fail">pwntools.yml</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="fail">Binary Exploitation</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="1"></td>
+</tr>
+</table>
+</td>
+<td>fail</td></tr>
+</table>
+
 </div>
 
 </html>

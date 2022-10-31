@@ -110,7 +110,7 @@ class Record():
     def gen_head(self):
         template = open("report_template.html", "r").read()
         head = template.split("<p>content</p>")[0]
-        head = head + "<h3>Date: {date}</h3>".format(date=date.today().strftime('%Y-%m-%d'))
+        head = head + "<h2>Date: {date}</h3>".format(date=date.today().strftime('%Y-%m-%d'))
         return head
     
     def gen_success_rate(self):
@@ -136,12 +136,12 @@ class Record():
         plt.savefig("./report/status_pie_{date}.jpg".format(date=date.today().strftime('%Y-%m-%d')), transparent=True, dpi=300)
         plt.close()
 
-        content = "<h1>result</h1>\n"
+        content = "<h1>Result</h1>\n"
         content = content + "<img src=\"status_pie.jpg\">\n\n"
         return content
 
     def gen_target_host_info(self):
-        content = "<h1>target host information</h1>\n"
+        content = "<h1>Target host information</h1>\n"
         content = content + "<p>IP: {IP}</p>\n".format(IP=str(self.target_host_info['IP']))
         content = content + "<p>URL: {URL}</p>\n".format(URL=str(self.target_host_info['URL']))
         if isinstance(self.target_host_info['Service'], list):
@@ -167,7 +167,7 @@ class Record():
         return content
 
     def gen_overview(self):
-        content = "<h1>attack chain overview</h1>\n"
+        content = "<h1>Attack chain overview</h1>\n"
         content = content + "<table>\n"\
         "<tr>\n"\
             "<th>chain name</th>\n"\
@@ -192,7 +192,8 @@ class Record():
         return content
 
     def gen_detail(self):
-        content = "<h1>attack chain details</h1>\n"
+        content = "<h1>Attack chain details</h1>\n"
+        content = content + "<table class=\"legend\">\n" + "<tr>\n" + "<td class=\"success\">excution successful</td>\n" + "<td class=\"fail\">excution failed</td>\n" + "</tr>\n" + "</table>\n"
         for chain_name in self.chain_record.keys():
             content = content + "<table>\n"
             num_block = len(self.chain_record[chain_name]['block_list'].keys())
@@ -257,5 +258,5 @@ class Record():
         self.chain_record = {'annie.yml': {'block_list': {'nmap_sC_sV': {'class_name': 'Reconnaissance', 'block_name': 'nmap_sC_sV', 'description': 'Nmap scan to get the useful info', 'success': True}, 'CVE-2020–13160': {'class_name': 'Initial Access', 'block_name': 'CVE-2020–13160', 'description': 'create and send reverse shell by python2', 'success': True}, 'get_bash_by_python': {'class_name': 'Initial Access', 'block_name': 'get_bash_by_python', 'description': 'get bash through python', 'success': True}}, 'status': 2, 'success': True, 'tag': ['#PT01', '#PT05']}, 'postgres_login.yml': {'block_list': {'postgres_login.yml': {'class_name': 'Credential Access', 'block_name': 'postgres_login.yml', 'description': 'scan postgres username and password', 'success': False}}, 'status': -1, 'success': False, 'tag': []}, 'pwntools.yml': {'block_list': {'pwntools.yml': {'class_name': 'Privilege Escalation', 'block_name': 'pwntools.yml', 'description': 'Binary Exploitation', 'success': False}}, 'status': -1, 'success': False, 'tag': []}} 
         self.gen_report()
 
-test_record = Record()
-test_record.test()
+#test_record = Record()
+#test_record.test()
