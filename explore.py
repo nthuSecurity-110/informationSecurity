@@ -379,7 +379,7 @@ class Explore():
                         break
             
             self.record.add_chain_mark(file, chain_success_flag)
-            self.record.add_chain_status(file)
+            self.record.add_chain_status(file, chain_success_flag)
                             
         while(1):
             print("\nPlease choose next step: \n1. Run other attack chains \n2. Run single block \n3. Privilege escalation \n4. End execution\n")
@@ -439,7 +439,7 @@ class Explore():
                                 chain_success_flag = False
                                 break
                     self.record.add_chain_mark(file, chain_success_flag)
-                    self.record.add_chain_status(file)
+                    self.record.add_chain_status(file, chain_success_flag)
             elif next_step == '2':
                 try:
                     run_single_block = getattr(Function, "run_single_block")

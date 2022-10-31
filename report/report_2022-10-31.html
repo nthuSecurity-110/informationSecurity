@@ -41,8 +41,8 @@
             }
     
             img {
-                margin: 30px;
-                padding: 20px;
+                margin: 10px;
+                padding: 10px;
                 width: 1000;
                 mix-blend-mode: multiply;
             }
@@ -91,7 +91,7 @@
             }
 
             .legend {
-                width: 30%;
+                width: 40%;
                 table-layout: fixed;
             }    
             
@@ -112,18 +112,18 @@
         </style></head>
     <header style="width: 100%;  padding: 20px 0; margin: 0 0 20px 20; font-size: 200%;">NTHU Information Security</header>
 <div>
-    <h2>Date: 2022-10-31</h3><h1>Result</h1>
-<img src="status_pie.jpg">
+    <h2>Date: 2022-10-31</h3><h1>Pentest Result</h1>
+<img src="status_pie_2022-10-31.jpg">
 
-<h1>Target host information</h1>
-<p>IP: 99.83.179.177</p>
-<p>URL: https://hackmd.io/</p>
-<p>Service: http, https </p>
+<h1>Target Host Information</h1>
+<p>IP: 10.10.110.108</p>
+<p>URL: http://10.10.110.108/</p>
+<p>Service: ftp, ssh </p>
 <p>OS: None</p>
-<p>Port: 80, 443 </p>
+<p>Port: 21, 22 </p>
 <p>Apache: None</p>
 
-<h1>Attack chain overview</h1>
+<h1>Attack Chain Overview</h1>
 <table>
 <tr>
 <th>chain name</th>
@@ -131,9 +131,19 @@
 <th>result</th>
 </tr>
 <tr>
-<td>annie.yml</td>
-<td>#PT01 #PT05 </td>
-<td>get shell</td>
+<td>anonforce.yml</td>
+<td>#ftp #PT02 #PT03 #PT04 #PT13 </td>
+<td>get root</td>
+</tr>
+<tr>
+<td>brooklyn99.yml</td>
+<td>#ftp #PT03 #PT04 #PT05 #PT13 </td>
+<td>fail</td>
+</tr>
+<tr>
+<td>agentT.yml</td>
+<td>#Port80 #PT01 #PT07 </td>
+<td>get data</td>
 </tr>
 <tr>
 <td>postgres_login.yml</td>
@@ -141,21 +151,107 @@
 <td>fail</td>
 </tr>
 <tr>
-<td>pwntools.yml</td>
+<td>ftp_find_sh.yml</td>
 <td></td>
 <td>fail</td>
 </tr>
+<tr>
+<td>smbclient.yml</td>
+<td></td>
+<td>fail</td>
+</tr>
+<tr>
+<td>nmap_sC_sV.yml</td>
+<td></td>
+<td>get data</td>
+</tr>
+<tr>
+<td>pwntools.yml</td>
+<td></td>
+<td>ineffective</td>
+</tr>
+<tr>
+<td>crack_hash_by_john.yml</td>
+<td></td>
+<td>get shell</td>
+</tr>
 </table>
-<h1>Attack chain details</h1>
+<h1>Attack Chain Details</h1>
 <table class="legend">
 <tr>
-<td class="success">excution successful</td>
-<td class="fail">excution failed</td>
+<td class="success">successful excution</td>
+<td class="fail">failed excution</td>
 </tr>
 </table>
 <table>
 <tr>
-<th width="60%">annie.yml</th>
+<th width="60%">anonforce.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="success">Credential Access</td>
+<td class="success">Initial Access</td>
+<td class="success">Credential Access</td>
+<td class="success">Credential Access</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="success">ftp_anonymous_login</td>
+<td class="success">crack_gpg</td>
+<td class="success">crack_hash_by_john</td>
+<td class="success">ssh_login</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="success">login as anonymous to find legitimate username for further exploit</td>
+<td class="success">crack gpg file</td>
+<td class="success">crack hash file by john</td>
+<td class="success">login ssh as user</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="4"><span class="tag">#ftp</span><span class="tag">#PT02</span><span class="tag">#PT03</span><span class="tag">#PT04</span><span class="tag">#PT13</span></td>
+</tr>
+</table>
+</td>
+<td>get root</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">brooklyn99.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="success">Credential Access</td>
+<td class="fail">Credential Access</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="success">ftp_anonymous_login</td>
+<td class="fail">exploit_user</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="success">login as anonymous to find legitimate username for further exploit</td>
+<td class="fail">get the user's password by hydra and login</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="2"><span class="tag">#ftp</span><span class="tag">#PT03</span><span class="tag">#PT04</span><span class="tag">#PT05</span><span class="tag">#PT13</span></td>
+</tr>
+</table>
+</td>
+<td>fail</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">agentT.yml</th>
 <th colspan="1">result</th>
 </tr>
 <tr>
@@ -165,26 +261,23 @@
 <th class="chain">class</th>
 <td class="success">Reconnaissance</td>
 <td class="success">Initial Access</td>
-<td class="success">Initial Access</td>
 </tr><tr>
 <th class="chain">block</th>
-<td class="success">nmap_sC_sV</td>
-<td class="success">CVE-2020–13160</td>
-<td class="success">get_bash_by_python</td>
+<td class="success">nmap_http_php_version</td>
+<td class="success">php-8.1.0-dev-exploit</td>
 </tr>
 <tr>
 <th class="chain">info</th>
-<td class="success">Nmap scan to get the useful info</td>
-<td class="success">create and send reverse shell by python2</td>
-<td class="success">get bash through python</td>
+<td class="success">scan the webserver for PHP version by nmap (PHP versions after 5.5.0 will not respond)</td>
+<td class="success">use script to exploit PHP 8.1.0-dev Backdoor Remote Code Execution</td>
 </tr>
 <tr>
 <th class="chain">tags</th>
-<td class="chain" colspan="3"><span class="tag">#PT01</span><span class="tag">#PT05</span></td>
+<td class="chain" colspan="2"><span class="tag">#Port80</span><span class="tag">#PT01</span><span class="tag">#PT07</span></td>
 </tr>
 </table>
 </td>
-<td>get shell</td></tr>
+<td>get data</td></tr>
 </table>
 <table>
 <tr>
@@ -215,6 +308,87 @@
 </table>
 <table>
 <tr>
+<th width="60%">ftp_find_sh.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="fail">Initial Access</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="fail">ftp_find_sh.yml</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="fail">find script running at remote</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="1"></td>
+</tr>
+</table>
+</td>
+<td>fail</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">smbclient.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="fail">Discovery</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="fail">smbclient.yml</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="fail">mount a SMB file share</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="1"></td>
+</tr>
+</table>
+</td>
+<td>fail</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">nmap_sC_sV.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="success">Reconnaissance</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="success">nmap_sC_sV.yml</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="success">Nmap scan to get the useful info</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="1"></td>
+</tr>
+</table>
+</td>
+<td>get data</td></tr>
+</table>
+<table>
+<tr>
 <th width="60%">pwntools.yml</th>
 <th colspan="1">result</th>
 </tr>
@@ -238,7 +412,34 @@
 </tr>
 </table>
 </td>
-<td>fail</td></tr>
+<td>ineffective</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">crack_hash_by_john.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="success">Credential Access</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="success">crack_hash_by_john.yml</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="success">crack hash file by john</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="1"></td>
+</tr>
+</table>
+</td>
+<td>get shell</td></tr>
 </table>
 
 </div>

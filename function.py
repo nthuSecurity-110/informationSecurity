@@ -308,7 +308,7 @@ class Function():
                     priv_esc_record.add_chain_status_directly(block_list[user_input], 3)
                     break
                 else:
-                    priv_esc_record.add_chain_status(block_list[user_input])
+                    priv_esc_record.add_chain_status(block_list[user_input], True)
             
             block_list.remove(block_list[user_input])
             if len(block_list) == 0:
@@ -384,7 +384,7 @@ class Function():
                             if match_condition:
                                 single_block_record.add_block_mark(block_list[block_num], block_list[block_num], True)
                                 single_block_record.add_chain_mark(block_list[block_num], True)
-                                single_block_record.add_chain_status(block_list[block_num])
+                                single_block_record.add_chain_status(block_list[block_num], True)
                                 print("Block execution done.\n")
                             else:
                                 print("The block can't match condition. End execution.")
