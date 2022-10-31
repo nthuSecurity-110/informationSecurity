@@ -136,12 +136,12 @@ class Record():
         plt.savefig("./report/status_pie_{date}.jpg".format(date=date.today().strftime('%Y-%m-%d')), transparent=True, dpi=300)
         plt.close()
 
-        content = "<h1>Result</h1>\n"
+        content = "<h1>Success Rate</h1>\n"
         content = content + "<img src=\"status_pie.jpg\">\n\n"
         return content
 
     def gen_target_host_info(self):
-        content = "<h1>Target host information</h1>\n"
+        content = "<h1>Target Host Information</h1>\n"
         content = content + "<p>IP: {IP}</p>\n".format(IP=str(self.target_host_info['IP']))
         content = content + "<p>URL: {URL}</p>\n".format(URL=str(self.target_host_info['URL']))
         if isinstance(self.target_host_info['Service'], list):
@@ -167,7 +167,7 @@ class Record():
         return content
 
     def gen_overview(self):
-        content = "<h1>Attack chain overview</h1>\n"
+        content = "<h1>Attack Chain Overview</h1>\n"
         content = content + "<table>\n"\
         "<tr>\n"\
             "<th>chain name</th>\n"\
@@ -192,7 +192,7 @@ class Record():
         return content
 
     def gen_detail(self):
-        content = "<h1>Attack chain details</h1>\n"
+        content = "<h1>Attack Chain Details</h1>\n"
         content = content + "<table class=\"legend\">\n" + "<tr>\n" + "<td class=\"success\">successful excution</td>\n" + "<td class=\"fail\">failed excution</td>\n" + "</tr>\n" + "</table>\n"
         for chain_name in self.chain_record.keys():
             content = content + "<table>\n"
