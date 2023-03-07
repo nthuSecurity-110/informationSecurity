@@ -7,6 +7,7 @@
 - Run `pip install nmap`
 - Run `pip install multiprocess`
 - Run `pip install treelib`
+- Run `pip install mdutils`
 - Run `python main.py` in Windows to execute the program.
 
 ### Modifying Files
