@@ -6,6 +6,7 @@ import re
 from termios import tcflush, TCIFLUSH
 import sys
 from block import Block
+from record import Record
 
 Default = False
 
@@ -270,28 +271,44 @@ class Function():
         for i in range(len(block_list)):
             print(f'{i}: {block_list[i]}')
         print('='*30)
+
+        priv_esc_record = Record()
         
         while(1):
             user_input = input("Please input a number: ")
             while(1):
                 try:
                     user_input = int(user_input)
-                    if user_input < 0 or user_input >= len(block_list):
+                    if user_input < 0 or user_input > len(block_list):
                         user_input = input("Out of range. Please input again: ")
                     else:
                         print("")
                         break
                 except ValueError:
                     user_input = input("Please input number: ")
+
+            if user_input == len(block_list):
+                break
             block = Block("Privilege Escalation", block_list[user_input].replace(".yml",""))
+            
+            priv_esc_record.ini_chain_info(block_list[user_input])
+            priv_esc_record.add_chain_info(block_list[user_input], "Privilege Escalation", block_list[user_input], block)
+            priv_esc_record.add_block_info("Privilege Escalation", block_list[user_input], block)
+            
             result = give_hint(block.hint, block.argument, func_in, Data)
+
             if result:
                 success = input("Does escalation success? Please input yes/no: ")
                 while success.lower() != "yes" and success.lower() != "no":
                     success = input('Please input "yes" or "no": ')
                 if success.lower() == "yes":
                     print("SUCCESS TO GET ROOT!!")
+                    priv_esc_record.add_block_mark(block_list[user_input], block_list[user_input], True)
+                    priv_esc_record.add_chain_mark(block_list[user_input], True)
+                    priv_esc_record.add_chain_status_directly(block_list[user_input], 3)
                     break
+                else:
+                    priv_esc_record.add_chain_status(block_list[user_input], True)
             
             block_list.remove(block_list[user_input])
             if len(block_list) == 0:
@@ -300,11 +317,15 @@ class Function():
             print("\nChoose the block you want to use to get root from the following.\n"+'='*30)
             for i in range(len(block_list)):
                 print(f'{i}: {block_list[i]}')
+            print(f'{len(block_list)}: exit')
             print('='*30)
+        return priv_esc_record
             
     def run_single_block(func_in, Data, match_condition_format):
         type_list = ['Credential Access', 'Discovery', 'Execution', 'Initial Access', 'Reconnaissance']
         
+        single_block_record = Record()
+
         while(1):
             print("Choose what type of block you want to run.\n"+'='*30)
             for i in range(len(type_list)):
@@ -349,6 +370,11 @@ class Function():
                         block_num = input("Please input number: ")
                         
                 block = Block(type_list[type_num], block_list[block_num].replace(".yml",""))
+
+                single_block_record.ini_chain_info(block_list[block_num])
+                single_block_record.add_chain_info(block_list[block_num], type_list[type_num], block_list[block_num], block)
+                single_block_record.add_block_info(type_list[type_num], block_list[block_num], block)
+
                 result = match_condition_format(block)
                 if result == True:
                         try:
@@ -356,6 +382,9 @@ class Function():
                             func_in = {item:Data[item] for item in block.In} # find the function input from Data
                             Data, match_condition = block_func(func_in, Data, block.argument, block.In, block.Out, block.hint) 
                             if match_condition:
+                                single_block_record.add_block_mark(block_list[block_num], block_list[block_num], True)
+                                single_block_record.add_chain_mark(block_list[block_num], True)
+                                single_block_record.add_chain_status(block_list[block_num], True)
                                 print("Block execution done.\n")
                             else:
                                 print("The block can't match condition. End execution.")
@@ -384,6 +413,7 @@ class Function():
                 success = input('Please input "yes" or "no": ')
             if success.lower() == "no":
                 break
+        return single_block_record
     	
     
     def magic_function(func_in, Data, args, block_In, block_Out, block_hint):

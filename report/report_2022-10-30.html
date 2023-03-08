@@ -1,0 +1,236 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><title>NTHU Information Security</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Sriracha&display=swap" rel="stylesheet"> 
+        <style>
+            p{
+                margin: 0;
+                padding: 10 20px 10 20px;
+                border: 0;
+                color: #003049;
+            }
+    
+            h1{
+                margin: 0;
+                padding: 10 20px 10 20px;
+                border: 0;
+                color: #7f908f;
+            }
+    
+            body {
+                background-color: #fdf0d5;
+            }
+            
+            html, div, span {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
+                -webkit-text-size-adjust: none;
+            }
+    
+            table {
+                margin: 20px;
+                padding: 15px;
+                border-collapse: collapse;
+                width: 90%;
+                border: hidden;
+            }
+    
+            img {
+                margin: 30px;
+                padding: 20px;
+                width: 1000;
+                mix-blend-mode: multiply;
+            }
+    
+            .tag {
+                border-radius: 20px;
+                background-color: #a9bebd;
+                padding: 1px 5px 1px 5px;
+                margin: 3px;
+            }
+    
+            th {
+                border: 2px solid #000000;
+                text-align: left;
+                width: 10%;
+                padding: 5px;
+            }
+    
+            td {
+                border: 2px solid #000000;
+                text-align: left;
+                padding: 5px;
+            }
+    
+            header {
+                font-size: 20px;
+                color: #001a4d;
+                font-family: 'Sriracha', cursive;
+            }
+    
+            .chain {
+                border: 1px solid #fdf0d5;
+                border-collapse: collapse;
+            }
+    
+            .success {
+                background-color: #df817a;
+                border: 3px solid #fdf0d5;
+                border-collapse: collapse;
+            }
+    
+            .fail {
+                background-color: #7f908f;
+                border: 3px solid #fdf0d5;
+                border-collapse: collapse;
+            }
+    
+            
+            h2 {
+                text-align: right;
+                color: #7f908f;
+            }
+    
+            h1, h2, p {
+                font-family: 'Playfair Display', serif;
+            }
+
+            div {
+                margin: 0 100px 0 100px;
+            }
+    
+    
+        </style></head>
+    <header style="width: 100%;  padding: 20px 0; margin: 0 0 20px 20; font-size: 200%;">NTHU Information Security</header>
+<div>
+    <h2>Date: 2022-10-30</h3><h1>Result</h1>
+<img src="status_pie.jpg">
+
+<h1>Target host information</h1>
+<p>IP: 99.83.179.177</p>
+<p>URL: https://hackmd.io/</p>
+<p>Service: http, https </p>
+<p>OS: None</p>
+<p>Port: 80, 443 </p>
+<p>Apache: None</p>
+
+<h1>Attack chain overview</h1>
+<table>
+<tr>
+<th>chain name</th>
+<th>tags</th>
+<th>result</th>
+</tr>
+<tr>
+<td>annie.yml</td>
+<td>#PT01 #PT05 </td>
+<td>get shell</td>
+</tr>
+<tr>
+<td>postgres_login.yml</td>
+<td></td>
+<td>fail</td>
+</tr>
+<tr>
+<td>pwntools.yml</td>
+<td></td>
+<td>fail</td>
+</tr>
+</table>
+<h1>Attack chain details</h1>
+<table>
+<tr>
+<th width="60%">annie.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="success">Reconnaissance</td>
+<td class="success">Initial Access</td>
+<td class="success">Initial Access</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="success">nmap_sC_sV</td>
+<td class="success">CVE-2020–13160</td>
+<td class="success">get_bash_by_python</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="success">Nmap scan to get the useful info</td>
+<td class="success">create and send reverse shell by python2</td>
+<td class="success">get bash through python</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="3"><span class="tag">#PT01</span><span class="tag">#PT05</span></td>
+</tr>
+</table>
+</td>
+<td>get shell</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">postgres_login.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="fail">Credential Access</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="fail">postgres_login.yml</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="fail">scan postgres username and password</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="1"></td>
+</tr>
+</table>
+</td>
+<td>fail</td></tr>
+</table>
+<table>
+<tr>
+<th width="60%">pwntools.yml</th>
+<th colspan="1">result</th>
+</tr>
+<tr>
+<td width="60%">
+<table class="chain">
+<tr>
+<th class="chain">class</th>
+<td class="fail">Privilege Escalation</td>
+</tr><tr>
+<th class="chain">block</th>
+<td class="fail">pwntools.yml</td>
+</tr>
+<tr>
+<th class="chain">info</th>
+<td class="fail">Binary Exploitation</td>
+</tr>
+<tr>
+<th class="chain">tags</th>
+<td class="chain" colspan="1"></td>
+</tr>
+</table>
+</td>
+<td>fail</td></tr>
+</table>
+
+</div>
+
+</html>

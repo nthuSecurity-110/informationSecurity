@@ -9,14 +9,14 @@ This report serves as a ...
 # Data
 
 
-my IP:192.168.17.131
+my IP:10.18.23.211
 
-Explored host:99.83.179.177
+Explored host:10.10.8.92
 
-Service:['http', 'https']
+Service:['ftp', 'ssh', 'http']
 
 OS:None
 
-Port:['80', '443']
+Port:['21', '22', '80']
 
 Apache:None
